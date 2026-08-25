@@ -551,42 +551,6 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
 .hw-team .hw-col .label{ font-size:20px; font-weight:700; margin-bottom:13px; }
 .hw-team .hw-col .body{ font-size:18px; color:#606060; line-height:1.45; }
 
-/* (복원 3) 차별화된 서비스 6카드 — event-slide 카드 문법 재사용 */
-.hw-diff .diff-slide{ position:relative; margin-top:20px; }
-.hw-diff .diff-slide-inner{ overflow:hidden; }
-.hw-diff .swiper-wrapper{ height:600px; align-items:center; }
-.hw-diff .swiper-slide{ width:auto; height:auto; }
-.hw-diff .card{
-  width:432px; background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12); padding:24px 34px 34px;
-}
-.hw-diff .card .top{ display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-.hw-diff .card .top .title{ font-size:20px; line-height:27px; font-weight:700; }
-.hw-diff .card .say{ padding-top:6px; }
-.hw-diff .card .say .q{ font-size:16px; color:#606060; line-height:150%; }
-.hw-diff .card .say .a{ font-size:16px; line-height:150%; margin-top:4px; }
-.hw-diff .card .say .a b{ color:var(--brand); font-weight:700; }
-.hw-diff .card .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; }
-.hw-diff .card .chips span{
-  display:inline-block; border:1px solid #eaeaea; border-radius:500px; font-size:14px;
-  line-height:30px; padding:0 16px; color:#606060; white-space:nowrap;
-}
-.hw-diff .swiper-slide-active .card{ transform:scale(1.1); }
-.hw-diff .swiper-slide-active{ z-index:10; }
-.hw-diff .swiper-button-next, .hw-diff .swiper-button-prev{
-  position:absolute; top:50%; transform:translateY(-50%); width:50px; height:50px; cursor:pointer; z-index:11;
-  background:center/cover no-repeat;
-}
-.hw-diff .swiper-button-next{ right:-77px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50' fill='none'%3E%3Ccircle cx='25' cy='25' r='24' stroke='%23e83817' stroke-width='1.6'/%3E%3Cpath d='M21 15l10 10-10 10' stroke='%23e83817' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
-.hw-diff .swiper-button-prev{ left:-77px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50' fill='none'%3E%3Ccircle cx='25' cy='25' r='24' stroke='%23e83817' stroke-width='1.6'/%3E%3Cpath d='M29 15L19 25l10 10' stroke='%23e83817' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
-.hw-diff .swiper-button-next.swiper-button-disabled{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50' fill='none'%3E%3Ccircle cx='25' cy='25' r='24' stroke='%23c0c0c0' stroke-width='1.6'/%3E%3Cpath d='M21 15l10 10-10 10' stroke='%23c0c0c0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
-.hw-diff .swiper-button-prev.swiper-button-disabled{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50' fill='none'%3E%3Ccircle cx='25' cy='25' r='24' stroke='%23c0c0c0' stroke-width='1.6'/%3E%3Cpath d='M29 15L19 25l10 10' stroke='%23c0c0c0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"); }
-.hw-diff .tag{ display:inline-block; border-radius:500px; font-size:16px; font-weight:700; line-height:32px; padding:0 20px; background:var(--brand); color:#fff; }
-
-/* (복원 4) 업종별 — con3(좌 이미지 교체 + 우 행 리스트) 문법 재사용 */
 .hw-industry .inner{ display:flex; align-items:center; position:relative; }
 .hw-industry .left{ width:50%; }
 .hw-industry .left .list li{ display:none; }
@@ -837,10 +801,6 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
   .hw-sec .txt3{ font-size:16px; }
   .hw-after .hw-steps, .hw-build .hw-steps{ grid-template-columns:1fr; gap:20px; }
   .hw-team .hw-cols{ grid-template-columns:1fr; gap:20px; }
-  .hw-diff .swiper-wrapper{ height:450px; }
-  .hw-diff .card{ width:100%; padding:20px; }
-  .hw-diff .swiper-button-next{ width:36px; height:36px; right:-25px; }
-  .hw-diff .swiper-button-prev{ width:36px; height:36px; left:-25px; }
   .hw-industry .inner{ display:block; }
   .hw-industry .left{ display:none; }
   .hw-industry .right{ width:100%; }
@@ -854,4 +814,280 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
 
 @media (prefers-reduced-motion: reduce){
   .rotate, .circleBg span, .bubbleBg span{ animation:none !important; }
+}
+
+/* ============================================================
+   차별화된 서비스 — 기존 하오웹(seyeong1403.github.io/haoweb-design-preview) 실측 이식
+   2026-08-25. 원본 base.css .diff 규칙을 토큰만 파나시아 것으로 바꿔 그대로 옮겼다.
+   실측(1600x900): 좌 40 / 우 60 · 카드 398x554 radius20 pad 80/50/60 · gap 15(>=1300)
+                   transform .8s cubic-bezier(.4,0,.2,1) · 진행바 5px #f0f0f0/#111
+   ⚠ 컨테이너만 다르다 — 원본 1360(내용 1264)이고 파나시아는 1400 이라,
+     카드가 오른쪽으로 넘치는 인상을 지키려고 뷰포트를 758 로 고정했다.
+   ============================================================ */
+.diff { background: #fff; padding-block: 128px; overflow: hidden; }
+/* ⚠ 폭·좌우 위치는 파나시아 `.container` 가 정한다 — 이 사이트의 컨테이너는 1682px 이하에서
+     `calc(100% - 169px)` + `margin-left:139px` 로 **왼쪽에 치우쳐** 있다(원본 좌측 레일 때문).
+     여기서 1400 중앙으로 고정했더니 다른 섹션과 좌우가 31px 어긋났다(2026-08-25 실측).
+   ⚠ 뷰포트 758 은 고정이다 — 카드 2장(398x2+15=811)이 53px 넘치는 인상이 레퍼런스의 핵심이다.
+     비율(60%)로 두면 1431 에서 859 가 되어 넘침이 사라진다. */
+.diff__inner {
+  display: grid; grid-template-columns: 1fr 758px; align-items: start;
+}
+/* 좌측 글 — 카드가 지나가는 동안 붙어 있는다(레퍼런스도 고정된 채 슬라이드만 움직인다). */
+/* ⚠ 레퍼런스는 sticky 가 아니다. 좌측 글 상자가 슬라이더와 **같은 높이**(565)이고
+     화살표가 그 **맨 아래**에 붙는다(섹션 위에서 503px). 그래서 세로 flex 로 밀어 내린다. */
+.diff__aside {
+  min-width: 0; padding-right: 40px;
+  /* ⚠ `align-items: flex-start` 가 없으면 flex 기본값(stretch)이라 배지가 칸 폭을 다 먹는다. */
+  display: flex; flex-direction: column; align-items: flex-start; min-height: 565px;
+}
+.diff__badge {
+  display: inline-block; font-size: 15px; font-weight: 700; letter-spacing: -.02em;
+  color: rgba(23, 21, 15, .74); background: rgba(23, 21, 15, .07);
+  padding: 9px 18px; border-radius: 999px;
+}
+.diff__title {
+  /* 레퍼런스 실측 58px w800. 4vw 면 1440 에서 56.96 이라 상한에 못 닿는다 → 4.1vw. */
+  margin-top: 28px; font-size: clamp(40px, 4.1vw, 58px); font-weight: 800;
+  line-height: 1.12; letter-spacing: -.04em; color: #17150f;
+}
+.diff__sub {
+  margin-top: 30px; font-size: clamp(19px, 1.6vw, 23.2px); font-weight: 400;
+  /* 레퍼런스 실측: 리드 23.2px w400 색 rgb(51,51,51). 강조줄만 w800. */
+  line-height: 1.6; letter-spacing: -.02em; color: #333;
+}
+/* 화살표 — 레퍼런스는 좌측 글 아래에 둘을 나란히 둔다(각 48×62). */
+/* 레퍼런스 실측 — `.port_pager` 110×62 · 버튼 48×62 · 사이 15px · 좌측 글 맨 아래 */
+.diff__nav { display: flex; gap: 15px; margin-top: auto; }
+.diff__arrow {
+  width: 48px; height: 62px;   /* 레퍼런스 실측 */ padding: 0; border: 0; background: none; cursor: pointer;
+  font-size: 44px; line-height: 1; color: #17150f;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .25s ease, opacity .25s ease;
+}
+.diff__arrow:hover { color: var(--brand); }
+/* ⚠ 끝에 닿으면 눌러도 소용없다는 걸 보여 준다 — 안 그러면 고장으로 읽힌다. */
+.diff__arrow[disabled] { opacity: .28; cursor: default; }
+.diff__arrow[disabled]:hover { color: #17150f; }
+
+/* 슬라이더 — 오른쪽으로 흘러넘치게 둔다. 넘친 부분은 `.diff` 의 overflow 가 자른다.
+   ⚠⚠ `min-width: 0` 이 반드시 있어야 한다. 그리드 `fr` 트랙의 자동 최소값은 **min-content** 라
+     안에 든 카드 1244px 에 맞춰 칸이 통째로 늘어난다 — 좌측 글 칸이 짜부라지고
+     넘치는 게 없어져 **화살표가 둘 다 꺼진 채로 굳는다**(2026-08-24 실제로 그랬다.
+     실측: 뷰포트가 758 이어야 하는데 1244 로 나왔다). */
+.diff__viewport {
+  position: relative; overflow: visible; min-width: 0;
+  /* ⚠⚠ **왼쪽만 자른다.** 무한 루프를 만들려고 앞뒤로 카드를 복제해 두었는데,
+     앞쪽 복제본이 왼쪽으로 삐져나와 「차별화된 서비스」 글 위를 덮었다(2026-08-24 캡처).
+     `overflow:hidden` 을 쓰면 오른쪽으로 흘러넘치는 인상까지 같이 죽는다.
+     그래서 `clip-path` 로 **왼쪽 0 · 오른쪽 -100vw** — 왼쪽만 자르고 오른쪽은 열어 둔다.
+     위아래도 여유를 줘서 카드 모서리가 깎이지 않게 한다. */
+  clip-path: inset(-40px -100vw -40px 0);
+}
+/* ⭐ 진행바 — 레퍼런스 실측 `.swiper-pagination-progressbar`
+     트랙 779×5 · radius 50 · #f0f0f0 / 채움 #111. 슬라이더와 같은 x 에서 시작한다.
+   ⚠ 폭은 슬라이더 뷰포트와 같다(779 ≈ 820 에서 좌우 여백을 뺀 값). 우리는 뷰포트 폭에 맞춘다. */
+.diff__bar {
+  position: relative; height: 5px; border-radius: 50px; background: #f0f0f0;
+  margin-top: 57px; overflow: hidden;
+}
+.diff__bar span {
+  position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 50px; background: #111;
+  transition: width .8s cubic-bezier(.4, 0, .2, 1), transform .8s cubic-bezier(.4, 0, .2, 1);
+}
+.diff__track {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; gap: 25px;   /* 레퍼런스 실측 spaceBetween 25 */
+  /* ⚠ 레퍼런스 실측 speed = 800ms. JS 에서 인라인으로 넣었더니 `place()` 가 transition 을
+     비우는 순간 이 CSS 값으로 되돌아가 **0.6초로 돌고 있었다**(2026-08-24 실측).
+     한 곳에서만 정한다 — 여기다. */
+  transition: transform .8s cubic-bezier(.4, 0, .2, 1);
+}
+.diff__card {
+  position: relative; flex: none;
+  width: 398px; min-height: 530px; border-radius: 20px;
+  padding: 80px 50px 60px;
+  display: flex; flex-direction: column;
+}
+/* 아이콘 — 레퍼런스 실측 85×85, 카드 위에서 80px(안쪽 여백과 같은 줄).
+   ⚠ 색을 카드마다 바꿔야 해서 `<img>` 가 아니라 **마스크**로 쓴다.
+     `<img>` 로 넣으면 원본 검정 그대로라 레드·먹색 카드에서 안 보인다.
+     경로는 **이 파일 기준**(`../img/`)이다 — 인라인 변수로 넘기면 조각 기준으로 풀려 깨진다. */
+.diff__ico {
+  display: block; width: 85px; height: 85px; flex: none;
+  background: currentColor; opacity: .92;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: left center; mask-position: left center;
+  -webkit-mask-size: contain; mask-size: contain;
+}
+.diff__ico--write { -webkit-mask-image: url('../img/icon/diff-write.svg'); mask-image: url('../img/icon/diff-write.svg'); }
+.diff__ico--team  { -webkit-mask-image: url('../img/icon/diff-team.svg');  mask-image: url('../img/icon/diff-team.svg'); }
+.diff__ico--shoot  { -webkit-mask-image: url('../img/icon/diff-shoot.svg');  mask-image: url('../img/icon/diff-shoot.svg'); }
+.diff__ico--global { -webkit-mask-image: url('../img/icon/diff-global.svg'); mask-image: url('../img/icon/diff-global.svg'); }
+.diff__ico--care   { -webkit-mask-image: url('../img/icon/diff-care.svg');   mask-image: url('../img/icon/diff-care.svg'); }
+.diff__ico--doc    { -webkit-mask-image: url('../img/icon/diff-doc.svg');    mask-image: url('../img/icon/diff-doc.svg'); }
+
+/* 큰 번호 — 레퍼런스는 모든 카드에 rgba(0,0,0,.1) 을 쓴다.
+   ⚠ 어두운 카드에서는 검정 10% 가 보이지 않아 그 카드만 흰 알파로 뒤집는다. */
+.diff__no {
+  position: absolute; top: 65px; right: 25px;
+  font-size: 112px; font-weight: 600; line-height: 1; letter-spacing: -.04em;
+  color: rgba(0, 0, 0, .10); pointer-events: none;
+}
+/* ⚠ 제목은 **아이콘·번호 아래에서** 시작한다. 레퍼런스 실측 — 아이콘 80~165, 번호 65~177,
+     제목 윗변 215. 안 띄우면 큰 번호가 제목 위에 겹친다(2026-08-24 캡처에서 실제로 겹쳤다).
+     아이콘(85) + 50 = 135 가 그 자리를 만든다. */
+.diff__cardt {
+  margin: 50px 0 0; font-size: 26px; font-weight: 800; line-height: 1.2; letter-spacing: -.03em;
+}
+.diff__say { margin-top: 22px; }
+.diff__q { font-size: 18px; font-weight: 700; line-height: 1.6; letter-spacing: -.02em; }
+.diff__a { margin-top: 8px; font-size: 18px; font-weight: 400; line-height: 1.6; letter-spacing: -.02em; }
+/* ⚠ 레퍼런스에 없는 우리 것. 지우면 글 13개가 사라져서 남겼다. 카드 맨 아래로 민다. */
+.diff__tags {
+  margin-top: auto; padding-top: 28px; display: flex; flex-wrap: wrap; gap: 8px;
+}
+.diff__tags span {
+  font-size: 12px; font-weight: 500;
+  padding: 7px 14px; border-radius: 999px;
+}
+
+/* ── 카드 2색 — **하오 포인트 컬러와 회색이 번갈아** (2026-08-24 세영 지시).
+   세영: "카드색은 검은색은 하지 말고 하오 포인트 컬러와 회색이 번갈아가며 보이게".
+   레퍼런스는 5색(틸·파랑·남색·회색·밝은회색)을 돌리지만 그건 바로웹 브랜드다.
+   우리는 두 색만 쓴다 — 01·03·05 레드 / 02·04·06 회색.
+   ⚠ 레드 카드의 흰 글자를 위해 채움은 `--brand-fill`(#e83817) 이다. `--brand`(#e83817)를 쓰면
+     흰 글자가 4.19:1 로 기준(4.5)을 못 넘는다(2026-08-24 실측). ── */
+.diff__card--brand { background: var(--brand); color: #fff; }
+/* ⚠ .82 는 레드 채움 위에서 3.7:1 이라 18px 본문 기준(4.5)을 못 넘는다(2026-08-24 실측).
+     흰색 100% 면 4.86:1 이다. 인용문과 답변은 색이 아니라 **굵기**로 갈린다(q 700 / a 400). */
+.diff__card--brand .diff__q { color: #fff; }
+.diff__card--brand .diff__a b { color: #fff; }
+/* ⚠ 흰 알파 칩은 레드를 **밝게** 만들어 그 위 흰 글자가 3.7:1 로 떨어진다.
+     검은 알파로 바꾸면 칩이 어두워져 흰 글자가 산다. */
+.diff__card--brand .diff__tags span { color: #fff; background: rgba(0, 0, 0, .16); }
+
+.diff__card--gray { background: #f4f4f4; color: #222; }
+.diff__card--gray .diff__q { color: rgba(0, 0, 0, .62); }
+.diff__card--gray .diff__a b { color: var(--brand); }
+.diff__card--gray .diff__tags span { color: rgba(0, 0, 0, .74); background: rgba(0, 0, 0, .07); }
+
+/* ⭐ 화면별 보이는 장수 — 레퍼런스 Swiper breakpoints 실측
+     기본 2장(간격 25) · 1300 이상 3장(간격 15) · 768 미만 1장(간격 7)
+   ⚠ 레퍼런스는 1700 이상에서 다시 2장으로 돌아간다. 큰 화면에서 카드가 너무 커지는 걸
+     막으려는 값으로 보이는데, 우리 카드는 폭이 398 로 고정이라 해당 없다(같이 넣지 않았다). */
+@media (min-width: 1300px) {
+  .diff__track { gap: 15px; }
+}
+@media (max-width: 1100px) {
+  .diff__inner { grid-template-columns: 1fr; }
+  .diff__aside { min-height: 0; padding-right: 0; }
+  .diff__nav { margin-top: 36px; }
+  .diff__viewport { margin-top: 44px; }
+  .diff__bar { margin-top: 32px; }
+}
+@media (max-width: 767px) {
+  .diff__track { gap: 7px; }
+}
+@media (max-width: 900px) {
+  .diff { padding-block: 88px; }
+  /* ⚠ 좁은 화면에서 카드 폭을 398 로 두면 화면(375)을 넘는다. 화면에 맞춘다. */
+  .diff__card { width: min(398px, 82vw); min-height: 0; padding: 64px 30px 40px; }
+  .diff__no { font-size: 88px; top: 48px; right: 20px; }
+  .diff__cardt { font-size: 23px; margin-top: 36px; }
+  .diff__ico { width: 66px; height: 66px; }
+  .diff__q, .diff__a { font-size: 16px; }
+}
+
+/* ============================================================
+   실적 — 바로웹 #section5 「Performance」 실측 이식 (2026-08-25)
+   실측(1600x900): .box2 1522 · padding 150px 0
+     좌 .sec_tbox w477(31.3%) / 우 .nm_box w1013, 왼쪽에서 506.64 지점에서 시작
+     .nm_up li 4개가 2열로 감기고 li h322 · .in h182 — **왼쪽 열만 mt140** 지그재그
+     .nm_en 16/400 색=포인트 mb3 · .nm_tw 26/400 lh33.8 #222 mb10
+     .nm_tt 88/800 lh114.4 #222 inline-block · .nm_st 20/400 ml5
+     카운트업 counterUp({delay:50, time:700}) — 700ms 동안 50ms 간격
+   ⚠ 글자 크기는 파나시아 토큰에 맞춘다(레퍼런스 px 를 그대로 옮기지 않는다).
+     숫자 88 → 70(.txt1) · 국문 26 → 20(.hw-team .label) · 내려오는 양 140 → 110(같은 비율)
+   ============================================================ */
+.perf .container{
+  display:grid; grid-template-columns:439px 1fr; column-gap:29px; align-items:start;
+}
+.perf__head .txt2{ margin-top:3px; }
+.perf__head .txt3{ margin-top:35px; }   /* 레퍼런스 실측 sec_tw margin-top 35 */
+.perf__list{ display:grid; grid-template-columns:repeat(2,1fr); }
+/* ⚠ 레퍼런스는 li 에 높이(322)가 있고 내용(182)이 위에 붙는다 — 아래 140 이 다음 행과의 간격이다.
+     행 간격을 gap 으로 주면 지그재그가 어긋난다. li 최소 높이로 잡는다. */
+.perf__list li{ min-height:262px; }
+.perf__list li:nth-child(odd) .in{ margin-top:110px; }
+.perf__en{ font-size:16px; font-weight:700; color:var(--brand); margin-bottom:3px; }
+.perf__ko{ font-size:20px; font-weight:700; line-height:1.3; color:#222; margin-bottom:10px; }
+.perf__no{ color:#222; }
+.perf__no em{ font-size:70px; font-weight:800; line-height:1.3; letter-spacing:-.5px; }
+.perf__no span{ font-size:20px; font-weight:400; margin-left:5px; }
+
+@media screen and (max-width:1400px){
+  .perf .container{ grid-template-columns:1fr; row-gap:56px; }
+  .perf__list li:nth-child(odd) .in{ margin-top:0; }
+  .perf__list li{ min-height:0; }
+  .perf__list{ row-gap:48px; }
+}
+@media screen and (max-width:768px){
+  .perf__list{ grid-template-columns:1fr; }
+  .perf__no em{ font-size:52px; }
+}
+
+/* ============================================================
+   홈페이지 종류 — 바로웹 #section14 「Design Sample Category」 실측 이식 (2026-08-25)
+   실측(1600x900): padding 120px 0 90px · 머리 가운데정렬 mb40 · .ctg_slide mt50
+     Swiper slidesPerView 6 · spaceBetween 10 · loop · speed 800 · autoplay 5000
+     원 210 radius 50% bg #f9f9f9 transition .3s · 아이콘 45 · 라벨 18 mt15
+     hover — 원 배경 var(--subColor) / 아이콘 brightness(0) invert(1) / 라벨 #fff
+     화살표 48x62 · top 105 · left/right -80
+   ⚠ 컨테이너 1400 이라 좌우 여백 76→70 · 원 210→192 · 아이콘 45→42 (같은 비율)
+   ============================================================ */
+.ctg{ padding:120px 0 90px; }
+.ctg__head{ text-align:center; margin-bottom:40px; }
+.ctg__head .txt2{ margin-top:3px; }
+.ctg__head .txt3{ margin-top:35px; }
+.ctg__head .txt3 b{ color:var(--brand); font-weight:700; }
+.ctg__slide{ position:relative; margin:50px 70px 0; }
+.ctg__swiper{ overflow:hidden; }
+.ctg__swiper .swiper-wrapper{ display:flex; }
+.ctg__swiper .swiper-slide{ flex:none; }
+/* 원 — 레퍼런스 `.in_icon`. 라벨까지 원 안에 들어간다(바로웹도 원 안에 아이콘+글자다). */
+.ctg .in_icon{
+  /* ⚠ 지름을 고정하면(192px) 화면이 좁아질 때 슬라이드보다 원이 커져 서로 겹친다
+     (1280 에서 실제로 겹쳤다). 레퍼런스는 슬라이드 220 / 원 210 — 좌우 5씩 작다.
+     그 관계를 그대로 쓰면 어느 폭에서도 맞는다. */
+  width:calc(100% - 10px); aspect-ratio:1/1; border-radius:50%; margin:0 auto; background:#f9f9f9;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:#222; transition:.3s;
+}
+.ctg .in_icon img{ width:42px; height:42px; transition:.3s; }
+.ctg .in_tx{ margin-top:15px; font-size:18px; line-height:1.3; }
+.ctg .in_icon:hover{ background:var(--brand); }
+.ctg .in_icon:hover img{ filter:brightness(0) invert(1); }
+.ctg .in_icon:hover .in_tx{ color:#fff; }
+/* 화살표 — 레퍼런스 실측 48x62, 원 중심 높이에 맞춘다(원 192 → 96). */
+.ctg__arrow{
+  /* ⚠ z-index 가 없으면 Swiper 가 슬라이드에 transform 을 걸면서 만든 스택 컨텍스트에
+     화살표가 가린다(390px 에서 실제로 원 뒤로 숨었다). 레퍼런스도 z-index:10 이다. */
+  position:absolute; top:50%; transform:translateY(-50%); z-index:10;
+  width:48px; height:62px; font-size:44px; line-height:1; color:#17150f;
+  display:flex; align-items:center; justify-content:center;
+  transition:color .25s ease;
+}
+.ctg__arrow:hover{ color:var(--brand); }
+.ctg__arrow--prev{ left:-70px; }
+.ctg__arrow--next{ right:-70px; }
+
+@media screen and (max-width:1024px){
+  /* ⚠ 여기서부터 파나시아 컨테이너가 `calc(100% - 60px)` 중앙이라 좌우 여백이 30 뿐이다.
+     화살표를 안쪽으로 넣으면 원 위에 겹친다 — 레퍼런스도 좁은 화면에서는 화살표를
+     -80 바깥(화면 밖)에 둬서 보이지 않게 하고 스와이프로 넘긴다. 같은 결과로 감춘다. */
+  .ctg{ padding:88px 0 64px; }
+  .ctg__slide{ margin:50px 0 0; }
+  .ctg__arrow{ display:none; }
+  .ctg .in_tx{ font-size:16px; margin-top:12px; }
 }

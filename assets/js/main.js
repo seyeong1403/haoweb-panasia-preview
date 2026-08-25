@@ -411,21 +411,99 @@
       scrollTrigger: { trigger: '.main-con3', start: 'top bottom', end: 'center bottom', scrub: 2 }
     });
 
-  /* ---------- 복원 섹션 (파나시아 문법 재사용) ---------- */
-  /* 차별화된 서비스 — event 슬라이더 문법(3장 센터·nav), 01부터 보여야 해서 시작만 1 */
-  new Swiper('.diff-slide-inner', {
-    slidesPerView: 3,
-    centeredSlides: true,
-    initialSlide: 1,
-    navigation: {
-      nextEl: '.diff-slide .swiper-button-next',
-      prevEl: '.diff-slide .swiper-button-prev'
-    },
-    breakpoints: {
-      0:   { slidesPerView: 1, centeredSlides: true },
-      769: { slidesPerView: 3, centeredSlides: true }
+  /* ---------- 복원 섹션 ---------- */
+  /* 차별화된 서비스 — 기존 하오웹(design-preview) 슬라이더를 그대로 옮겼다.
+     Swiper 를 쓰지 않는다: 앞뒤 한 벌씩 복제한 무한 루프 + 5초 자동재생 + 진행바.
+     전환 시간(800ms)은 CSS `.diff__track` 한 곳에서만 정한다 — 여기서 인라인으로
+     넣으면 place() 가 transition 을 비우는 순간 사라진다(원본 주석의 실제 사고). */
+  function initDiff() {
+    var view = document.querySelector('[data-diff-view]');
+    var track = document.querySelector('[data-diff-track]');
+    if (!view || !track) return;
+    var prev = document.querySelector('[data-diff="prev"]');
+    var next = document.querySelector('[data-diff="next"]');
+    var fill = document.querySelector('[data-diff-fill]');
+
+    var real = [].slice.call(track.children);
+    var N = real.length;
+    if (!N) return;
+
+    function clone(list, where) {
+      list.forEach(function (el) {
+        var c = el.cloneNode(true);
+        c.setAttribute('aria-hidden', 'true');
+        c.setAttribute('inert', '');
+        c.setAttribute('data-clone', '');
+        c.removeAttribute('data-fade');
+        c.classList.add('on');
+        if (where === 'before') track.insertBefore(c, track.firstChild);
+        else track.appendChild(c);
+      });
     }
-  });
+    clone(real.slice().reverse(), 'before');
+    clone(real, 'after');
+
+    var i = N;
+    var timer = null;
+    var DELAY = 5000;      /* 레퍼런스 실측 */
+    /* ⚠ 전환 시간(레퍼런스 실측 800ms)은 **CSS 한 곳에서만** 정한다.
+       여기서 인라인으로 넣으면 `place()` 가 transition 을 비울 때 사라져 CSS 기본값으로 돈다. */
+
+    function step() {
+      var card = track.children[0];
+      if (!card) return 0;
+      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
+      return card.getBoundingClientRect().width + gap;
+    }
+    /* 진행바 — 지금이 원본 몇 번째인지의 비율만큼 채운다. 한 칸 분량이 최소 폭이다. */
+    function paint() {
+      if (!fill) return;
+      var pos = ((i - N) % N + N) % N;          /* 0 … N-1 */
+      var one = 100 / N;
+      fill.style.width = (one * (pos + 1)) + '%';
+    }
+    function place(animate) {
+      track.style.transition = animate ? '' : 'none';
+      track.style.transform = 'translateX(' + (-i * step()) + 'px)';
+      if (!animate) { track.offsetHeight; track.style.transition = ''; }
+      paint();
+    }
+    function settle() {
+      if (i >= N * 2) { i -= N; place(false); }
+      else if (i < N) { i += N; place(false); }
+    }
+    /* ⚠ `transitionend` 는 자식에서 올라온다 — 트랙 자신 것만 받는다.
+       안 그러면 카드 안 등장 모션이 위치 보정을 엉뚱한 순간에 부른다. */
+    track.addEventListener('transitionend', function (e) {
+      if (e.target === track && e.propertyName === 'transform') settle();
+    });
+    function go(d) { i += d; place(true); restart(); }
+
+    function restart() {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function () { go(1); }, DELAY);
+    }
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    window.addEventListener('resize', function () { place(false); });
+
+    /* ⚠ 화면 밖에서는 돌리지 않는다 — 안 보이는 곳에서 타이머가 도는 건 낭비다.
+       레퍼런스는 항상 돌지만 결과(보이는 동안 5초마다)는 같고 배터리를 덜 쓴다. */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) restart();
+          else if (timer) { clearTimeout(timer); timer = null; }
+        });
+      }, { threshold: .2 }).observe(view);
+    } else restart();
+
+    place(false);
+  }
+  /* ⚠ 즉시 부르면 CSS 적용 전 카드 폭(52px)으로 step() 이 계산돼 트랙이 -402px 에서
+     굳는다(정상 -2478px = 6장 x 413). 실제로 그랬다 — 스타일이 확정된 뒤에 건다. */
+  if (document.readyState === 'complete') initDiff();
+  else window.addEventListener('load', initDiff);
 
   /* SEO·AEO·GEO 상세 pill 탭 */
   $$('.hw-viz [data-viz-tab]').forEach(function (btn) {
@@ -463,6 +541,63 @@
       ease: 'none',
       scrollTrigger: { trigger: '.hw-reveal .photo', start: 'top bottom', end: 'center bottom', scrub: 2 }
     });
+
+  /* ---------- 홈페이지 종류 원형 슬라이더 ----------
+     바로웹 #section14 실측 그대로: slidesPerView 6 · spaceBetween 10 · loop · speed 800
+     · autoplay {delay: 5000, disableOnInteraction: false}
+     ⚠ 항목이 8개라 loop 복제분이 모자랄 수 있어 loopAdditionalSlides 를 넉넉히 준다. */
+  if (document.querySelector('.ctg__swiper')) {
+    new Swiper('.ctg__swiper', {
+      slidesPerView: 6,
+      spaceBetween: 10,
+      loop: true,
+      loopAdditionalSlides: 8,
+      speed: 800,
+      autoplay: { delay: 5000, disableOnInteraction: false },
+      navigation: {
+        nextEl: '.ctg__arrow--next',
+        prevEl: '.ctg__arrow--prev'
+      },
+      breakpoints: {
+        0:    { slidesPerView: 2, spaceBetween: 8 },
+        561:  { slidesPerView: 3, spaceBetween: 10 },
+        861:  { slidesPerView: 4, spaceBetween: 10 },
+        1025: { slidesPerView: 6, spaceBetween: 10 }
+      }
+    });
+  }
+
+  /* ---------- 실적 카운트업 ----------
+     바로웹 실측: $("#section5 .aniNum").counterUp({delay: 50, time: 700})
+     → 700ms 동안 50ms 간격(14 스텝). 화면에 들어올 때 한 번만 센다. */
+  (function () {
+    var els = [].slice.call(document.querySelectorAll('.perf__no em[data-count]'));
+    if (!els.length) return;
+    var TIME = 700, DELAY = 50;
+
+    function run(el) {
+      var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+      var steps = Math.max(1, Math.round(TIME / DELAY));
+      var n = 0;
+      el.textContent = '0';   /* 세기 직전에만 0 으로 — 그 전에는 목표값이 보인다 */
+      var timer = setInterval(function () {
+        n++;
+        var v = n >= steps ? target : Math.round(target * n / steps);
+        el.textContent = v.toLocaleString('ko-KR');
+        if (n >= steps) clearInterval(timer);
+      }, DELAY);
+    }
+
+    if (!('IntersectionObserver' in window)) { els.forEach(run); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        run(e.target);
+      });
+    }, { threshold: .4 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
 
   /* ---------- AOS (원본: 히어로 fade-up 2000) ---------- */
   if (window.AOS) AOS.init();
