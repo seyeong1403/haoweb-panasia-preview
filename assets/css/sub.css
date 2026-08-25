@@ -213,6 +213,9 @@ main .sec:first-of-type{ padding-top:90px; }
 .plan__scale b{ font-size:50px; font-weight:800; line-height:1; }
 .plan__scale i{ font-size:14px; font-weight:700; color:#a4a4a4; margin-left:8px; }
 .plan__scale s{ display:block; text-decoration:none; font-size:14px; color:#a4a4a4; margin-top:6px; }
+.plan__price{ margin:-10px 0 24px; }
+.plan__price b{ font-size:20px; font-weight:700; }
+.plan__price i{ font-size:14px; color:#a4a4a4; margin-left:12px; }
 .plan__eyebrow{ font-size:16px; font-weight:700; color:var(--brand); margin-bottom:13px; }
 .plan__list li{ font-size:16px; color:#606060; line-height:150%; padding:8px 0; border-bottom:1px solid #eaeaea; }
 .plan__list li:last-child{ border-bottom:0; }
