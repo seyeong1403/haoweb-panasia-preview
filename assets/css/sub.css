@@ -74,7 +74,7 @@ main .sec:first-of-type{ padding-top:90px; }
 .btns{ display:flex; gap:12px; flex-wrap:wrap; margin-top:48px; }
 .btn{
   display:inline-block; font-size:15px; font-weight:700; line-height:35px; padding:0 32px;
-  border:1px solid var(--brand); color:var(--brand); border-radius:0; background:none; cursor:pointer;
+  border:1px solid var(--brand); color:var(--brand); border-radius:var(--r-btn); background:none; cursor:pointer;
 }
 .btn--brand{ background:var(--brand); color:#fff; }
 .invert .btn:not(.btn--brand){ border-color:#fff; color:#fff; }

@@ -13,7 +13,7 @@
 <link rel="icon" href="assets/img/logo-on-dark.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-<link rel="stylesheet" href="assets/css/main.css?v=c05717e9">
+<link rel="stylesheet" href="assets/css/main.css?v=7d106bf4">
 </head>
 <body>
 <div id="wrap">
@@ -153,9 +153,6 @@
 <div class="allMenuWrap">
   <div class="container">
     <div class="inner">
-      <div class="circleBg pc">
-        <span class="o1 rotate"></span><span class="o2 rotate"></span><span class="o3 rotate"></span><span class="o4 rotate"></span>
-      </div>
       <div class="bubbleBg">
         <span class="bb1"></span><span class="bb2"></span><span class="bb3"></span><span class="bb4"></span><span class="bb5"></span><span class="bb6"></span><span class="bb7"></span><span class="bb8"></span><span class="bb9"></span><span class="bb10"></span><span class="bb11"></span><span class="bb12"></span><span class="bb13"></span><span class="bb14"></span>
       </div>
@@ -265,17 +262,6 @@
         검색엔진 최적화(SEO)·답변 엔진 최적화(AEO)·생성형 AI 최적화(GEO)를 기준으로 페이지와 콘텐츠를 정리합니다.<br>
         새로 만드는 경우와 기존 홈페이지를 고치는 경우 모두 같은 기준으로 진행합니다.
       </div>
-      <div class="rotate_box">
-        <svg class="snow rotate" viewBox="0 0 117 117" fill="none" aria-hidden="true">
-          <g stroke="#e83817" stroke-width="3" stroke-linecap="round">
-            <path d="M58.5 8v101M8 58.5h101M23 23l71 71M94 23L23 94"/>
-            <path d="M58.5 8l-8 12h16zM58.5 109l-8-12h16zM8 58.5l12-8v16zM109 58.5l-12-8v16z" fill="#e83817" stroke="none"/>
-          </g>
-        </svg>
-        <svg class="wave static" viewBox="0 0 60 26" fill="none" aria-hidden="true">
-          <path d="M2 18c6-10 11-10 17 0s11 10 17 0 11-10 17 0" stroke="#e83817" stroke-width="3" stroke-linecap="round"/>
-        </svg>
-      </div>
     </div>
   </div>
   <div class="mv-ix_visual_wrap s-inner" data-aos="fade-up" data-aos-duration="2000">
@@ -292,9 +278,13 @@
             </div>
           </div>
           <div class="video-wrap">
-            <video src="assets/video/hero-main.mp4" id="v1" poster="assets/img/hero-video-poster.jpg" autoplay muted playsinline disablePictureInPicture></video>
-            <video src="assets/video/hero-main.mp4" id="v2" muted playsinline disablePictureInPicture></video>
-            <div class="video-progress"><span class="bar"></span></div>
+            <!-- 히어로 비주얼 — 기존 하오웹(design-preview)의 메인 히어로 사진을 그대로 가져왔다
+                 (2026-08-25 세영 지시). 원본은 `Desktop\히어로 이미지 모음\메인페이지.jpg`,
+                 2400x1600 187KB 로 줄인 것. 영상 대신 이 사진이 확대 박스 안을 채운다.
+                 ⚠ 스크림은 레퍼런스 실측값 그대로다 — 사진이 중간~어두운 톤이라 흰 글자를
+                   받치려면 필요하다(레퍼런스도 같은 이유로 .72~.82 를 깔았다). -->
+            <img class="hero-still" src="assets/img/hero-main.jpg" alt="" aria-hidden="true">
+            <div class="hero-scrim" aria-hidden="true"></div>
           </div>
         </div>
       </div>
@@ -606,6 +596,11 @@
 <!-- (복원) 제작 이후 단계 — con2 주제의 연속(다크) -->
 <div class="hw-sec hw-sec--dark hw-after">
   <div class="container">
+    <!-- ⚠ 제목 없이 4열 그리드만 있어 「무엇의 단계인지」를 알 수 없었다
+         (2026-08-25 전체 훑기에서 발견). 머리를 붙여 맥락을 준다.
+         main-con2 의 「홈페이지 이후 필요한 일까지 이어집니다」와 겹치지 않게 다른 문장을 썼다. -->
+    <p class="bluetext">제작 이후는 어떻게 되나요?</p>
+    <p class="txt2">오픈 다음도 같은 팀이 이어서 맡습니다.</p>
     <div class="hw-steps">
       <div class="hw-step"><span class="no">00</span><p class="t">제작</p><p class="d">고객이 이해하고 문의하는 구조로 홈페이지를 만듭니다.</p></div>
       <div class="hw-step"><span class="no">01</span><p class="t">디자인·촬영</p><p class="d">화면과 홍보물에 쓸 사진과 편집물을 같은 기준으로 만듭니다.</p></div>
@@ -670,11 +665,9 @@
 <!-- (복원) 마케터/디자이너 — con1(왜 하오웹인가요)의 연속 -->
 <div class="hw-sec hw-team">
   <div class="container">
-    <div class="hw-btns" style="margin-top:0">
-      <a class="button add-button brand-border-btn" href="website.html">홈페이지 제작센터</a>
-      <a class="button add-button brand-border-btn" href="global.html">글로벌 홈페이지</a>
-    </div>
-    <div class="hw-cols">
+    <!-- ⚠ 버튼이 제목도 없이 섹션 맨 위에 떠 있어 맥락이 끊겼다(2026-08-25 전체 훑기에서 발견).
+         설명을 먼저 읽고 행동하도록 2열 아래로 내렸다. -->
+    <div class="hw-cols" style="margin-top:0">
       <div class="hw-col">
         <p class="label">마케터</p>
         <p class="body">그 업종의 고객이 어떤 말로 검색해 들어오는지 압니다. 무엇을 앞에 두어야 읽히는지부터 정합니다.</p>
@@ -683,6 +676,10 @@
         <p class="label">디자이너</p>
         <p class="body">고객이 무엇을 확인하고 문의를 결정하는지 파악해 콘텐츠에 반영합니다.</p>
       </div>
+    </div>
+    <div class="hw-btns">
+      <a class="button add-button brand-border-btn" href="website.html">홈페이지 제작센터</a>
+      <a class="button add-button brand-border-btn" href="global.html">글로벌 홈페이지</a>
     </div>
   </div>
 </div>
@@ -863,11 +860,24 @@
   </div>
 </div>
 
-<!-- (복원) 워드마크 밴드 — 배경워드 타이포 문법 -->
-<div class="hw-wordmark" aria-hidden="true">
-  <div class="line">HAOWEB</div>
-  <div class="line">RENEWAL</div>
-</div>
+<!-- 워드마크 밴드 — 기존 하오웹(design-preview) `.txtsec` 를 그대로 가져왔다(2026-08-25 세영 지시).
+     사진 3장이 4.2초마다 넘어가고, 각 장은 위로 흐른다. 글자는 `mix-blend-mode: lighten` 으로
+     **글자 안에만** 사진이 비치게 하는 마스크다.
+     ⚠ `.txtsec__bgs` 의 검은 바탕을 지우지 말 것 — 사진을 어둡게 만드는 것은 opacity 가 아니라
+       **검은 바탕과의 합성**이다. 이게 없으면 흰 바탕이 많은 사진에서 글자가 배경과 같아져 사라진다. -->
+<section class="txtsec" aria-hidden="true">
+  <div class="txtsec__bgs" aria-hidden="true">
+    <img class="txtsec__bg is-on" src="assets/img/wordmark/work-code.jpg" alt="" loading="lazy">
+    <img class="txtsec__bg" src="assets/img/wordmark/work-laptop.jpg" alt="" loading="lazy">
+    <img class="txtsec__bg" src="assets/img/wordmark/work-meeting.jpg" alt="" loading="lazy">
+  </div>
+  <div class="txtsec__wrap">
+    <div class="txtsec__inner">
+      <div class="txtsec__line" data-wb="1">HAOWEB</div>
+      <div class="txtsec__line" data-wb="-1">RENEWAL</div>
+    </div>
+  </div>
+</section>
 
 <!-- (복원) 리뉴얼 -->
 <div class="hw-sec hw-renewal" style="padding-top:0">
@@ -977,88 +987,190 @@
   </div>
 </div>
 
-<!-- con4: Work -->
-<div class="mainCon">
-  <div class="main-con4">
-    <div class="container">
-      <div class="inner">
-        <p class="bluetext">Work</p>
-        <div class="title-wrap">
-          <div class="txt2">실제로 운영 중인 <span>홈페이지</span>를 확인해 보세요.</div>
-          <a href="portfolio.html" class="button add-button brand-border-btn">포트폴리오 전체 보기</a>
-        </div>
-        <p class="txt3" style="margin-bottom:40px">현재 온라인에서 운영 중인 제작 사이트를 직접 확인할 수 있습니다.</p>
-        <div class="event-slide">
-          <div class="event-slide-inner swiper">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/daeyoungfabric-com.jpg" alt="대영패브릭"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">대영패브릭</div><span class="wno">/01</span></div>
-                  <div class="date-wrap"><ul><li>www.daeyoungfabric.com</li></ul></div>
-                </div>
-              </div></div>
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/gnlifekorea-com.jpg" alt="Global Geumsan Ginseng"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">Global Geumsan Ginseng</div><span class="wno">/02</span></div>
-                  <div class="date-wrap"><ul><li>gnlifekorea.com</li></ul></div>
-                </div>
-              </div></div>
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/ycdis-co-kr.jpg" alt="YCDIS"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">YCDIS</div><span class="wno">/03</span></div>
-                  <div class="date-wrap"><ul><li>www.ycdis.co.kr</li></ul></div>
-                </div>
-              </div></div>
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/pharmicellbc-com.jpg" alt="파미셀㈜ 바이오케미컬사업부"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">파미셀㈜ 바이오케미컬사업부</div><span class="wno">/04</span></div>
-                  <div class="date-wrap"><ul><li>www.pharmicellbc.com</li></ul></div>
-                </div>
-              </div></div>
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/royalchef-kr.jpg" alt="대령숙수"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">대령숙수</div><span class="wno">/05</span></div>
-                  <div class="date-wrap"><ul><li>royalchef.kr</li></ul></div>
-                </div>
-              </div></div>
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/bestdh-co-kr.jpg" alt="대현공"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">대현공</div><span class="wno">/06</span></div>
-                  <div class="date-wrap"><ul><li>bestdh.co.kr</li></ul></div>
-                </div>
-              </div></div>
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/neopwr-co-kr.jpg" alt="㈜네오파워텍"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">㈜네오파워텍</div><span class="wno">/07</span></div>
-                  <div class="date-wrap"><ul><li>neopwr.co.kr</li></ul></div>
-                </div>
-              </div></div>
-              <div class="swiper-slide"><div class="card">
-                <div class="img-banner"><img src="assets/img/work/daeyangsusan-co-kr.jpg" alt="대양수산영어조합법인"></div>
-                <div class="text-banner">
-                  <div class="top"><span class="tag brand-tag">LIVE ↗</span><div class="title">대양수산영어조합법인</div><span class="wno">/08</span></div>
-                  <div class="date-wrap"><ul><li>daeyangsusan.co.kr</li></ul></div>
-                </div>
-              </div></div>
-            </div>
-          </div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
-        </div>
-        <div class="mo-more-btn m">
-          <a href="portfolio.html" class="button add-button brand-border-btn">포트폴리오 전체 보기</a>
-        </div>
+<!-- con4: Work — 기존 하오웹(design-preview) 의 WORK 섹션을 그대로 가져왔다(2026-08-25 세영 지시).
+     카드/목록 보기 전환 · 카드 hover 시 썸네일이 원으로 · 이름이 마스크로 밝혀지고
+     목록 hover 시 도메인 마퀴가 올라오는 것까지 원본 동작 그대로다. -->
+<!-- 06 · WORK (레퍼런스 works-reveal 행)
+     2026-08-15: 3 DIRECTIONS 뒤(7번째)에 있던 것을 여기로 올렸다. 실제로 열리는 사이트를
+     주소째 공개하는 것이 우리 쪽 가장 강한 증거인데, 대부분 보기 전에 이탈하는 자리였다.
+     되돌리려면 `python _movework.py` 의 SRC/DST 를 맞바꿔 실행한다. -->
+<section class="sec sec--flush hw-sec" style="padding-top:160px;padding-bottom:80px" data-workview data-view="grid">
+  <div class="container">
+    <!-- ⚠ 원본은 좌 영문 대제목(112px) + 우 국문 2단 구성이지만, 사이트 전체 타이틀을
+         하나로 맞추라는 2026-08-25 세영 지시에 따라 파나시아 표준 머리로 바꿨다.
+         카드·목록·모션은 원본 그대로다. -->
+    <p class="bluetext">Work</p>
+    <p class="txt2">실제로 운영 중인 홈페이지를 확인해 보세요.</p>
+    <p class="txt3">현재 온라인에서 운영 중인 제작 사이트를 직접 확인할 수 있습니다.</p>
+        <div class="viewsw-wrap">
+      <div class="viewsw" role="group" aria-label="보기 방식">
+        <button class="viewsw__btn" type="button" data-view-btn="grid" aria-pressed="true" aria-label="카드 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></svg>
+        </button>
+        <button class="viewsw__btn" type="button" data-view-btn="list" aria-pressed="false" aria-label="목록 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        </button>
       </div>
     </div>
+    <div class="work fullbleed" data-work style="margin-top:40px">
+      <div class="work__item">
+        <a class="work__link" href="http://www.daeyoungfabric.com" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/daeyoungfabric-com.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>대영패브릭</span></i></h3>
+            <p class="work__meta">www.daeyoungfabric.com <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
+        <a class="work__link" href="https://gnlifekorea.com" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/gnlifekorea-com.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>Global Geumsan Ginseng</span></i></h3>
+            <p class="work__meta">gnlifekorea.com <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
+        <a class="work__link" href="https://www.ycdis.co.kr" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/ycdis-co-kr.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>YCDIS</span></i></h3>
+            <p class="work__meta">www.ycdis.co.kr <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
+        <a class="work__link" href="http://www.pharmicellbc.com" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/pharmicellbc-com.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>파미셀㈜ 바이오케미컬사업부</span></i></h3>
+            <p class="work__meta">www.pharmicellbc.com <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
+        <a class="work__link" href="https://royalchef.kr" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/royalchef-kr.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>대령숙수</span></i></h3>
+            <p class="work__meta">royalchef.kr <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
+        <a class="work__link" href="https://bestdh.co.kr" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/bestdh-co-kr.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>대현공</span></i></h3>
+            <p class="work__meta">bestdh.co.kr <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
+        <a class="work__link" href="https://neopwr.co.kr" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/neopwr-co-kr.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>㈜네오파워텍</span></i></h3>
+            <p class="work__meta">neopwr.co.kr <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
+        <a class="work__link" href="https://daeyangsusan.co.kr" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/daeyangsusan-co-kr.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>대양수산영어조합법인</span></i></h3>
+            <p class="work__meta">daeyangsusan.co.kr <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="rows fullbleed">
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="http://www.daeyoungfabric.com" target="_blank" rel="noopener">
+            <span class="row__cat">/01</span>
+            <span class="row__title">대영패브릭</span>
+            <span class="row__meta">www.daeyoungfabric.com</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="WWW.DAEYOUNGFABRIC.COM"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="https://gnlifekorea.com" target="_blank" rel="noopener">
+            <span class="row__cat">/02</span>
+            <span class="row__title">Global Geumsan Ginseng</span>
+            <span class="row__meta">gnlifekorea.com</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="GNLIFEKOREA.COM"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="https://www.ycdis.co.kr" target="_blank" rel="noopener">
+            <span class="row__cat">/03</span>
+            <span class="row__title">YCDIS</span>
+            <span class="row__meta">www.ycdis.co.kr</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="WWW.YCDIS.CO.KR"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="http://www.pharmicellbc.com" target="_blank" rel="noopener">
+            <span class="row__cat">/04</span>
+            <span class="row__title">파미셀㈜ 바이오케미컬사업부</span>
+            <span class="row__meta">www.pharmicellbc.com</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="WWW.PHARMICELLBC.COM"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="https://royalchef.kr" target="_blank" rel="noopener">
+            <span class="row__cat">/05</span>
+            <span class="row__title">대령숙수</span>
+            <span class="row__meta">royalchef.kr</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="ROYALCHEF.KR"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="https://bestdh.co.kr" target="_blank" rel="noopener">
+            <span class="row__cat">/06</span>
+            <span class="row__title">대현공</span>
+            <span class="row__meta">bestdh.co.kr</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="BESTDH.CO.KR"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="https://neopwr.co.kr" target="_blank" rel="noopener">
+            <span class="row__cat">/07</span>
+            <span class="row__title">㈜네오파워텍</span>
+            <span class="row__meta">neopwr.co.kr</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="NEOPWR.CO.KR"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="https://daeyangsusan.co.kr" target="_blank" rel="noopener">
+            <span class="row__cat">/08</span>
+            <span class="row__title">대양수산영어조합법인</span>
+            <span class="row__meta">daeyangsusan.co.kr</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="DAEYANGSUSAN.CO.KR"></div></div>
+      </div>
+    </div>
+    <div class="hw-btns" style="margin-top:56px"><a class="button add-button brand-border-btn" href="portfolio.html">포트폴리오 전체 보기</a></div>
   </div>
-</div>
+</section>
 
 <!-- (복원) How We Build -->
 <div class="hw-sec hw-build">
@@ -1066,30 +1178,35 @@
     <p class="bluetext">How We Build</p>
     <p class="txt2">고객이 이해하고 문의하는 순서로 만듭니다.</p>
     <p class="txt3">사업과 고객을 먼저 파악하고, 메시지와 정보 우선순위를 정한 뒤 검색과 AI가 이해하기 좋은 구조로 구축합니다.</p>
-    <div class="hw-steps">
-      <div class="hw-step">
-        <span class="no">01</span>
-        <p class="t">사업과 고객을 이해합니다</p>
-        <p class="d">이야기를 나누며 사업과 현재 상황을 파악합니다.</p>
-        <p class="out"><i>OUTPUT</i><span>핵심 질문 · 인터뷰 정리</span></p>
+    <!-- 기존 하오웹(design-preview) 타임라인 이식 (2026-08-25 세영 지시).
+         디자인·모션은 원본 그대로 — 선이 차오르고 점이 켜지며, 지금 도달한 점만 레드로 맥동.
+         ⚠ 글자 크기·색은 **파나시아 기존 값을 유지**한다(세영: 앞으로 폰트와 글자 크기는
+           현재 하오웹을 유지). no 16/700 · t 20/700 · d 16 · out 14. -->
+    <div class="timeline timeline--4" data-timeline style="margin-top:64px">
+      <div class="timeline__line"><i></i></div>
+      <div class="tstep">
+        <span class="tstep__no">01</span>
+        <h3 class="tstep__t">사업과 고객을 이해합니다</h3>
+        <p class="tstep__d">이야기를 나누며 사업과 현재 상황을 파악합니다.</p>
+        <p class="tstep__out"><i>OUTPUT</i><span>핵심 질문 · 인터뷰 정리</span></p>
       </div>
-      <div class="hw-step">
-        <span class="no">02</span>
-        <p class="t">구조와 콘텐츠를 설계합니다</p>
-        <p class="d">메시지와 정보 우선순위를 정리합니다.</p>
-        <p class="out"><i>OUTPUT</i><span>사이트맵 · 페이지 구성 · 원고 방향</span></p>
+      <div class="tstep">
+        <span class="tstep__no">02</span>
+        <h3 class="tstep__t">구조와 콘텐츠를 설계합니다</h3>
+        <p class="tstep__d">메시지와 정보 우선순위를 정리합니다.</p>
+        <p class="tstep__out"><i>OUTPUT</i><span>사이트맵 · 페이지 구성 · 원고 방향</span></p>
       </div>
-      <div class="hw-step">
-        <span class="no">03</span>
-        <p class="t">디자인과 구축을 진행합니다</p>
-        <p class="d">화면 제작과 구현을 진행합니다.</p>
-        <p class="out"><i>OUTPUT</i><span>디자인 · 반응형 구현</span></p>
+      <div class="tstep">
+        <span class="tstep__no">03</span>
+        <h3 class="tstep__t">디자인과 구축을 진행합니다</h3>
+        <p class="tstep__d">화면 제작과 구현을 진행합니다.</p>
+        <p class="tstep__out"><i>OUTPUT</i><span>디자인 · 반응형 구현</span></p>
       </div>
-      <div class="hw-step">
-        <span class="no">04</span>
-        <p class="t">오픈 이후까지 이어갑니다</p>
-        <p class="d">최종 검수와 운영 관점 점검까지 함께합니다.</p>
-        <p class="out"><i>OUTPUT</i><span>검수 · 운영 기준</span></p>
+      <div class="tstep">
+        <span class="tstep__no">04</span>
+        <h3 class="tstep__t">오픈 이후까지 이어갑니다</h3>
+        <p class="tstep__d">최종 검수와 운영 관점 점검까지 함께합니다.</p>
+        <p class="tstep__out"><i>OUTPUT</i><span>검수 · 운영 기준</span></p>
       </div>
     </div>
   </div>
@@ -1346,6 +1463,6 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
-<script src="assets/js/main.js?v=058778ef"></script>
+<script src="assets/js/main.js?v=542c25ec"></script>
 </body>
 </html>

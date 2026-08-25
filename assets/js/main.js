@@ -542,6 +542,192 @@
       scrollTrigger: { trigger: '.hw-reveal .photo', start: 'top bottom', end: 'center bottom', scrub: 2 }
     });
 
+  /* ---------- How We Build 타임라인 ----------
+     기존 하오웹 site.js 의 initTimeline() 을 그대로 옮겼다. 화면에 들어오면 단계가
+     차례로 켜지고(스태거) 선이 그 점 중심까지 차오른다. 화면 밖으로 나가면 되감는다. */
+  function initTimeline() {
+    var tls = [].slice.call(document.querySelectorAll('[data-timeline]'));
+    if (!tls.length) return;
+
+    var reduce = window.matchMedia &&
+                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var make = function (tl) {
+      var steps = [].slice.call(tl.querySelectorAll('.tstep'));
+      var fill = tl.querySelector('.timeline__line i');
+      var at = -1;
+      var timers = [];
+      var playing = false;
+
+      /* 원본(haoc)은 마지막 단계에서 선을 100% 까지 채우는데, 점은 각 칸의 왼쪽에 있어서
+         마지막 점 오른쪽으로 빈 선이 남는다. 하오웹은 칸 간격이 더 넓어 그게 눈에 띄므로
+         채움을 '그 단계 점의 중심'까지로 맞춘다. (점: left 2px + 지름 12 → 중심 +8) */
+      var paint = function () {
+        if (!fill || at < 0) return;
+        fill.style.width = (steps[at].offsetLeft + 8) + 'px';
+      };
+
+      var tip = function (s) {
+        steps.forEach(function (o) { o.classList.remove('is-tip'); });
+        s.classList.add('is-tip');        /* 지금 도달한 단계 = 레드 점 */
+      };
+
+      /* 재생 중 화면 밖으로 나가면 남은 타이머가 다음 재생과 겹친다 — 반드시 끊는다 */
+      var stop = function () {
+        for (var i = 0; i < timers.length; i++) clearTimeout(timers[i]);
+        timers = [];
+      };
+
+      var reset = function () {
+        if (reduce || !playing) return;    /* reduce 는 모션이 없으니 켜 둔 채로 */
+        stop();
+        playing = false;
+        at = -1;
+        steps.forEach(function (s) {
+          s.classList.remove('is-on');
+          s.classList.remove('is-tip');
+        });
+        if (fill) fill.style.width = '0px';
+      };
+
+      var play = function () {
+        if (playing) return;               /* 스크롤 중 콜백이 여러 번 와도 한 번만 */
+        playing = true;
+        if (reduce) {
+          steps.forEach(function (s) { s.classList.add('is-on'); });
+          at = steps.length - 1;
+          tip(steps[at]);
+          paint();
+          return;
+        }
+        stop();
+        steps.forEach(function (s, i) {
+          timers.push(setTimeout(function () {
+            s.classList.add('is-on');
+            tip(s);
+            at = i;
+            paint();
+          }, 250 + i * 420));
+        });
+      };
+
+      /* 예전엔 run() 안에서 붙여 재생할 때마다 리스너가 쌓였다 — 타임라인당 한 번만 붙인다 */
+      window.addEventListener('resize', paint);
+      return { el: tl, play: play, reset: reset };
+    };
+
+    var list = tls.map(make);
+    var ctl = function (el) {
+      for (var i = 0; i < list.length; i++) if (list[i].el === el) return list[i];
+      return null;
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      list.forEach(function (o) { o.play(); });
+      return;
+    }
+    /* 0 = 완전히 벗어남(초기화), .15 = 발동 — 두 지점 모두에서 콜백을 받아야 한다 */
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var c = ctl(e.target);
+        if (!c) return;
+        if (!e.isIntersecting) c.reset();
+        else if (e.intersectionRatio >= .15) c.play();
+      });
+    }, { threshold: [0, .15] });
+    list.forEach(function (o) { io.observe(o.el); });
+  }
+  initTimeline();
+
+  /* ---------- WORK ----------
+     기존 하오웹 site.js 의 initWork / initWorkView / initMarquee 를 그대로 옮겼다.
+     · initWork      화면에 들어오면 `data-on=true` → 카드가 아래에서 떠오른다
+     · initWorkView  카드/목록 보기 전환(`data-view`)
+     · initMarquee   목록 hover 시 올라오는 도메인 마퀴 텍스트를 8번 복제해 채운다 */
+  function initWork() {
+    var grids = [].slice.call(document.querySelectorAll('[data-work]'));
+    if (!grids.length) return;
+    var on = function (g) { g.setAttribute('data-on', 'true'); };
+    if (!('IntersectionObserver' in window)) { grids.forEach(on); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        on(e.target);
+        io.unobserve(e.target);
+      });
+    }, { threshold: .15 });
+    grids.forEach(function (g) { io.observe(g); });
+  }
+
+  function initWorkView() {
+    [].slice.call(document.querySelectorAll('[data-workview]')).forEach(function (wrap) {
+      var btns = [].slice.call(wrap.querySelectorAll('[data-view-btn]'));
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          wrap.setAttribute('data-view', btn.getAttribute('data-view-btn'));
+          btns.forEach(function (o) {
+            o.setAttribute('aria-pressed', o === btn ? 'true' : 'false');
+          });
+        });
+      });
+    });
+  }
+
+  function initMarquee() {
+    document.querySelectorAll('[data-marquee]').forEach(function (m) {
+      var label = m.dataset.marquee;
+      if (!label) return;
+      var html = '';
+      for (var i = 0; i < 8; i++) html += '<span>' + label + '</span>';
+      m.innerHTML = html;
+    });
+  }
+  initWork();
+  initWorkView();
+  initMarquee();
+
+  /* ---------- 워드마크 밴드 ----------
+     기존 하오웹 site.js 의 initWordband() 를 그대로 옮겼다(2026-08-25 세영 지시).
+     흐름 속도는 화면 폭 / 87.2px/s 로 매번 다시 계산한다(실측값).
+     배경 사진은 4.2초마다 넘어가고, 화면 밖이면 돌리지 않는다. */
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function initWordband() {
+    var sec = document.querySelector('.txtsec');
+    if (!sec) return;
+    var lines = Array.prototype.slice.call(sec.querySelectorAll('[data-wb]'));
+    if (!lines.length) return;
+    var SPEED = 87.2;                    // 실측 px/s
+    var apply = function () {
+      var w = window.innerWidth || 1440;
+      var dur = (w / SPEED).toFixed(2) + 's';
+      lines.forEach(function (el) { el.style.animationDuration = dur; });
+    };
+    apply();
+    window.addEventListener('resize', apply);
+
+    /* 배경 캡처를 한 장씩 넘긴다 (2026-08-16 세영: "하나의 이미지를 깔자 · 모션이 들어가며
+       다른 이미지로 바뀌고"). 레퍼런스는 영상 한 편이라 그 등가물로 전환을 쓴다.
+       ⚠ 두 줄은 **같은 사진**을 공유한다 — 배경은 섹션에 하나뿐이다. */
+    var bgs = Array.prototype.slice.call(sec.querySelectorAll('.txtsec__bg'));
+    if (bgs.length > 1 && !reduced) {
+      var i = 0;
+      setInterval(function () {
+        // 화면 밖이면 굳이 돌리지 않는다(모바일 배터리·CPU)
+        var r = sec.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > (window.innerHeight || 900)) return;
+        bgs[i].classList.remove('is-on');
+        i = (i + 1) % bgs.length;
+        // 확대 애니메이션을 매번 처음부터 재생시키려면 클래스를 뗐다 붙이는 것만으로는 부족하다
+        var n = bgs[i];
+        n.style.animation = 'none';
+        void n.offsetWidth;              // 리플로를 한 번 강제해야 애니메이션이 리셋된다
+        n.style.animation = '';
+        n.classList.add('is-on');
+      }, 4200);
+    }
+  }
+  initWordband();
+
   /* ---------- 홈페이지 종류 원형 슬라이더 ----------
      바로웹 #section14 실측 그대로: slidesPerView 6 · spaceBetween 10 · loop · speed 800
      · autoplay {delay: 5000, disableOnInteraction: false}

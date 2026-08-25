@@ -7,12 +7,17 @@
    실측 기준: 1600×900 뷰포트, 2026-08-25 라이브 확인
    ============================================================ */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+/* 워드마크 밴드 전용 — 원본 campton 이 상용이라 기존 하오웹이 Poppins 로 대체해 쓰고 있다(세영 확인) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 
 :root{
   --brand:#e83817;            /* 하오 레드 — 원본 #0089CF 자리 전부 */
   --brand-hover:#c42b0d;
   --brand-tint:#fde7e1;       /* 원본 #DFF4FF(포인트 연한 틴트) 자리 */
   --brand-tint2:#f6c9bf;      /* 원본 #99d0ec(원형 링 틴트) 자리 */
+  /* 버튼 모서리 — 기존 하오웹 실측값(--r-btn: 999px, 알약). 2026-08-25 세영 지시로
+     파나시아의 각진 버튼(radius 0)을 전부 이 값으로 바꿨다. */
+  --r-btn:999px;
   --font:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
          'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
@@ -40,8 +45,6 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 .container{ width:1400px; height:100%; position:relative; margin-left:auto !important; margin-right:auto !important; }
 .container.news-swiper-container{ width:100%; }
 .inner{ width:100%; height:100%; position:relative; }
-.rotate{ animation:rotate 10s linear infinite; }
-@keyframes rotate{ 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
 
 /* ---------- 공통 타이포 (실측) ---------- */
 .bluetext{ font-size:16px; font-weight:700; color:var(--brand); margin-bottom:3px; }
@@ -50,7 +53,8 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 .mainCon .txt3{ font-size:18px; color:#606060; line-height:1.45; }
 
 /* ---------- 버튼 (실측: 15/700, lh35, pad 0 32, border 1px, radius 0) ---------- */
-.button.add-button{ display:inline-block; font-size:15px; font-weight:700; line-height:35px; padding:0 32px; }
+.button.add-button{ display:inline-block; font-size:15px; font-weight:700; line-height:35px; padding:0 32px;
+  border-radius:var(--r-btn); }
 .button.add-button.brand-border-btn{ border:1px solid var(--brand); color:var(--brand); }
 .button.add-button.white-btn{ border:1px solid #fff; color:#fff; }
 
@@ -134,7 +138,9 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 }
 #headerY.active{ z-index:99999; }
 #headerY .txt{
-  font-size:18px; opacity:.2; letter-spacing:.3px; writing-mode:vertical-rl;
+  /* 원본은 먹색 20% 였는데 세영 지시로 포인트 컬러를 넣었다(2026-08-25).
+     레드에 20% 를 그대로 두면 연한 분홍이 되어 색이 죽는다 — 불투명도를 올려 색을 살린다. */
+  font-size:18px; color:var(--brand); opacity:.85; letter-spacing:.3px; writing-mode:vertical-rl;
   transform:rotate(180deg); position:absolute; top:140px;
 }
 #headerY .allMenuBtn{ position:absolute; top:50%; transform:translateY(-50%); cursor:pointer; }
@@ -162,16 +168,12 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 .allMenuWrap .allMenu > ul{ display:flex; justify-content:space-between; color:#a5a5a5; flex-wrap:wrap; row-gap:34px; column-gap:48px; }
 .allMenuWrap .allMenu > ul > li{ flex-shrink:0; }
 .allMenuWrap .allMenu > ul > li > span{
-  display:block; font-size:35px; font-weight:500; padding:30px 0 37px; position:relative;
+  /* 원본 실측은 35px 이지만 세영 지시로 줄였다(2026-08-25). 위 여백 30 은 hover 물결이
+     들어가던 자리라, 물결을 지우면서 같이 줄였다. */
+  display:block; font-size:28px; font-weight:500; padding:10px 0 32px; position:relative;
   transition:.3s ease; color:#606060;
 }
 .allMenuWrap .allMenu > ul > li:hover > span{ color:var(--brand); }
-.allMenuWrap .allMenu > ul > li > span::before{
-  content:''; position:absolute; left:0; top:0; width:27.61px; height:15.1px;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 16' fill='none'%3E%3Cpath d='M1 11c3.5-6 6.5-6 10 0s6.5 6 10 0 4-8 6-8' stroke='%23e83817' stroke-width='2.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") center/cover no-repeat;
-  opacity:0; transition:.3s ease;
-}
-.allMenuWrap .allMenu > ul > li:hover > span::before{ opacity:1; }
 .allMenuWrap .allMenu .dep2{ font-size:20px; }
 .allMenuWrap .allMenu .dep2 li{ margin-bottom:11px; transition:.3s ease; }
 .allMenuWrap .allMenu .dep2 a{ position:relative; white-space:nowrap; }
@@ -183,12 +185,6 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 .allMenuWrap .allMenu .dep2 li a:hover::before{ width:100%; }
 
 /* 원형 링 (실측: 576px, 4개 링 회전) */
-.circleBg{ position:absolute; width:576px; height:576px; left:50%; top:50%; transform:translate(-50%,-50%); }
-.circleBg span{ width:100%; height:100%; border-radius:50%; position:absolute; border:1px solid #bcbcbc; }
-.circleBg span.o1{ border-color:var(--brand-tint2); transform-origin:55% 52%; animation-duration:15s; animation-direction:reverse; }
-.circleBg span.o2{ transform-origin:53% 52%; animation-duration:13s; }
-.circleBg span.o3{ transform-origin:50% 51%; animation-duration:8s; }
-.circleBg span.o4{ border-color:#a6f599; transform-origin:52% 54%; animation-duration:6s; }
 
 /* 버블 (원본 키프레임 값 그대로) */
 .bubbleBg{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
@@ -235,9 +231,6 @@ section.visual#mv-ix .tit-box .tit .tit__header{
 section.visual#mv-ix .tit-box .tit .tit__des{
   font-size:20px; font-weight:300; color:#606060; line-height:130%; margin-top:22px;
 }
-.rotate_box{ position:absolute; right:0; top:-20px; }
-.rotate_box .snow{ width:117px; height:117px; }
-.rotate_box .wave{ position:absolute; bottom:-7px; left:-53px; width:60px; height:26px; }
 
 section.visual#mv-ix .mv-ix_visual_wrap{ height:40vh; }
 section.visual .s-inner{ width:1400px; position:relative; margin-left:auto; margin-right:auto; }
@@ -272,12 +265,34 @@ section.visual .txt-video-wrap .txt-wrap .txt-video__des{
   text-align:center; font-size:20px; line-height:130%; font-weight:400;
 }
 section.visual .txt-video-wrap .video-wrap{ position:relative; width:100%; height:100vh; }
+/* ⚠ 아래 video 규칙은 지금 쓰이지 않는다 — 히어로를 사진으로 바꿨다(2026-08-25 세영 지시).
+   영상으로 되돌릴 수 있게 남겨 둔다. 마크업이 없으므로 무해하다. */
 section.visual .txt-video-wrap .video-wrap video{
   width:100%; height:100vh; object-fit:cover; position:absolute; left:0; top:0;
   transition:opacity .6s;
 }
 section.visual .txt-video-wrap .video-wrap #v1{ z-index:2; }
 section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
+
+/* 히어로 사진 — 기존 하오웹(design-preview) `.hero__img` 실측 이식
+   실측: object-fit cover · inset 0 · 사진 2400x1600
+   스크림 실측: linear-gradient(rgba(16,16,16,.72) 0%, .82 34%, .82 62%, .74 100%)
+   ⚠ 확대 박스 안을 채우므로 영상과 같은 규격(100% x 100vh)을 쓴다.
+   ⚠ z-index 는 사진 1 · 스크림 2 · 글(.txt-wrap) 3 순서다. 스크림을 3 으로 두면 글을 덮는다. */
+section.visual .txt-video-wrap .video-wrap .hero-still{
+  width:100%; height:100vh; object-fit:cover; object-position:50% 50%;
+  position:absolute; left:0; top:0; z-index:1;
+}
+section.visual .txt-video-wrap .video-wrap .hero-scrim{
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(rgba(16,16,16,.72) 0%, rgba(16,16,16,.82) 34%,
+                             rgba(16,16,16,.82) 62%, rgba(16,16,16,.74) 100%);
+  /* ⚠ 펼치기 전에는 글이 박스 안에 없다(제목은 위쪽 흰 바탕에 있다). 그때까지 스크림을 씌우면
+     사진만 칙칙해진다 — 40vh 창에서는 보케만 보여 무엇을 찍은 건지 알 수 없었다.
+     펼쳐져 흰 글자가 올라올 때 맞춰 어두워지게 한다. */
+  opacity:0; transition:opacity .4s ease-in-out;
+}
+section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 .video-progress{
   position:absolute; left:50%; transform:translateX(-50%); bottom:130px; width:1400px; height:3px;
   background:rgba(249,249,249,.4); overflow:hidden; z-index:5;
@@ -511,7 +526,7 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
 .chatbotbox .bubble .bubble_box{ background:var(--brand-tint); border-radius:10px; padding:20px 10px; }
 .chatbotbox .bubble .bubble_box p{ padding-bottom:6px; line-height:1.4; }
 .chatbotbox .bubble .bubble_box p:nth-child(1){ font-weight:800; color:#5a1305; }
-.chatbotbox .bubble .bubble_box .chatbot_btn{ font-weight:800; background:var(--brand); border-radius:5px; color:#fff; padding:6px 0; }
+.chatbotbox .bubble .bubble_box .chatbot_btn{ font-weight:800; background:var(--brand); border-radius:var(--r-btn); color:#fff; padding:6px 0; }
 .chatbotbox .bubble .bubble_box .chatbot_btn a{ color:#fff; }
 .chatbotbox .chatbot_pan{ margin:12px auto 0; cursor:pointer; width:80px; }
 .chatbotbox .chatbot_pan .pan-circle{
@@ -574,10 +589,6 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none'%3E%3Cpath d='M8 22L22 8M22 8H11M22 8v11' stroke='%23e83817' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* (복원 5) 워드마크 밴드 — 배경워드 164/202/900 문법 */
-.hw-wordmark{ padding:100px 0; overflow:hidden; }
-.hw-wordmark .line{ font-size:164px; line-height:202px; font-weight:900; color:#faf7fa; white-space:nowrap; }
-.hw-wordmark .line:nth-child(2){ text-align:right; }
 
 /* (복원 6) 리뉴얼 — 강조문 25/700(원본 dep2Tit 타이포) */
 .hw-renewal .bigsay{ font-size:25px; font-weight:700; margin-top:48px; }
@@ -682,7 +693,6 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
   .mainCon .main-con1 .inner{ width:100%; padding:0 30px; }
 }
 @media screen and (max-width:1280px){
-  .rotate_box{ display:none; }
   section.visual .txt-video-wrap .txt-wrap{ padding:0 20px 50px; }
   section.visual .txt-video-wrap .txt-wrap .txt-wrap-inner{ left:14px; width:calc(100% - 40px); transform:translate(0,-50%); }
   section.visual .txt-video-wrap .txt-wrap .txt-video__tit{ margin-bottom:0; font-size:34px; line-height:120%; }
@@ -782,7 +792,6 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
   .allMenuWrap .allMenu .dep2.active{ display:block; }
   .allMenuWrap .allMenu .dep2 li{ margin-bottom:5px; }
   .allMenuWrap .allMenu > ul > li > span::before{ display:none; }
-  .circleBg{ display:none; }
   .chatbotbox{ bottom:58px; width:103px; }
   .chatbotbox .chatbot_pan{ width:50px; }
   .chatbotbox .chatbot_pan .pan-circle{ width:50px; height:50px; }
@@ -792,7 +801,6 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
 /* 복원 섹션 반응형 — 원본 축소 문법(164→80, 50→26, 4열→1열) 그대로 */
 @media screen and (max-width:1400px){
   .hw-sec .txt2{ font-size:34px; }
-  .hw-wordmark .line{ font-size:80px; line-height:100px; }
 }
 @media screen and (max-width:1024px){
   .hw-sec{ padding:70px 0; }
@@ -813,7 +821,7 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .rotate, .circleBg span, .bubbleBg span{ animation:none !important; }
+  .bubbleBg span{ animation:none !important; }
 }
 
 /* ============================================================
@@ -846,15 +854,16 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
   color: rgba(23, 21, 15, .74); background: rgba(23, 21, 15, .07);
   padding: 9px 18px; border-radius: 999px;
 }
+/* ⚠ 레퍼런스 실측은 제목 58 / 리드 23.2 이지만, 사이트 전체 타이틀을 하나로 맞추라는
+   2026-08-25 세영 지시에 따라 파나시아 표준(.txt2 50/800 · .txt3 18)으로 내렸다.
+   섹션 제목이 50 인 곳이 12 군데라 여기만 58 이면 그 섹션만 커 보인다. */
 .diff__title {
-  /* 레퍼런스 실측 58px w800. 4vw 면 1440 에서 56.96 이라 상한에 못 닿는다 → 4.1vw. */
-  margin-top: 28px; font-size: clamp(40px, 4.1vw, 58px); font-weight: 800;
-  line-height: 1.12; letter-spacing: -.04em; color: #17150f;
+  margin-top: 28px; font-size: 50px; font-weight: 800;
+  line-height: 130%; letter-spacing: -.04em; color: #17150f;
 }
 .diff__sub {
-  margin-top: 30px; font-size: clamp(19px, 1.6vw, 23.2px); font-weight: 400;
-  /* 레퍼런스 실측: 리드 23.2px w400 색 rgb(51,51,51). 강조줄만 w800. */
-  line-height: 1.6; letter-spacing: -.02em; color: #333;
+  margin-top: 30px; font-size: 18px; font-weight: 400;
+  line-height: 1.45; letter-spacing: -.02em; color: #606060;
 }
 /* 화살표 — 레퍼런스는 좌측 글 아래에 둘을 나란히 둔다(각 48×62). */
 /* 레퍼런스 실측 — `.port_pager` 110×62 · 버튼 48×62 · 사이 15px · 좌측 글 맨 아래 */
@@ -1016,10 +1025,11 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
 .perf__head .txt2{ margin-top:3px; }
 .perf__head .txt3{ margin-top:35px; }   /* 레퍼런스 실측 sec_tw margin-top 35 */
 .perf__list{ display:grid; grid-template-columns:repeat(2,1fr); }
-/* ⚠ 레퍼런스는 li 에 높이(322)가 있고 내용(182)이 위에 붙는다 — 아래 140 이 다음 행과의 간격이다.
-     행 간격을 gap 으로 주면 지그재그가 어긋난다. li 최소 높이로 잡는다. */
-.perf__list li{ min-height:262px; }
-.perf__list li:nth-child(odd) .in{ margin-top:110px; }
+/* ⛔ 지그재그(왼쪽 열만 110px 내림)는 걷어냈다 — 2026-08-25 세영: 「위치가 어긋나 있거나
+     어색한 부분」의 예로 이 섹션을 짚었다. 바로웹에서는 의도된 배치지만, 파나시아는 컨테이너와
+     숫자 크기가 달라 **어긋난 것처럼** 보였다. 네 항목을 같은 선에서 시작시킨다. */
+.perf__list{ row-gap:72px; }
+.perf__list li{ min-height:0; }
 .perf__en{ font-size:16px; font-weight:700; color:var(--brand); margin-bottom:3px; }
 .perf__ko{ font-size:20px; font-weight:700; line-height:1.3; color:#222; margin-bottom:10px; }
 .perf__no{ color:#222; }
@@ -1091,3 +1101,285 @@ section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
   .ctg__arrow{ display:none; }
   .ctg .in_tx{ font-size:16px; margin-top:12px; }
 }
+
+/* ============================================================
+   워드마크 밴드 — 기존 하오웹(design-preview) `.txtsec` 실측 이식 (2026-08-25 세영 지시)
+   섹션 910 · 글자 440/700 lh1 · 흐름 87.2px/s(화면 폭만큼 가면 순환, linear)
+   배경 사진 3장이 4.2초마다 전환되고 각 장은 26초에 걸쳐 위로 흐른다.
+   ⚠⚠ 어둡게 만드는 것은 opacity 가 아니라 `.txtsec__bgs` 의 **검은 바탕과의 합성**이다.
+     `lighten` 은 밝은 쪽을 남기므로, 검은 바탕을 지우면 흰 바탕이 많은 사진에서 글자가
+     배경과 같아져 통째로 사라진다. .85 = 15% 어둡게.
+   ⚠ blend 는 **래퍼**(.txtsec__wrap)에 건다. 자식에 걸면 흰 바탕까지 같이 blend 되어
+     사진이 통째로 비친다.
+   ⚠ line-height 는 1 이어야 한다 — 440x2 + 위아래 15 = 910 이 섹션 높이와 맞는다.
+   ============================================================ */
+.txtsec{ position:relative; overflow:hidden; height:910px; padding:0; }
+.txtsec__bgs{ position:absolute; inset:0; overflow:hidden; background:#000; }
+.txtsec__bg{
+  position:absolute; top:0; left:0; width:100%; height:auto; min-height:100%;
+  object-fit:cover; object-position:top center; opacity:0; transition:opacity 1.1s ease;
+}
+.txtsec__bg.is-on{ opacity:.85; animation:txtsecUp 26s linear infinite; }
+@keyframes txtsecUp{
+  from{ transform:translateY(0); }
+  to{ transform:translateY(calc(-100% + 910px)); }
+}
+.txtsec__wrap{ position:absolute; inset:0; z-index:2; mix-blend-mode:lighten; }
+.txtsec__inner{
+  width:100%; height:100%; background:#fff; overflow:hidden;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.txtsec__line{
+  font-family:'Poppins', var(--font);
+  font-size:440px; font-weight:700; line-height:1;
+  color:#000; text-align:center; white-space:nowrap;
+  will-change:transform; animation:txtsecFlowL 16.5s linear infinite;
+}
+.txtsec__line[data-wb="-1"]{ animation-name:txtsecFlowR; }
+@keyframes txtsecFlowL{ from{ transform:translateX(0); } to{ transform:translateX(-100vw); } }
+@keyframes txtsecFlowR{ from{ transform:translateX(0); } to{ transform:translateX(100vw); } }
+@media (prefers-reduced-motion: reduce){
+  .txtsec__bg.is-on{ animation:none; }
+  .txtsec__line{ animation:none; }
+}
+/* 좁은 화면 — 440 을 그대로 두면 한 글자도 안 들어온다. 비율만 유지해 줄인다. */
+@media screen and (max-width:1200px){ .txtsec{ height:620px; } .txtsec__line{ font-size:300px; } }
+@media screen and (max-width:900px){ .txtsec{ height:380px; } .txtsec__line{ font-size:170px; } }
+@media screen and (max-width:560px){ .txtsec{ height:260px; } .txtsec__line{ font-size:112px; } }
+
+/* ============================================================
+   WORK — 기존 하오웹(design-preview) 섹션 실측 이식 (2026-08-25 세영 지시)
+   `.bighead`(영문 대제목 + 우측 국문) · `.viewsw`(카드/목록 전환) ·
+   `.work`(4열 카드, hover 시 썸네일이 원이 되고 이름이 마스크로 밝혀짐) ·
+   `.rows`(목록, hover 시 도메인 마퀴가 아래에서 올라옴)
+   ⚠ 토큰만 파나시아 값으로 바꿨다 — border rgba(23,21,15,.16) · muted #6e6a60 ·
+     gutter 48 · lead 18 / body 17 / sm 14 / eyebrow 12 · r-btn 999 · fg #17150f.
+     영문 대제목은 원본이 112px 고정인데 파나시아 컨테이너가 더 좁아질 수 있어
+     clamp(64px, 7vw, 112px) 로 뒀다(최대값은 원본 그대로).
+   ⚠ `.work.fullbleed` 는 100vw 로 펼친다 — 파나시아 컨테이너가 좌우 비대칭이라
+     이 섹션만 화면 전체를 쓴다. 원본도 같다.
+   ============================================================ */
+.bighead { display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 48px; }
+.bighead__title {
+  font-family: var(--font); font-size: clamp(64px, 7vw, 112px); line-height: .95;
+  font-weight: 700; letter-spacing: -.035em; white-space: nowrap;
+}
+.bighead__lead { width: 100%; max-width: 448px; font-size: 17px; line-height: 1.5; }
+/* 영문 대제목 옆 국문 제목 — 2026-08-15.
+   Work·How We Build 처럼 제목이 영문 한 단어인 섹션에 국문 타이틀을 주기 위한 자리다.
+   ⚠ 영문 제목 안에 넣을 수 없다 — site.js 의 splitLines()/splitChars() 가 innerHTML 을
+     textContent 로 납작하게 만들어 중첩 태그를 지운다(h1 국문화 때와 같은 함정). */
+.bighead__right { width: 100%; max-width: 448px; }
+.bighead__right .bighead__lead { max-width: none; }
+.bighead__ko { font-size: 18px; font-weight: 700; line-height: 1.45; letter-spacing: -.01em; margin-bottom: 14px; }
+
+.rows { border-bottom: 1px solid rgba(23,21,15,.16); }
+.row { position: relative; border-top: 1px solid rgba(23,21,15,.16); overflow: hidden; }
+.row__face { position: relative; z-index: 1; background: #fff; }
+.row__link {
+  /* ⚠ 원본은 var(--container)=1360 이다. 파나시아에는 그 토큰이 없어 max-width 가 통째로
+     무효가 되고, fullbleed(100vw) 안에서 행이 화면 폭을 다 써 우측 도메인이 잘렸다.
+     파나시아 컨테이너 최대폭 1400 으로 맞춘다. */
+  width: 100%; max-width: 1400px; margin-inline: auto;
+  display: flex; align-items: center; gap: 16px;
+  padding: 60px 40px; min-height: 192px;
+}
+.row__cat { font-size: 12px; color: #6e6a60; width: 150px; flex: none; }
+.row__title { flex: 1; font-size: 44px; font-weight: 600; letter-spacing: -.02em; text-align: center; line-height: 1.15; }
+.row__meta { width: 150px; flex: none; text-align: right; font-size: 13px; color: #6e6a60; }
+.row__over {
+  position: absolute; inset: 0; z-index: 2; display: flex; align-items: center;
+  background: #17150f; color: #fff;
+  transform: translateY(101%); transition: transform .5s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.row:hover .row__over, .row:focus-within .row__over { transform: translateY(0); }
+.row__marquee { display: flex; width: max-content; animation: marquee 18s linear infinite; }
+.row__marquee > span {
+  font-family: var(--font); font-size: 56px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: -.03em; padding-right: 48px; white-space: nowrap;
+}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.fullbleed { width: 100vw; max-width: 100vw; margin-left: 50%; transform: translateX(-50%); }
+/* ⚠ 원본은 `.work` 를 100vw 로 빼내 화면을 꽉 채운다. 원본 컨테이너는 중앙 정렬이라
+   좌우 여백이 대칭이어서 그래도 머리와 맞아 보이는데, 파나시아 컨테이너는
+   `calc(100% - 169px)` + `margin-left:139px` 로 **비대칭**이라 카드가 제목보다 39px 왼쪽으로
+   튀어나왔다(2026-08-25 실측). 정렬이 먼저라 이 섹션에서는 fullbleed 를 풀고 컨테이너에 맞춘다. */
+.work.fullbleed { width: 100%; max-width: none; margin-left: 0; transform: none; padding-inline: 0; }
+
+/* 보기 전환 — 카드 / 목록 */
+/* 스위치 우측 끝을 카드 그리드 우측 끝에 맞춘다 (그리드가 전체 폭이라 컨테이너 기준이면 어긋난다) */
+.viewsw-wrap {
+  display: flex; justify-content: flex-end; margin-top: 32px;
+  width: 100vw; max-width: 100vw; margin-left: 50%; transform: translateX(-50%);
+  padding-inline: 48px;
+}
+/* overflow:hidden 이 있어야 눌린 버튼의 꽉 찬 배경이 둥근 모서리에 맞춰 잘린다 —
+   없으면 테두리만 둥글고 안쪽 배경은 각져서 모서리에 삼각형이 비어 보인다. */
+.viewsw { display: inline-flex; border: 1px solid rgba(23,21,15,.16); border-radius: 999px; overflow: hidden; }
+.viewsw__btn {
+  width: 48px; height: 44px; display: grid; place-items: center;
+  background: transparent; border: 0; color: #6e6a60; cursor: pointer;
+  transition: background .3s cubic-bezier(.4,0,.2,1), color .3s cubic-bezier(.4,0,.2,1);
+}
+.viewsw__btn + .viewsw__btn { border-left: 1px solid rgba(23,21,15,.16); }
+.viewsw__btn svg { width: 18px; height: 18px; }
+.viewsw__btn[aria-pressed='true'] { background: #17150f; color: #fff; }
+.viewsw__btn:focus-visible { outline: 2px solid var(--brand); outline-offset: -4px; }
+[data-view='grid'] .rows { display: none; }
+[data-view='list'] .work { display: none; }
+
+.work { display: flex; flex-wrap: wrap; gap: 18px; }
+.work__item { width: calc((100% - 54px) / 4); overflow: hidden; }
+.work__link { display: block; width: 100%; height: 100%; position: relative; }
+.work__link::before, .work__link::after {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 1; transition: opacity .4s ease; pointer-events: none;
+}
+/* ⛔ 2026-08-24 — .7 → .58 로 눅였다(세영: 밝아진 페이지에 맞게 대비를 줄여줘).
+   ⚠ 이 막은 장식이 아니라 **썸네일 위 흰 글자를 읽히게 하는 장치**다. 더 걷어내면
+     밝은 홈페이지 캡처에서 업체명이 사라진다 — 값을 내릴 때마다 대비를 다시 잴 것. */
+/* ⚠ 사진 톤을 눅이며 .7 → .58 로 내렸더니 그 위 `LIVE ↗`(11px)가 2.8:1 이 됐다.
+     세기를 되돌리는 대신 **글자가 앉는 맨 아래만** 진하게 하고 위쪽은 밝게 둔다 —
+     사진은 그대로 보이면서 글자는 읽힌다(2026-08-24 실측으로 정함). */
+.work__link::before { background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.42) 24%, transparent 56%); }
+.work__link::after { opacity: 0; background: linear-gradient(to top, rgba(0,0,0,.9), transparent 90%); }
+.work__thumb {
+  margin: 0; width: 100%; height: auto; padding-bottom: 100%;
+  background-size: cover; background-position: center top; background-repeat: no-repeat;
+  background-color: rgba(23,21,15,.16);
+  transition: border-radius .4s ease;
+}
+.work__text {
+  position: absolute; bottom: 20px; left: 25px; width: calc(100% - 50px);
+  z-index: 10; transition: .4s ease;
+}
+.work__name { margin: 0; font-size: 24px; font-weight: 600; color: #fff; }
+.work__name i { position: relative; font-style: normal; }
+.work__name i::after { content: ''; position: absolute; top: 0; height: 100%; z-index: 1; background: #fff; }
+.work__name span { opacity: 0; }
+.work__meta { margin: 15px 0 0; font-size: 14px; font-weight: 400; color: #fff; }
+/* 실제로 운영 중인 사이트라는 표시 (2026-08-13) — 성과 수치 대신 '지금 열린다'는 사실만.
+   링크가 전부 외부 사이트라 화살표가 새 창으로 나간다는 신호도 같이 한다. */
+.work__live {
+  margin-left: 10px; font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  /* ⚠ 사진 위 11px 잔글씨. .7 이면 밝은 캡처에서 2.8:1 이다(실측) → 흰색 100%. */
+  color: #fff; white-space: nowrap;
+}
+.work__item:hover .work__live, .work__item:focus-within .work__live { color: #fff; }
+
+.work__item:hover .work__thumb { border-radius: 50%; }
+.work__item:hover .work__link::before { opacity: 0; }
+.work__item:hover .work__link::after { opacity: 1; }
+.work__item:hover .work__name i::after,
+.work__item:focus-within .work__name i::after { animation: workMask 1s cubic-bezier(.77,0,.175,1) forwards; }
+.work__item:hover .work__name span,
+.work__item:focus-within .work__name span {
+  opacity: 1; transition: opacity .3s ease-in-out; transition-delay: .4s;
+}
+.work__item:focus-within .work__thumb { border-radius: 50%; }
+
+/* 등장 — 원본 .motion-1 실측값 (translateY 30 + 페이드, 1s ease) */
+.work__item { transform: translateY(30px); opacity: 0; transition: transform 1s ease, opacity 1s ease; }
+.work[data-on='true'] .work__item { transform: none; opacity: 1; }
+
+@keyframes workMask {
+  0%   { left: 0; width: 0; }
+  50%  { width: 100%; }
+  100% { right: 0; width: 0; }
+}
+
+/* 섹션 안에서 한 번 크게 말하는 문장 (리뉴얼 섹션의 핵심 카피 등).
+   .oneline__t 는 마지막 CTA 전용(32px 얇은 글씨)이라 일반 섹션에서 쓸 수 없어 따로 둔다. */
+
+/* ============================================================
+   How We Build 타임라인 — 기존 하오웹(design-preview) 실측 이식 (2026-08-25 세영 지시)
+   선이 차오르고(width .52s) 점이 켜지며, **지금 도달한 점만** 레드로 맥동한다(tipPulse).
+   번호 배지는 채워질 때 살짝 튀어오른다(noPop).
+   ⚠ 글자 크기·색은 **파나시아 기존 값을 유지**했다(세영: 앞으로 폰트와 글자 크기는 현재
+     하오웹을 유지). 원본 no 20/800 · t 24/600 · d 17 → 파나시아 16/700 · 20/700 · 16.
+   ⚠ 선과 점은 먹색 그대로다 — 레드는 '지금 위치' 점 하나뿐이어야 뜻이 산다.
+   ============================================================ */
+.timeline {
+  position: relative; display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 36px; padding-top: 56px;
+}
+.timeline--4 { grid-template-columns: repeat(4, 1fr); gap: 30px; }
+.timeline--3 { grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.timeline__line { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #d9d9d9; }
+.timeline__line i {
+  position: relative; display: block; height: 100%; width: 0;
+  background: #17150f; transition: width .25s linear;
+}
+/* 원본은 진행선 끝에 별도의 글로우 점을 띄우지만, 그 점이 단계 점 밑으로 깔린다.
+   여기서는 '지금 도달한 단계'의 점 자체를 레드로 바꾼다 (site.js 가 is-tip 을 옮겨 붙인다).
+   이 컴포넌트에서 레드는 이 점 하나뿐이다. */
+.tstep {
+  position: relative; display: flex; flex-direction: column;
+  opacity: .28; transform: translateY(16px);
+  transition: opacity .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1);
+}
+/* 설명 줄 수가 칸마다 달라도(1줄/2줄) 아래 OUTPUT 룰이 같은 선에서 시작하게 —
+   칸 높이는 그리드가 이미 맞춰 주므로 설명이 남는 높이를 먹는다. */
+.tstep__d { flex: 1; }
+.tstep::before {                        /* 선 위에 얹히는 점 */
+  content: ''; position: absolute; top: -61px; left: 2px; width: 12px; height: 12px;
+  border-radius: 50%; background: #fff; border: 2px solid #d9d9d9;
+  transition: background .3s, border-color .3s, transform .3s cubic-bezier(.16,1,.3,1);
+}
+.tstep.is-on { opacity: 1; transform: none; }
+.tstep.is-on::before { background: #17150f; border-color: #17150f; transform: scale(1.25); }
+.tstep__no {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 60px; height: 60px; border-radius: 50%; margin-bottom: 16px;
+  font-family: var(--font); font-size: 16px; font-weight: 700; letter-spacing: .02em;
+  color: #606060; border: 2px solid #d9d9d9; background: transparent;
+  transition: color .3s, border-color .3s, background .3s;
+}
+.tstep.is-on .tstep__no {
+/* ⭐⭐ 2026-08-24 세영 — "단계별로 보여주는 부분이 많을 거야. 숫자 부분은 하오웹 포인트
+     컬러로 바뀌게 통일하자." 사이트의 단계 숫자를 전부 레드로 맞췄다.
+     ⚠ 쓰임에 따라 값이 다르다 — **채움**(흰 숫자를 얹는 동그라미)은 `--brand-fill`(4.86:1),
+       **글자**로 쓰는 숫자는 `--brand-ink`(#e83817 · 흰 바탕 5.68 · #f9f9f9 5.39).
+       `--brand`(#e83817)를 작은 글자에 쓰면 4.19 로 기준(4.5)을 못 넘는다.
+     ⚠ `.diff__no`(카드 위 큰 워터마크 번호)는 단계 표시가 아니라 장식이라 제외했다.
+     ⚠ 타임라인의 **선과 점**은 그대로 먹색이다 — 숫자만 바꾸라는 지시였고,
+       선까지 레드로 하면 '지금 도달한 지점'을 알리는 맥동 레드 점이 묻힌다. */
+  color: #fff; background: var(--brand); border-color: var(--brand);
+  animation: noPop .55s cubic-bezier(.16,1,.3,1);
+}
+/* 기존 .step__t(22) · .step__d(14) 보다 한 단계씩 키웠다 (2026-08-12 세영 지시).
+   키우면서 제목이 1줄인 칸과 2줄인 칸이 섞여 설명 시작선이 어긋난다 → 2줄분을 확보해 맞춘다. */
+.tstep__t { font-size: 20px; font-weight: 700; letter-spacing: -.015em; line-height: 1.35; min-height: 2.7em; }
+.tstep__d { margin-top: 12px; font-size: 16px; line-height: 1.5; font-weight: 400; color: #606060; }
+/* 단계마다 실제로 남는 것 (2026-08-13) — 새 카드를 만들지 않고 1px 룰 아래 한 줄로 붙인다.
+   'OUTPUT' 은 eyebrow 급 영문, 값은 본문 색이라 단계 설명(muted)보다 한 단계 앞에 읽힌다. */
+.tstep__out { margin-top: 20px; padding-top: 14px; border-top: 1px solid #d9d9d9; }
+.tstep__out i {
+  display: block; margin-bottom: 7px; font-style: normal;
+  font-family: var(--font); font-size: 14px; font-weight: 700;
+  letter-spacing: .16em; color: #a4a4a4;
+}
+.tstep__out span { font-size: 14px; line-height: 1.6; }
+@keyframes tipPulse {
+  0%, 100% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--brand) 18%, transparent); }
+  50%      { box-shadow: 0 0 0 11px color-mix(in srgb, var(--brand) 6%, transparent); }
+}
+@keyframes noPop {
+  0%   { transform: scale(.6); }
+  55%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+.tstep__no { transition: color .34s cubic-bezier(.16,1,.3,1), background .34s cubic-bezier(.16,1,.3,1),
+             border-color .34s cubic-bezier(.16,1,.3,1), transform .34s cubic-bezier(.16,1,.3,1); }
+.tstep.is-on .tstep__no { transform: translateY(-2px); }
+.tstep.is-tip::before { transform: scale(1.45); }
+.tstep__t { transition: transform .34s cubic-bezier(.16,1,.3,1); }
+@media (hover: hover) {
+  .timeline .tstep:hover::before { transform: scale(1.55); border-color: var(--brand); }
+  .timeline .tstep:hover .tstep__t { transform: translateX(4px); }
+  .timeline .tstep:hover .tstep__no { transform: translateY(-4px); }
+}
+/* 진행선이 채워지는 속도 — 단계 스태거(420ms)와 어울리게 */
+.timeline__line i { transition: width .52s cubic-bezier(.16,1,.3,1); }
