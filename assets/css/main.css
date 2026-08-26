@@ -938,7 +938,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
      제목 윗변 215. 안 띄우면 큰 번호가 제목 위에 겹친다(2026-08-24 캡처에서 실제로 겹쳤다).
      아이콘(85) + 50 = 135 가 그 자리를 만든다. */
 .diff__cardt {
-  margin: 50px 0 0; font-size: 26px; font-weight: 800; line-height: 1.2; letter-spacing: -.03em;
+  margin: 50px 0 0; font-size: 28px; font-weight: 800; line-height: 1.2; letter-spacing: -.03em;
 }
 .diff__say { margin-top: 22px; }
 .diff__q { font-size: 18px; font-weight: 700; line-height: 1.6; letter-spacing: -.02em; }
@@ -948,7 +948,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   margin-top: auto; padding-top: 28px; display: flex; flex-wrap: wrap; gap: 8px;
 }
 .diff__tags span {
-  font-size: 12px; font-weight: 500;
+  font-size: 14px; font-weight: 500;
   padding: 7px 14px; border-radius: 999px;
 }
 
@@ -1138,6 +1138,18 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 @media screen and (max-width:900px){ .txtsec{ height:380px; } .txtsec__line{ font-size:170px; } }
 @media screen and (max-width:560px){ .txtsec{ height:260px; } .txtsec__line{ font-size:112px; } }
 
+/* ⭐ 2026-08-26 — 원본 worldpanasia.com 과 폰트 크기를 대조했다(라이브 실측).
+   원본이 쓰는 크기는 164·50·33·30·28·22·20·18·17·16·15·14 뿐인데, 기존 하오웹에서
+   가져온 섹션들이 그 밖의 크기를 들고 왔다. 「글자 크기는 파나시아 값을 유지한다」는
+   원칙에 따라 본문·라벨급을 스케일 안으로 되돌렸다 —
+     .diff__cardt 26→28 · .diff__tags 12→14 · .work__name 24→22 · .work__live 11→14
+     · .row__title 44→30 (원본 con3 링크가 30/700 이다)
+   ⚠ 25px 은 **원본에도 있다**(헤더 2뎁스 제목 `.dep2Tit .tit` 25/700). 처음엔 이탈로 보고
+     `.bigsay` 를 28 로 올렸다가 되돌렸다 — 메뉴가 닫혀 있어 분포 측정에서 빠졌을 뿐이다.
+     `sub.css` 의 `.bigsay` 도 25 라 그쪽과도 어긋날 뻔했다.
+   ⚠ 장식급(워드마크 440 · 카드 번호 112 · 실적 숫자 70 · 화살표 44)은 컴포넌트 고유
+     형태라 그대로 뒀다 — 바꿀지는 세영 확인 대기. */
+
 /* ============================================================
    WORK — 기존 하오웹(design-preview) 섹션 실측 이식 (2026-08-25 세영 지시)
    `.bighead`(영문 대제목 + 우측 국문) · `.viewsw`(카드/목록 전환) ·
@@ -1176,7 +1188,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   padding: 60px 40px; min-height: 192px;
 }
 .hw-sec .row__cat { font-size: 12px; color: #6e6a60; width: 150px; flex: none; }
-.hw-sec .row__title { flex: 1; font-size: 44px; font-weight: 600; letter-spacing: -.02em; text-align: center; line-height: 1.15; }
+.hw-sec .row__title { flex: 1; font-size: 30px; font-weight: 600; letter-spacing: -.02em; text-align: center; line-height: 1.15; }
 .hw-sec .row__meta { width: 150px; flex: none; text-align: right; font-size: 13px; color: #6e6a60; }
 .hw-sec .row__over {
   position: absolute; inset: 0; z-index: 2; display: flex; align-items: center;
@@ -1245,7 +1257,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   position: absolute; bottom: 20px; left: 25px; width: calc(100% - 50px);
   z-index: 10; transition: .4s ease;
 }
-.hw-sec .work__name { margin: 0; font-size: 24px; font-weight: 600; color: #fff; }
+.hw-sec .work__name { margin: 0; font-size: 22px; font-weight: 600; color: #fff; }
 .hw-sec .work__name i { position: relative; font-style: normal; }
 .hw-sec .work__name i::after { content: ''; position: absolute; top: 0; height: 100%; z-index: 1; background: #fff; }
 .hw-sec .work__name span { opacity: 0; }
@@ -1253,7 +1265,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 /* 실제로 운영 중인 사이트라는 표시 (2026-08-13) — 성과 수치 대신 '지금 열린다'는 사실만.
    링크가 전부 외부 사이트라 화살표가 새 창으로 나간다는 신호도 같이 한다. */
 .hw-sec .work__live {
-  margin-left: 10px; font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  margin-left: 10px; font-size: 14px; font-weight: 700; letter-spacing: .1em;
   /* ⚠ 사진 위 11px 잔글씨. .7 이면 밝은 캡처에서 2.8:1 이다(실측) → 흰색 100%. */
   color: #fff; white-space: nowrap;
 }
