@@ -524,7 +524,8 @@
          채움을 '그 단계 점의 중심'까지로 맞춘다. (점: left 2px + 지름 12 → 중심 +8) */
       var paint = function () {
         if (!fill || at < 0) return;
-        fill.style.width = (steps[at].offsetLeft + 8) + 'px';
+        /* ⚠ 선이 24px 지점에서 시작하고 점 중심은 offsetLeft+30 이다 → 채움 폭은 그 차이. */
+        fill.style.width = (steps[at].offsetLeft + 6) + 'px';
       };
 
       var tip = function (s) {
@@ -598,6 +599,26 @@
     list.forEach(function (o) { io.observe(o.el); });
   }
   initTimeline();
+
+  /* ---------- 레일 경계선 감추기 ----------
+     사진이 화면 끝까지 깔리는 구간(`.work.fullbleed`)이 화면에 걸쳐 있는 동안만
+     좌측 레일의 세로 선을 지운다. 목록 보기로 바꾸면 `.work` 가 display:none 이라
+     관찰이 자동으로 끊기고 선이 다시 돌아온다. */
+  (function () {
+    var rail = $('#headerY');
+    var zones = $$('.work.fullbleed');
+    if (!rail || !zones.length || !('IntersectionObserver' in window)) return;
+    var shown = [];
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var i = shown.indexOf(e.target);
+        if (e.isIntersecting) { if (i < 0) shown.push(e.target); }
+        else if (i >= 0) { shown.splice(i, 1); }
+      });
+      rail.classList.toggle('rail--noline', shown.length > 0);
+    }, { threshold: 0 });
+    zones.forEach(function (z) { io.observe(z); });
+  })();
 
   /* ---------- WORK ----------
      기존 하오웹 site.js 의 initWork / initWorkView / initMarquee 를 그대로 옮겼다.

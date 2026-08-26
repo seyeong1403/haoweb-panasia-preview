@@ -236,7 +236,15 @@ main .sec:first-of-type{ padding-top:90px; }
 .work__live{ color:var(--brand); font-weight:700; }
 .fullbleed{ margin-top:40px; }
 .rows .row{ position:relative; border-bottom:1px solid #d9d9d9; }
-.rows .row__link{ display:flex; align-items:center; gap:24px; padding:24px 0; font-size:30px; font-weight:700; color:#a4a4a4; }
+/* ⚠ `.rows` 는 마크업상 `</section>` 밖에 있어 화면 전체 폭이다(website·global·columns·
+   content-production 4장). 그래서 좌측 라벨이 화면 왼쪽 끝에 붙어 **잘린 것처럼** 보였다
+   (2026-08-26 세영 지적). 구분선은 넓게 두고 **내용만** 컨테이너와 같은 자리에 맞춘다.
+   ⚠ 파나시아 컨테이너는 구간마다 좌단이 다르다 — 1683 이상 1400 중앙 / 이하 좌 139 / 1024 이하 좌 30 */
+.rows .row__link{ display:flex; align-items:center; gap:24px; padding:24px 0; font-size:30px; font-weight:700; color:#a4a4a4;
+  width:calc(100% - 169px); margin-left:139px; }
+@media screen and (min-width:1683px){
+  .rows .row__link{ width:1400px; margin-left:auto; margin-right:auto; }
+}
 .rows .row:hover .row__link{ color:#000; }
 .rows .row__cat{ font-size:14px; font-weight:400; color:#c4c4c4; min-width:88px; }
 .rows .row__title{ flex:1 1 auto; }
@@ -375,7 +383,8 @@ main .container > .btns:first-child{ margin-top:0; }
   .work{ grid-template-columns:repeat(2,1fr); gap:16px; }
   .timeline, .timeline--4{ grid-template-columns:1fr; gap:20px; }
   .biz-band{ grid-template-columns:1fr; gap:10px; padding:28px 0; }
-  .rows .row__link{ font-size:18px; padding:15px 0; gap:12px; }
+  .rows .row__link{ font-size:18px; padding:15px 0; gap:12px;
+    width:calc(100% - 60px); margin-left:30px; }
   .rows .row__cat{ min-width:52px; }
   .step__t{ font-size:20px; }
   .faq__item summary{ font-size:16px; padding-right:38px; }
