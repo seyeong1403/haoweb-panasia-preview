@@ -124,12 +124,13 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 #header .dep2Menu .area > ul{ display:none; padding-top:30px; padding-right:300px; flex-wrap:wrap; row-gap:18px; }
 #header .dep2Menu .area > ul.active{ display:flex; }
 #header .dep2Menu .area > ul > li:not(:last-child){ margin-right:80px; }
-#header .dep2Menu .area > ul > li > a{ display:block; font-weight:700; margin-bottom:20px; position:relative; }
-#header .dep2Menu .area > ul > li > a::after{
-  content:''; display:block; width:0; height:7px; background:var(--brand); opacity:.2;
-  position:absolute; left:0; bottom:0; transition:.3s ease;
+/* ⭐ 2026-08-26 세영 — hover 를 **밑줄에서 글자 포인트 컬러로** 바꿨다.
+   원본 파나시아는 레드 20% 밑줄(height 7)이 좌→우로 차오르는 방식이었다. */
+#header .dep2Menu .area > ul > li > a{
+  display:block; font-weight:700; margin-bottom:20px; position:relative;
+  transition:color .3s ease;
 }
-#header .dep2Menu .area > ul > li > a:hover::after{ width:100%; }
+#header .dep2Menu .area > ul > li > a:hover{ color:var(--brand); }
 #header .dep2Menu .area > ul > .dep2Tit{ position:absolute; right:0; top:30px; text-align:right; }
 #header .dep2Menu .area > ul > .dep2Tit .tit{ font-size:25px; font-weight:700; }
 
@@ -186,13 +187,12 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 .allMenuWrap .allMenu > ul > li:hover > span{ color:var(--brand); }
 .allMenuWrap .allMenu .dep2{ font-size:20px; }
 .allMenuWrap .allMenu .dep2 li{ margin-bottom:11px; transition:.3s ease; }
-.allMenuWrap .allMenu .dep2 a{ position:relative; white-space:nowrap; }
-.allMenuWrap .allMenu .dep2 li a::before{
-  content:''; display:block; width:0; height:7px; background:var(--brand); opacity:.2;
-  position:absolute; left:0; bottom:0; transition:.3s ease;
-}
-.allMenuWrap .allMenu .dep2 li a:hover{ color:#000; font-weight:700; }
-.allMenuWrap .allMenu .dep2 li a:hover::before{ width:100%; }
+/* ⭐ 2026-08-26 세영 — 헤더 2뎁스와 같게 통일했다. 밑줄(레드 20%, height 7)을 걷어내고
+   글자만 포인트 컬러로 바꾼다.
+   ⚠ 원래는 `color:#000; font-weight:700` 이었는데 굵기가 바뀌면 글자 폭이 달라져
+     옆 항목이 밀린다 — 색만 바꾼다. */
+.allMenuWrap .allMenu .dep2 a{ position:relative; white-space:nowrap; transition:color .3s ease; }
+.allMenuWrap .allMenu .dep2 li a:hover{ color:var(--brand); }
 
 /* 원형 링 (실측: 576px, 4개 링 회전) */
 
