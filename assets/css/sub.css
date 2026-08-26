@@ -120,15 +120,8 @@ main .sec:first-of-type{ padding-top:90px; }
 .step__t{ font-size:28px; font-weight:700; margin-bottom:13px; }
 .step__d{ font-size:16px; color:#606060; line-height:150%; }
 .invert .step__d{ color:rgba(255,255,255,.75); }
-.timeline{ position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:30px; padding-top:40px; }
-.timeline--4{ grid-template-columns:repeat(4,1fr); }
-.timeline__line{ position:absolute; left:0; right:0; top:0; height:1px; background:#d9d9d9; }
-.timeline__line i{ display:block; height:1px; background:var(--brand); width:100%; }
-.tstep__no{ font-size:16px; font-weight:700; color:var(--brand); display:block; margin-bottom:13px; }
-.tstep__t{ font-size:20px; font-weight:700; margin-bottom:13px; }
-.tstep__d{ font-size:16px; color:#606060; line-height:150%; }
-.tstep__out{ font-size:14px; color:#a4a4a4; margin-top:16px; line-height:150%; }
-.tstep__out i{ font-weight:700; margin-right:8px; }
+/* ⚠ 타임라인은 main.css 한 곳에서 정의한다 — 2026-08-26 세영 「사이트 전체에 단계별
+   섹션이 많으니 동일 디자인으로」. 여기 있던 자체 스타일(점 없는 레드 숫자)은 지웠다. */
 
 /* ---------- FAQ (네이티브 details) ---------- */
 .faq{ margin-top:40px; }
@@ -381,7 +374,6 @@ main .container > .btns:first-child{ margin-top:0; }
   .sechead__lead, .bighead__lead, .subLead .subLead__kr, .subLead .subLead__aside{ font-size:16px; }
   .cols, .cols--2, .cols--4, .cols--5, .steps, .plans, .panels, .pfslot, .dwork{ grid-template-columns:1fr; gap:20px; }
   .work{ grid-template-columns:repeat(2,1fr); gap:16px; }
-  .timeline, .timeline--4{ grid-template-columns:1fr; gap:20px; }
   .biz-band{ grid-template-columns:1fr; gap:10px; padding:28px 0; }
   .rows .row__link{ font-size:18px; padding:15px 0; gap:12px;
     width:calc(100% - 60px); margin-left:30px; }
