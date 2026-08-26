@@ -47,7 +47,10 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 
 /* ---------- 컨테이너 (실측: 1400px 중앙 / ≤1682px: calc(100% - 169px), ml 139px) ---------- */
 .container{ width:1400px; height:100%; position:relative; margin-left:auto !important; margin-right:auto !important; }
-.container.news-swiper-container{ width:100%; }
+/* ⚠ 폭만 100% 로 바꾸고 `.container` 의 좌측 139px 을 되돌리지 않아, 칼럼 섹션 전체가
+   139px 오른쪽으로 밀려 있었다 — 가운데 정렬한 제목이 화면 중앙에서 벗어난다
+   (2026-08-26 전수 검수에서 발견). 풀폭으로 쓸 것이면 마진도 0 이어야 한다. */
+.container.news-swiper-container{ width:100%; margin-left:0 !important; margin-right:0 !important; }
 .inner{ width:100%; height:100%; position:relative; }
 
 /* ---------- 공통 타이포 (실측) ---------- */
@@ -385,7 +388,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    그대로 두니 제목과 목록 사이가 휑했다(2026-08-26 세영 「간격이 너무 떨어졌어」). */
 .mainCon .main-con3 .inner .link-list{ margin:64px 0 0; }
 .mainCon .main-con3 .inner .link-list li a{
-  position:relative; display:block; font-size:30px; font-weight:700; color:#a4a4a4;
+  position:relative; display:block; font-size:30px; font-weight:700; color:#6e6a60;
   padding:24px 0; border-bottom:1px solid #d9d9d9;
 }
 .mainCon .main-con3 .inner .link-list li a:after{
@@ -476,9 +479,11 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 .mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+1) .card{ background-color:#f1f4f9; }
 .mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+1) .card .tag{ color:var(--brand); }
 .mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+2) .card{ background-color:#f1f7ed; }
-.mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+2) .card .tag{ color:#86bd64; }
+/* ⚠ #86bd64 는 연한 초록 바탕(#f1f7ed)에서 대비 2.03 이라 태그가 흐려 안 읽혔다
+   (2026-08-26). 같은 계열을 유지하되 4.5:1 을 넘도록 낮춘다. */
+.mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+2) .card .tag{ color:#3f7a1f; }
 .mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+3) .card{ background-color:#fcf7e8; }
-.mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+3) .card .tag{ color:#cf9800; }
+.mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+3) .card .tag{ color:#8a6500; }
 .mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+4) .card{ background-color:#fff5fd; }
 .mainCon .main-con5 .news-swiper .swiper-slide:nth-child(4n+4) .card .tag{ color:#d42a2a; }
 .news-scrollbar{ display:none; height:4px; margin-top:14px; background:rgba(0,0,0,.12); position:relative; }
@@ -573,7 +578,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 .hw-industry .right .right-box{ max-width:542px; margin:0 auto; }
 .hw-industry .link-list{ margin:64px 0 0; }
 .hw-industry .link-list li a{
-  position:relative; display:block; font-size:30px; font-weight:700; color:#a4a4a4;
+  position:relative; display:block; font-size:30px; font-weight:700; color:#6e6a60;
   padding:24px 0; border-bottom:1px solid #d9d9d9;
 }
 .hw-industry .link-list li a .lbl{ display:block; font-size:14px; font-weight:400; color:#c4c4c4; line-height:1; margin-bottom:6px; }
@@ -1480,3 +1485,113 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 @media screen and (max-width:1024px){
   .wrow__base{ width:calc(100% - 60px); margin-left:30px; margin-right:30px; }
 }
+
+/* ============================================================
+   정렬 보정 (2026-08-26 서브·메인 전수 검수)
+   ============================================================ */
+
+/* ⚠⚠ 핀 구간만 좌단이 47px(1024~1400 구간은 109px) 어긋나 있었다.
+   `.mainCon-gsap-wrap` 은 핀 스페이서의 마진 복제 때문에 **풀폭·마진0** 으로 두는데,
+   그 안의 `.inner` 가 1400 고정 + `justify-content:center` 라 **가운데**에 놓인다.
+   다른 섹션의 컨테이너는 ≤1682px 에서 좌 139px 이므로 둘이 어긋난다.
+   래퍼는 그대로 두고(핀이 필요로 한다) **안쪽만 컨테이너와 같은 자리로** 옮긴다.
+   ⚠ 파일 끝에 두는 것이 중요하다 — 앞쪽 `@media (max-width:1400px)` 의
+     `width:100%; padding:0 30px` 를 덮어써야 한다. */
+@media screen and (max-width:1682px){
+  .main-con1{ justify-content:flex-start; }
+  .mainCon .main-con1 .inner{
+    width:calc(100% - 169px); margin-left:139px; margin-right:0; padding:0; }
+}
+@media screen and (max-width:1024px){
+  /* 이 구간의 컨테이너는 `calc(100% - 60px)` 중앙이다 — 핀 안쪽도 중앙으로 되돌린다 */
+  .main-con1{ justify-content:center; }
+  .mainCon .main-con1 .inner{
+    width:calc(100% - 60px); margin-left:auto; margin-right:auto; padding:0; }
+}
+
+/* ⚠ 보기 전환 스위치가 화면 밖으로 7px 나가 잘렸다. `100vw` + `margin-left:50%` +
+   `translateX(-50%)` 로 화면 중앙을 잡았는데, 파나시아 컨테이너는 **좌우 비대칭**이라
+   50% 가 화면 중앙이 아니다. 게다가 `100vw` 는 스크롤바를 포함해 clientWidth 보다 넓다.
+   컨테이너 폭에서 되돌리는 방식(카드 그리드와 같은 계산)으로 바꾼다. */
+.hw-sec .viewsw-wrap{
+  width:100vw; max-width:100vw;
+  margin-left:calc((100vw - 1400px) / -2); transform:none;
+  padding-inline:0; padding-right:48px;
+}
+@media screen and (max-width:1682px){
+  .hw-sec .viewsw-wrap{ width:calc(100% + 169px); max-width:none; margin-left:-139px; }
+}
+@media screen and (max-width:1024px){
+  .hw-sec .viewsw-wrap{ width:calc(100% + 60px); margin-left:-30px; padding-right:30px; }
+}
+
+/* ⚠ 칼럼 섹션은 스와이퍼를 화면 끝까지 흘리려고 컨테이너를 풀폭으로 쓴다. 그러면 제목이
+   **화면** 중앙(792)에 놓여, 컨테이너 중앙(847)에 놓이는 다른 가운데정렬 섹션
+   (업종별·GET STARTED)과 55px 어긋난다. 제목만 컨테이너 폭으로 되돌린다. */
+.news-swiper-container > .inner > .bluetext,
+.news-swiper-container > .inner > .txt2{
+  width:1400px; margin-left:auto; margin-right:auto; }
+@media screen and (max-width:1682px){
+  .news-swiper-container > .inner > .bluetext,
+  .news-swiper-container > .inner > .txt2{
+    width:calc(100% - 169px); margin-left:139px; margin-right:30px; }
+}
+@media screen and (max-width:1024px){
+  .news-swiper-container > .inner > .bluetext,
+  .news-swiper-container > .inner > .txt2{
+    width:calc(100% - 60px); margin-left:auto; margin-right:auto; }
+}
+
+/* ⚠⚠ 타임라인에 **반응형이 없었다**(2026-08-26 전수 검수에서 발견).
+   5열 고정이라 모바일에서 칸이 73px 로 눌리고, 73×5 + 36×4 = **509px** 를 강제해
+   문서 전체가 390 화면보다 넓어졌다 — 48장 전부에서 가로가 밀린 진짜 원인이 이것 하나였다.
+   ⚠ 선(.timeline__line)과 점(.tstep::before)은 **가로 한 줄**을 전제로 한 장치라
+     여러 줄로 접히면 자리를 잃는다. 접히는 순간 숨기고 번호 배지에 맡긴다. */
+@media screen and (max-width:1024px){
+  .timeline, .timeline--4, .timeline--3{
+    grid-template-columns:repeat(2,1fr); gap:40px 24px; padding-top:0; }
+  .timeline__line{ display:none; }
+  .tstep::before{ display:none; }
+  .tstep__t{ min-height:0; }
+}
+@media screen and (max-width:768px){
+  .timeline, .timeline--4, .timeline--3{ grid-template-columns:1fr; gap:32px; }
+}
+
+/* ⚠ 모바일 푸터 — 원본 파나시아는 Information 자리에 항목이 **둘**뿐이라 한 줄로 늘어놓아도
+   됐다. 하오웹은 전화·이메일·사업자 정보·서비스로 **넷**이라 390px 화면에서 화면 밖으로
+   119px 밀려 잘렸다(2026-08-26 전수 검수). 줄바꿈을 허용한다. */
+@media screen and (max-width:1024px){
+  #footer .ftList li:nth-child(3),
+  #footer .ftList li:last-child{ flex-wrap:wrap; row-gap:14px; }
+  #footer .ftList li div{ margin-bottom:0; }
+}
+
+/* ⚠ 「왜 하오웹인가요?」의 이미지가 `max-width:560px` 고정이라 390px 화면에서 화면 밖으로
+   나갔다(suffix 의 `padding-right:93px` 까지 더해져 653px). 모바일에서는 폭을 풀어준다. */
+@media screen and (max-width:1024px){
+  .mainCon .main-con1 .inner .suffix{ width:100%; padding-right:0; padding-bottom:0; }
+  .mainCon .main-con1 .inner .suffix .img-banner img{ max-width:100%; }
+}
+
+/* ⚠ 위에서 줄바꿈을 허용하자 이번엔 **제목까지 flex 아이템**이 되어 항목과 한 줄에 붙었다
+   (「Information전화」·「Contact무료 홈페이지 제안받기」). 제목은 한 줄을 통째로 쓰게 한다. */
+@media screen and (max-width:1024px){
+  #footer .ftList li:nth-child(3) > span,
+  #footer .ftList li:last-child > span{ flex:0 0 100%; }
+  #footer .ftList li:last-child > span:not(:first-child){ margin-top:14px; }
+}
+
+/* ⚠ `margin-right:38px` 로 늘어놓으니 두 번째 열이 내용 길이에 따라 밀려 세로선이 안 맞았다
+   (전화/이메일 줄과 사업자정보/서비스 줄이 7px 어긋남). 2열 그리드로 고정한다. */
+@media screen and (max-width:1024px){
+  #footer .ftList li:nth-child(3){
+    display:grid; grid-template-columns:repeat(2,1fr); gap:18px 20px; }
+  #footer .ftList li:nth-child(3) > span{ grid-column:1 / -1; }
+  #footer .ftList li:nth-child(3) div{ margin-right:0; }
+}
+
+/* ⚠ 메인에 남아 있던 밝은 면 잔글씨 셋도 같은 기준(#6e6a60 · 4.9:1)으로 올린다.
+   단계의 OUTPUT 라벨과 플랜의 PAGES·부연은 장식이 아니라 읽어야 하는 정보다. */
+.tstep__out i{ color:#6e6a60; }
+.hw-plans .plan .scale i, .hw-plans .plan .scale s{ color:#6e6a60; }
