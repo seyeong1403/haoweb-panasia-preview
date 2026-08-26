@@ -142,46 +142,6 @@
   });
   /* 페이지 아무 데서나 최상단 도달 후 휠업 → 닫힘 (원본과 동일하게 #mv-ix 위에서만 작동) */
 
-  /* ---------- 히어로 영상 크로스페이드 + 진행바 (원본 로직) ---------- */
-  var v1 = $('#v1'), v2 = $('#v2'), bar = $('.video-progress .bar');
-  if (v1 && v2 && bar) {
-    var FADE_SEC = 0.6, PRELOAD_SEC = 0.4;
-    var current = v1, next = v2, switching = false, rafId = null;
-    var startProgressLoop = function () {
-      cancelAnimationFrame(rafId);
-      var tick = function () {
-        bar.style.width = current.duration ? ((current.currentTime / current.duration) * 100) + '%' : '0%';
-        rafId = requestAnimationFrame(tick);
-      };
-      rafId = requestAnimationFrame(tick);
-    };
-    var checkAndSwitch = function () {
-      if (!current.duration || switching) return;
-      if (current.duration - current.currentTime < PRELOAD_SEC) {
-        switching = true;
-        next.currentTime = 0;
-        var p = next.play();
-        if (p && p.catch) p.catch(function () {}); /* 절전 등으로 중단돼도 콘솔 에러 없이 */
-        next.style.opacity = 1;
-        current.style.opacity = 0;
-        next.style.zIndex = 2;
-        current.style.zIndex = 1;
-        setTimeout(function () {
-          current.pause();
-          bar.style.width = '0%';
-          var t = current; current = next; next = t;
-          switching = false;
-        }, FADE_SEC * 1000);
-      }
-    };
-    v1.addEventListener('timeupdate', checkAndSwitch);
-    v2.addEventListener('timeupdate', checkAndSwitch);
-    v1.addEventListener('canplay', function () {
-      var p1 = v1.play();
-      if (p1 && p1.catch) p1.catch(function () {});
-      startProgressLoop();
-    });
-  }
 
   /* ---------- 비즈니스 탭 + 스와이퍼 (원본 파라미터) ---------- */
   var menuItems = $$('.btn-area li');

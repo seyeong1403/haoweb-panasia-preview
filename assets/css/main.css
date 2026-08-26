@@ -269,15 +269,6 @@ section.visual .txt-video-wrap .txt-wrap .txt-video__des{
   text-align:center; font-size:20px; line-height:130%; font-weight:400;
 }
 section.visual .txt-video-wrap .video-wrap{ position:relative; width:100%; height:100vh; }
-/* ⚠ 아래 video 규칙은 지금 쓰이지 않는다 — 히어로를 사진으로 바꿨다(2026-08-25 세영 지시).
-   영상으로 되돌릴 수 있게 남겨 둔다. 마크업이 없으므로 무해하다. */
-section.visual .txt-video-wrap .video-wrap video{
-  width:100%; height:100vh; object-fit:cover; position:absolute; left:0; top:0;
-  transition:opacity .6s;
-}
-section.visual .txt-video-wrap .video-wrap #v1{ z-index:2; }
-section.visual .txt-video-wrap .video-wrap #v2{ opacity:0; z-index:1; }
-
 /* 히어로 사진 — 기존 하오웹(design-preview) `.hero__img` 실측 이식
    실측: object-fit cover · inset 0 · 사진 2400x1600
    스크림 실측: linear-gradient(rgba(16,16,16,.72) 0%, .82 34%, .82 62%, .74 100%)
@@ -297,11 +288,6 @@ section.visual .txt-video-wrap .video-wrap .hero-scrim{
   opacity:0; transition:opacity .4s ease-in-out;
 }
 section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
-.video-progress{
-  position:absolute; left:50%; transform:translateX(-50%); bottom:130px; width:1400px; height:3px;
-  background:rgba(249,249,249,.4); overflow:hidden; z-index:5;
-}
-.video-progress .bar{ display:block; width:0%; height:100%; background:#fff; }
 
 /* ============================================================
    GSAP 핀 구간 (실측: 100vh 핀, con2 408×271 → 풀사이즈)
@@ -710,7 +696,6 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   section.visual#mv-ix .tit-box .tit .tit__des{ font-size:14px; margin-top:10px; }
   section.visual#mv-ix .mv-ix_visual_wrap{ height:30vh; }
   section.visual#mv-ix .mv-ix_visual_box{ height:30vh; border-radius:11px; }
-  .video-progress{ width:70%; }
 }
 @media screen and (max-width:1024px){
   .m{ display:block; }
