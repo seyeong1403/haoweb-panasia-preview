@@ -1204,12 +1204,24 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-.hw-sec .fullbleed { width: 100vw; max-width: 100vw; margin-left: 50%; transform: translateX(-50%); }
-/* ⚠ 원본은 `.work` 를 100vw 로 빼내 화면을 꽉 채운다. 원본 컨테이너는 중앙 정렬이라
-   좌우 여백이 대칭이어서 그래도 머리와 맞아 보이는데, 파나시아 컨테이너는
-   `calc(100% - 169px)` + `margin-left:139px` 로 **비대칭**이라 카드가 제목보다 39px 왼쪽으로
-   튀어나왔다(2026-08-25 실측). 정렬이 먼저라 이 섹션에서는 fullbleed 를 풀고 컨테이너에 맞춘다. */
-.hw-sec .work.fullbleed { width: 100%; max-width: none; margin-left: 0; transform: none; padding-inline: 0; }
+/* ⚠ 원본 하오웹은 `margin-left:50%` + `translateX(-50%)` 로 100vw 를 만든다. 컨테이너가
+   **중앙 정렬**일 때만 맞는 공식이다 — 파나시아 컨테이너는 `margin-left:139px` 로 치우쳐 있어
+   그대로 쓰면 블록이 화면 오른쪽으로 55px 밀린다(2026-08-26 실측: x=55 · 마지막 카드 1591 로
+   화면 1584 를 넘었다). 컨테이너 좌단을 구간별로 정확히 상쇄한다. */
+.hw-sec .fullbleed { width: 100vw; max-width: 100vw; margin-left: calc((100vw - 1400px) / -2); transform: none; }
+/* 컨테이너가 구간마다 다른 좌단을 갖는다 — 상쇄값도 같이 바뀐다.
+   ≤1682: margin-left 139 / ≤1024: calc(100% - 60px) 중앙이라 좌단 30 */
+@media screen and (max-width:1682px){ .hw-sec .fullbleed { margin-left:-139px; } }
+@media screen and (max-width:1024px){ .hw-sec .fullbleed { margin-left:-30px; } }
+
+/* ⭐ 2026-08-26 세영 지시로 **화면 꽉 채우기를 되살렸다.**
+   기존 하오웹 실측(1585 뷰포트): `.work.fullbleed` 100vw · padding-inline 48 ·
+   카드 363 · 첫 카드 좌단 41 · 제목 좌단 161 — **제목과 120px 어긋난 채**가 그 인상이다.
+   ⚠ 어제는 이 어긋남을 정렬 문제로 보고 fullbleed 를 풀었는데, 원본에서는 의도된 배치다.
+   ⭐ 2026-08-26 세영: 「화면 좌우 전체로 꽉차게」 → 좌우 여백을 없앴다.
+     ⚠ 좌측 고정 레일(110px)이 첫 카드 위에 얹힌다. 레일은 배경이 투명하고 세로 워드마크와
+       햄버거 버튼만 있어서 사진 위에 그대로 겹친다 — 지시대로 꽉 채우는 쪽을 택했다. */
+.hw-sec .work.fullbleed { padding-left: 0; padding-right: 0; }
 
 /* 보기 전환 — 카드 / 목록 */
 /* 스위치 우측 끝을 카드 그리드 우측 끝에 맞춘다 (그리드가 전체 폭이라 컨테이너 기준이면 어긋난다) */
@@ -1294,6 +1306,20 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 
 /* 섹션 안에서 한 번 크게 말하는 문장 (리뉴얼 섹션의 핵심 카피 등).
    .oneline__t 는 마지막 CTA 전용(32px 얇은 글씨)이라 일반 섹션에서 쓸 수 없어 따로 둔다. */
+
+/* 화면이 좁아지면 열 수를 줄인다 — 기존 하오웹 실측(≤1260 3열 · ≤900 2열)을 파나시아
+   브레이크포인트(1280 · 1024)에 맞춰 옮겼다. 4열을 그대로 두면 모바일에서 카드가
+   손톱만 해진다(390 에서 실제로 그랬다 — 2026-08-26). */
+@media screen and (max-width:1280px){
+  .hw-sec .work__item { width: calc((100% - 36px) / 3); }
+}
+@media screen and (max-width:1024px){
+  .hw-sec .work { gap: 10px; }
+  .hw-sec .work__item { width: calc((100% - 10px) / 2); }
+  .hw-sec .work__text { bottom: 15px; left: 10px; width: calc(100% - 20px); }
+  .hw-sec .work__name { font-size: 15px; }
+  .hw-sec .work__meta { margin-top: 10px; font-size: 14px; }
+}
 
 /* ⚠ 두 규칙은 `.work`/`.rows` 정의보다 **뒤**에 와야 한다. 특정도가 같아서 순서로 갈린다 —
    앞에 두었더니 목록 보기에서 카드가 안 숨어 둘이 함께 보였다(2026-08-26).
