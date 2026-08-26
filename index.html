@@ -292,6 +292,183 @@
   </div>
 </section>
 
+<!-- 차별화된 서비스 — 기존 하오웹(design-preview) .diff 섹션 실측 이식 (2026-08-25)
+     좌 40 글 + 우 60 카드 트랙 / 카드 398x554 gap15 / transform .8s cubic-bezier(.4,0,.2,1)
+     5초 자동재생 무한루프 + 진행바. 컨테이너만 파나시아 1400 에 맞춰 뷰포트 758 고정 -->
+<section class="diff">
+  <div class="container diff__inner">
+    <div class="diff__aside">
+      <p class="diff__badge">하오웹만의</p>
+      <h2 class="diff__title" data-fade>차별화된 서비스</h2>
+      <p class="diff__sub" data-fade>제작사는 많습니다.<br>무엇이 다른지부터 보셔야 하니까</p>
+      <!-- 화살표 — 레퍼런스 실측: `.port_pager` 110×62 를 **좌측 글 맨 아래**에 둔다
+           (섹션 위에서 503px). 각 버튼 48×62 · 사이 15px. -->
+      <div class="diff__nav">
+        <button class="diff__arrow" type="button" data-diff="prev" aria-label="이전 카드">
+          <span aria-hidden="true">&#8249;</span>
+        </button>
+        <button class="diff__arrow" type="button" data-diff="next" aria-label="다음 카드">
+          <span aria-hidden="true">&#8250;</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="diff__viewport" data-diff-view>
+      <ul class="diff__track" data-diff-track>
+        <li class="diff__card diff__card--brand" data-fade>
+          <span class="diff__ico diff__ico--write" aria-hidden="true"></span>
+          <span class="diff__no" aria-hidden="true">01</span>
+          <h3 class="diff__cardt">자료가 없어도<br>시작합니다</h3>
+          <div class="diff__say">
+            <p class="diff__q">&#8216;원고랑 사진부터 준비해야죠&#8217;</p>
+            <p class="diff__a">근데 <b>그거 준비하다</b> 몇 달 지나지 않으셨나요?</p>
+          </div>
+          <div class="diff__tags">
+            <span>방문 인터뷰</span><span>원고 작성</span><span>촬영</span><span>사이트맵</span>
+          </div>
+        </li>
+
+        <li class="diff__card diff__card--gray" data-fade>
+          <span class="diff__ico diff__ico--team" aria-hidden="true"></span>
+          <span class="diff__no" aria-hidden="true">02</span>
+          <!-- 2026-08-17 세영 수정 — 「업종 전담이 따로 있습니다」에서 바꿨다.
+               전담이 무엇을 하는 사람인지(카피라이터·디자이너) 드러내는 쪽이 낫다. -->
+          <h3 class="diff__cardt">업종별 전담 카피라이터와<br>디자이너가 있습니다</h3>
+          <div class="diff__say">
+            <p class="diff__q">&#8216;홈페이지야 다 비슷하죠&#8217;</p>
+            <p class="diff__a">근데 <b>우리 업종 고객이</b> 뭘 먼저 보는지 아시나요?</p>
+          </div>
+          <div class="diff__tags">
+            <span>기업</span><span>병원</span><span>프랜차이즈</span><span>쇼핑몰</span><span>법률</span>
+          </div>
+        </li>
+
+        <li class="diff__card diff__card--brand" data-fade>
+          <span class="diff__ico diff__ico--shoot" aria-hidden="true"></span>
+          <span class="diff__no" aria-hidden="true">03</span>
+          <h3 class="diff__cardt">촬영&#183;디자인&#183;마케팅이<br>안에 있습니다</h3>
+          <div class="diff__say">
+            <p class="diff__q">&#8216;홈페이지만 만들면 되죠&#8217;</p>
+            <p class="diff__a">근데 <b>사진&#183;브로슈어&#183;광고는</b> 따로 맡기실 건가요?</p>
+          </div>
+          <div class="diff__tags">
+            <span>스튜디오 촬영</span><span>편집디자인</span><span>콘텐츠 운영</span><span>인플루언서</span>
+          </div>
+        </li>
+
+        <li class="diff__card diff__card--gray" data-fade>
+          <span class="diff__ico diff__ico--global" aria-hidden="true"></span>
+          <span class="diff__no" aria-hidden="true">04</span>
+          <h3 class="diff__cardt">해외에도<br>현지 사무실이 있습니다</h3>
+          <div class="diff__say">
+            <p class="diff__q">&#8216;해외 홈페이지도 되나요?&#8217;</p>
+            <p class="diff__a">근데 <b>번역만 맡기면</b> 그 시장에서 읽힐까요?</p>
+          </div>
+          <div class="diff__tags">
+            <span>베트남</span><span>중국</span><span>태국</span><span>현지 확인</span><span>다국어</span>
+          </div>
+        </li>
+
+        <li class="diff__card diff__card--brand" data-fade>
+          <span class="diff__ico diff__ico--care" aria-hidden="true"></span>
+          <span class="diff__no" aria-hidden="true">05</span>
+          <h3 class="diff__cardt">만든 다음도<br>맡습니다</h3>
+          <div class="diff__say">
+            <p class="diff__q">&#8216;만들고 나면 끝이죠&#8217;</p>
+            <p class="diff__a">근데 <b>고칠 일이 생기면</b> 누구에게 연락하시나요?</p>
+          </div>
+          <div class="diff__tags">
+            <span>정기 점검</span><span>콘텐츠 수정</span><span>백업</span><span>기본 유지보수 12개월</span>
+          </div>
+        </li>
+
+        <li class="diff__card diff__card--gray" data-fade>
+          <span class="diff__ico diff__ico--doc" aria-hidden="true"></span>
+          <span class="diff__no" aria-hidden="true">06</span>
+          <h3 class="diff__cardt">말이 아니라<br>문서로 남깁니다</h3>
+          <div class="diff__say">
+            <p class="diff__q">&#8216;알아서 잘해 주시겠죠&#8217;</p>
+            <p class="diff__a">근데 <b>무엇을 어떻게 정했는지</b> 남아 있나요?</p>
+          </div>
+          <div class="diff__tags">
+            <span>사이트맵</span><span>원고</span><span>산출물 인계</span>
+          </div>
+        </li>
+      </ul>
+      <!-- 진행바 — 레퍼런스 실측: 779×5 · 라운드 50 · 트랙 #f0f0f0 · 채움 #111.
+           슬라이더와 같은 x 에서 시작하고 섹션 맨 아래에 붙는다. -->
+      <div class="diff__bar" aria-hidden="true"><span data-diff-fill></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- (복원) 업종별 — 좌 이미지 교체 + 행 리스트 문법 -->
+<!-- 업종별 — 기존 하오웹 `.wrows` 를 그대로 가져왔다(2026-08-26 세영 지시).
+     행에 마우스를 올리면 아래에서 검은 띠가 올라오고 그 안에서 영문과 원형 사진이 흐른다.
+     ⚠ 제목부는 파나시아 표준(bluetext·txt2·txt3) 가운데정렬로 맞췄다 — 원본은 askq 22 /
+       sechead__title 54 이지만 「글자 크기는 파나시아 값을 유지」가 원칙이다. -->
+<div class="hw-sec hw-sec--gray hw-biz">
+  <div class="container">
+    <div class="hw-biz__head">
+      <p class="bluetext">업종별로 달라야 하나요?</p>
+      <p class="txt2">업종이 다르면, 고객이<br>확인하는 순서도 다릅니다.</p>
+      <p class="txt3">환자는 진료과와 의료진을 보고, 예비 점주는 비용과 본사 지원을 봅니다.<br>업종마다 고객이 확인하는 것이 다르므로 그에 맞춰 홈페이지를 구성합니다.</p>
+    </div>
+  </div>
+    <div class="wrows">
+      <a class="wrow" href="hospital.html" data-wrow>
+        <span class="wrow__base">
+          <span class="wrow__label">(hospital)</span>
+          <span class="wrow__title">병원 홈페이지 제작</span>
+          <span class="wrow__meta">01</span>
+        </span>
+        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Hospital Website Production</span><img class="wrow__mqi" src="assets/img/biz/hospital.jpg" alt="" loading="lazy"></span></span></span></span>
+      </a>
+      <a class="wrow" href="franchise.html" data-wrow>
+        <span class="wrow__base">
+          <span class="wrow__label">(franchise)</span>
+          <span class="wrow__title">프랜차이즈 홈페이지 제작</span>
+          <span class="wrow__meta">02</span>
+        </span>
+        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Franchise Website Production</span><img class="wrow__mqi" src="assets/img/biz/franchise.jpg" alt="" loading="lazy"></span></span></span></span>
+      </a>
+      <a class="wrow" href="company.html" data-wrow>
+        <span class="wrow__base">
+          <span class="wrow__label">(company)</span>
+          <span class="wrow__title">기업 홈페이지 제작</span>
+          <span class="wrow__meta">03</span>
+        </span>
+        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Company Website Production</span><img class="wrow__mqi" src="assets/img/biz/company.jpg" alt="" loading="lazy"></span></span></span></span>
+      </a>
+      <a class="wrow" href="shop.html" data-wrow>
+        <span class="wrow__base">
+          <span class="wrow__label">(shop)</span>
+          <span class="wrow__title">쇼핑몰 제작</span>
+          <span class="wrow__meta">04</span>
+        </span>
+        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Shop & Commerce Production</span><img class="wrow__mqi" src="assets/img/biz/shop.jpg" alt="" loading="lazy"></span></span></span></span>
+      </a>
+      <a class="wrow" href="lawyer.html" data-wrow>
+        <span class="wrow__base">
+          <span class="wrow__label">(lawyer)</span>
+          <span class="wrow__title">변호사·법률 홈페이지 제작</span>
+          <span class="wrow__meta">05</span>
+        </span>
+        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Law Firm Website Production</span><img class="wrow__mqi" src="assets/img/biz/lawyer.jpg" alt="" loading="lazy"></span></span></span></span>
+      </a>
+      <a class="wrow" href="landing.html" data-wrow>
+        <span class="wrow__base">
+          <span class="wrow__label">(landing)</span>
+          <span class="wrow__title">랜딩페이지 제작</span>
+          <span class="wrow__meta">06</span>
+        </span>
+        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Landing Page Production</span><img class="wrow__mqi" src="assets/img/biz/landing.jpg" alt="" loading="lazy"></span></span></span></span>
+      </a>
+      <!-- ⛔ 「앱 제작」 07 은 2026-08-17 삭제. 아이디어 시트에도 미팅 녹음본에도 근거가 없는
+             유일한 서비스였고, 포트폴리오 22곳에도 앱 실적이 없다. 목록 끝이라 번호는 안 밀린다. -->
+    </div>
+</div>
+
 <!-- GSAP 핀 구간: con1(소개) → con2(서비스 탭) -->
 <div class="container mainCon mainCon-gsap-wrap">
   <div class="main-con1">
@@ -658,183 +835,6 @@
   </div>
 </div>
 
-
-<!-- 차별화된 서비스 — 기존 하오웹(design-preview) .diff 섹션 실측 이식 (2026-08-25)
-     좌 40 글 + 우 60 카드 트랙 / 카드 398x554 gap15 / transform .8s cubic-bezier(.4,0,.2,1)
-     5초 자동재생 무한루프 + 진행바. 컨테이너만 파나시아 1400 에 맞춰 뷰포트 758 고정 -->
-<section class="diff">
-  <div class="container diff__inner">
-    <div class="diff__aside">
-      <p class="diff__badge">하오웹만의</p>
-      <h2 class="diff__title" data-fade>차별화된 서비스</h2>
-      <p class="diff__sub" data-fade>제작사는 많습니다.<br>무엇이 다른지부터 보셔야 하니까</p>
-      <!-- 화살표 — 레퍼런스 실측: `.port_pager` 110×62 를 **좌측 글 맨 아래**에 둔다
-           (섹션 위에서 503px). 각 버튼 48×62 · 사이 15px. -->
-      <div class="diff__nav">
-        <button class="diff__arrow" type="button" data-diff="prev" aria-label="이전 카드">
-          <span aria-hidden="true">&#8249;</span>
-        </button>
-        <button class="diff__arrow" type="button" data-diff="next" aria-label="다음 카드">
-          <span aria-hidden="true">&#8250;</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="diff__viewport" data-diff-view>
-      <ul class="diff__track" data-diff-track>
-        <li class="diff__card diff__card--brand" data-fade>
-          <span class="diff__ico diff__ico--write" aria-hidden="true"></span>
-          <span class="diff__no" aria-hidden="true">01</span>
-          <h3 class="diff__cardt">자료가 없어도<br>시작합니다</h3>
-          <div class="diff__say">
-            <p class="diff__q">&#8216;원고랑 사진부터 준비해야죠&#8217;</p>
-            <p class="diff__a">근데 <b>그거 준비하다</b> 몇 달 지나지 않으셨나요?</p>
-          </div>
-          <div class="diff__tags">
-            <span>방문 인터뷰</span><span>원고 작성</span><span>촬영</span><span>사이트맵</span>
-          </div>
-        </li>
-
-        <li class="diff__card diff__card--gray" data-fade>
-          <span class="diff__ico diff__ico--team" aria-hidden="true"></span>
-          <span class="diff__no" aria-hidden="true">02</span>
-          <!-- 2026-08-17 세영 수정 — 「업종 전담이 따로 있습니다」에서 바꿨다.
-               전담이 무엇을 하는 사람인지(카피라이터·디자이너) 드러내는 쪽이 낫다. -->
-          <h3 class="diff__cardt">업종별 전담 카피라이터와<br>디자이너가 있습니다</h3>
-          <div class="diff__say">
-            <p class="diff__q">&#8216;홈페이지야 다 비슷하죠&#8217;</p>
-            <p class="diff__a">근데 <b>우리 업종 고객이</b> 뭘 먼저 보는지 아시나요?</p>
-          </div>
-          <div class="diff__tags">
-            <span>기업</span><span>병원</span><span>프랜차이즈</span><span>쇼핑몰</span><span>법률</span>
-          </div>
-        </li>
-
-        <li class="diff__card diff__card--brand" data-fade>
-          <span class="diff__ico diff__ico--shoot" aria-hidden="true"></span>
-          <span class="diff__no" aria-hidden="true">03</span>
-          <h3 class="diff__cardt">촬영&#183;디자인&#183;마케팅이<br>안에 있습니다</h3>
-          <div class="diff__say">
-            <p class="diff__q">&#8216;홈페이지만 만들면 되죠&#8217;</p>
-            <p class="diff__a">근데 <b>사진&#183;브로슈어&#183;광고는</b> 따로 맡기실 건가요?</p>
-          </div>
-          <div class="diff__tags">
-            <span>스튜디오 촬영</span><span>편집디자인</span><span>콘텐츠 운영</span><span>인플루언서</span>
-          </div>
-        </li>
-
-        <li class="diff__card diff__card--gray" data-fade>
-          <span class="diff__ico diff__ico--global" aria-hidden="true"></span>
-          <span class="diff__no" aria-hidden="true">04</span>
-          <h3 class="diff__cardt">해외에도<br>현지 사무실이 있습니다</h3>
-          <div class="diff__say">
-            <p class="diff__q">&#8216;해외 홈페이지도 되나요?&#8217;</p>
-            <p class="diff__a">근데 <b>번역만 맡기면</b> 그 시장에서 읽힐까요?</p>
-          </div>
-          <div class="diff__tags">
-            <span>베트남</span><span>중국</span><span>태국</span><span>현지 확인</span><span>다국어</span>
-          </div>
-        </li>
-
-        <li class="diff__card diff__card--brand" data-fade>
-          <span class="diff__ico diff__ico--care" aria-hidden="true"></span>
-          <span class="diff__no" aria-hidden="true">05</span>
-          <h3 class="diff__cardt">만든 다음도<br>맡습니다</h3>
-          <div class="diff__say">
-            <p class="diff__q">&#8216;만들고 나면 끝이죠&#8217;</p>
-            <p class="diff__a">근데 <b>고칠 일이 생기면</b> 누구에게 연락하시나요?</p>
-          </div>
-          <div class="diff__tags">
-            <span>정기 점검</span><span>콘텐츠 수정</span><span>백업</span><span>기본 유지보수 12개월</span>
-          </div>
-        </li>
-
-        <li class="diff__card diff__card--gray" data-fade>
-          <span class="diff__ico diff__ico--doc" aria-hidden="true"></span>
-          <span class="diff__no" aria-hidden="true">06</span>
-          <h3 class="diff__cardt">말이 아니라<br>문서로 남깁니다</h3>
-          <div class="diff__say">
-            <p class="diff__q">&#8216;알아서 잘해 주시겠죠&#8217;</p>
-            <p class="diff__a">근데 <b>무엇을 어떻게 정했는지</b> 남아 있나요?</p>
-          </div>
-          <div class="diff__tags">
-            <span>사이트맵</span><span>원고</span><span>산출물 인계</span>
-          </div>
-        </li>
-      </ul>
-      <!-- 진행바 — 레퍼런스 실측: 779×5 · 라운드 50 · 트랙 #f0f0f0 · 채움 #111.
-           슬라이더와 같은 x 에서 시작하고 섹션 맨 아래에 붙는다. -->
-      <div class="diff__bar" aria-hidden="true"><span data-diff-fill></span></div>
-    </div>
-  </div>
-</section>
-
-<!-- (복원) 업종별 — 좌 이미지 교체 + 행 리스트 문법 -->
-<!-- 업종별 — 기존 하오웹 `.wrows` 를 그대로 가져왔다(2026-08-26 세영 지시).
-     행에 마우스를 올리면 아래에서 검은 띠가 올라오고 그 안에서 영문과 원형 사진이 흐른다.
-     ⚠ 제목부는 파나시아 표준(bluetext·txt2·txt3) 가운데정렬로 맞췄다 — 원본은 askq 22 /
-       sechead__title 54 이지만 「글자 크기는 파나시아 값을 유지」가 원칙이다. -->
-<div class="hw-sec hw-sec--gray hw-biz" style="padding-bottom:0">
-  <div class="container">
-    <div class="hw-biz__head">
-      <p class="bluetext">업종별로 달라야 하나요?</p>
-      <p class="txt2">업종이 다르면, 고객이<br>확인하는 순서도 다릅니다.</p>
-      <p class="txt3">환자는 진료과와 의료진을 보고, 예비 점주는 비용과 본사 지원을 봅니다.<br>업종마다 고객이 확인하는 것이 다르므로 그에 맞춰 홈페이지를 구성합니다.</p>
-    </div>
-  </div>
-    <div class="wrows">
-      <a class="wrow" href="hospital.html" data-wrow>
-        <span class="wrow__base">
-          <span class="wrow__label">(hospital)</span>
-          <span class="wrow__title">병원 홈페이지 제작</span>
-          <span class="wrow__meta">01</span>
-        </span>
-        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Hospital Website Production</span><img class="wrow__mqi" src="assets/img/biz/hospital.jpg" alt="" loading="lazy"></span></span></span></span>
-      </a>
-      <a class="wrow" href="franchise.html" data-wrow>
-        <span class="wrow__base">
-          <span class="wrow__label">(franchise)</span>
-          <span class="wrow__title">프랜차이즈 홈페이지 제작</span>
-          <span class="wrow__meta">02</span>
-        </span>
-        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Franchise Website Production</span><img class="wrow__mqi" src="assets/img/biz/franchise.jpg" alt="" loading="lazy"></span></span></span></span>
-      </a>
-      <a class="wrow" href="company.html" data-wrow>
-        <span class="wrow__base">
-          <span class="wrow__label">(company)</span>
-          <span class="wrow__title">기업 홈페이지 제작</span>
-          <span class="wrow__meta">03</span>
-        </span>
-        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Company Website Production</span><img class="wrow__mqi" src="assets/img/biz/company.jpg" alt="" loading="lazy"></span></span></span></span>
-      </a>
-      <a class="wrow" href="shop.html" data-wrow>
-        <span class="wrow__base">
-          <span class="wrow__label">(shop)</span>
-          <span class="wrow__title">쇼핑몰 제작</span>
-          <span class="wrow__meta">04</span>
-        </span>
-        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Shop & Commerce Production</span><img class="wrow__mqi" src="assets/img/biz/shop.jpg" alt="" loading="lazy"></span></span></span></span>
-      </a>
-      <a class="wrow" href="lawyer.html" data-wrow>
-        <span class="wrow__base">
-          <span class="wrow__label">(lawyer)</span>
-          <span class="wrow__title">변호사·법률 홈페이지 제작</span>
-          <span class="wrow__meta">05</span>
-        </span>
-        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Law Firm Website Production</span><img class="wrow__mqi" src="assets/img/biz/lawyer.jpg" alt="" loading="lazy"></span></span></span></span>
-      </a>
-      <a class="wrow" href="landing.html" data-wrow>
-        <span class="wrow__base">
-          <span class="wrow__label">(landing)</span>
-          <span class="wrow__title">랜딩페이지 제작</span>
-          <span class="wrow__meta">06</span>
-        </span>
-        <span class="wrow__mq" aria-hidden="true"><span class="wrow__shift"><span class="wrow__track"><span class="wrow__part"><span class="wrow__mqt">Landing Page Production</span><img class="wrow__mqi" src="assets/img/biz/landing.jpg" alt="" loading="lazy"></span></span></span></span>
-      </a>
-      <!-- ⛔ 「앱 제작」 07 은 2026-08-17 삭제. 아이디어 시트에도 미팅 녹음본에도 근거가 없는
-             유일한 서비스였고, 포트폴리오 22곳에도 앱 실적이 없다. 목록 끝이라 번호는 안 밀린다. -->
-    </div>
-</div>
 
 <!-- 워드마크 밴드 — 기존 하오웹(design-preview) `.txtsec` 를 그대로 가져왔다(2026-08-25 세영 지시).
      사진 3장이 4.2초마다 넘어가고, 각 장은 위로 흐른다. 글자는 `mix-blend-mode: lighten` 으로

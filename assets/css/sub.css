@@ -166,7 +166,32 @@ main .sec:first-of-type{ padding-top:90px; }
 .biz-incl__no{ font-size:16px; font-weight:700; color:var(--brand); }
 .biz-incl__t{ font-size:20px; font-weight:700; }
 .biz-incl__d{ font-size:16px; color:#606060; line-height:150%; }
-.biz-incl__ico{ display:none; }
+/* ⚠ 이식 때 아이콘 SVG 가 없어 숨겨 두었던 자리다(2026-08-26 원본에서 18개 복사해 살림).
+   <img> 로 넣지 않는다 — 원본 SVG 에 fill 이 없어 검정으로 굳는다. mask + currentColor 라야
+   밝은 면·어두운 면 양쪽에서 글자색을 따라간다. 경로는 **이 파일 기준**(../img/). */
+.biz-incl__ico{
+  flex:none; width:22px; height:22px; background:currentColor; opacity:.85;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:center; mask-position:center;
+  -webkit-mask-size:contain; mask-size:contain; }
+.ico--admin{ -webkit-mask-image:url('../img/icon/admin.svg'); mask-image:url('../img/icon/admin.svg'); }
+.ico--ai{ -webkit-mask-image:url('../img/icon/ai.svg'); mask-image:url('../img/icon/ai.svg'); }
+.ico--alert{ -webkit-mask-image:url('../img/icon/alert.svg'); mask-image:url('../img/icon/alert.svg'); }
+.ico--chart{ -webkit-mask-image:url('../img/icon/chart.svg'); mask-image:url('../img/icon/chart.svg'); }
+.ico--check{ -webkit-mask-image:url('../img/icon/check.svg'); mask-image:url('../img/icon/check.svg'); }
+.ico--consult{ -webkit-mask-image:url('../img/icon/consult.svg'); mask-image:url('../img/icon/consult.svg'); }
+.ico--form{ -webkit-mask-image:url('../img/icon/form.svg'); mask-image:url('../img/icon/form.svg'); }
+.ico--globe{ -webkit-mask-image:url('../img/icon/globe.svg'); mask-image:url('../img/icon/globe.svg'); }
+.ico--handover{ -webkit-mask-image:url('../img/icon/handover.svg'); mask-image:url('../img/icon/handover.svg'); }
+.ico--mobile{ -webkit-mask-image:url('../img/icon/mobile.svg'); mask-image:url('../img/icon/mobile.svg'); }
+.ico--notice{ -webkit-mask-image:url('../img/icon/notice.svg'); mask-image:url('../img/icon/notice.svg'); }
+.ico--phone{ -webkit-mask-image:url('../img/icon/phone.svg'); mask-image:url('../img/icon/phone.svg'); }
+.ico--responsive{ -webkit-mask-image:url('../img/icon/responsive.svg'); mask-image:url('../img/icon/responsive.svg'); }
+.ico--search{ -webkit-mask-image:url('../img/icon/search.svg'); mask-image:url('../img/icon/search.svg'); }
+.ico--sitemap{ -webkit-mask-image:url('../img/icon/sitemap.svg'); mask-image:url('../img/icon/sitemap.svg'); }
+.ico--ssl{ -webkit-mask-image:url('../img/icon/ssl.svg'); mask-image:url('../img/icon/ssl.svg'); }
+.ico--tag{ -webkit-mask-image:url('../img/icon/tag.svg'); mask-image:url('../img/icon/tag.svg'); }
+.ico--writing{ -webkit-mask-image:url('../img/icon/writing.svg'); mask-image:url('../img/icon/writing.svg'); }
 .biz-band{ position:relative; display:grid; grid-template-columns:64px minmax(0,1fr) minmax(0,420px); gap:30px; padding:44px 0; border-top:1px solid #d9d9d9; }
 .biz-band__no{ font-size:16px; font-weight:700; color:var(--brand); }
 .biz-band__label{ font-size:14px; color:#a4a4a4; margin-bottom:6px; }
@@ -384,4 +409,214 @@ main .container > .btns:first-child{ margin-top:0; }
   .statement, .bigsay, .bighead__ko, .article__h{ font-size:20px; }
   .plan__scale b{ font-size:34px; }
   .reveal__frame img{ height:40vh; }
+}
+
+/* ============================================================
+   누락 컴포넌트 보강 (2026-08-26 세영: 「디자인이 아예 안된 곳」)
+   서브페이지 이식 때 **레이아웃 컨테이너 CSS 가 통째로 빠져** 있었다.
+   자식(.card·.step·.panel·.biz-band·.eqbox·.mock…)은 이미 스타일이 있는데
+   부모가 display:block 이라 전부 세로로 흘러내렸다 — 48장 중 18곳.
+   ⚠ 원본 base.css 를 그대로 붙이지 않았다. `--grid-gap`·`--muted`·color-mix 등
+     파나시아에 없는 토큰을 쓰고 있어 기존 스타일과 충돌한다(220규칙 검토 후 폐기).
+     여기서는 sub.css 규약(제목 20/700 · 본문 16/#606060/1.5 · 라벨 14/700 브랜드 ·
+     카드 그림자 0 0 20 rgba(0,0,0,.12) · 라운드 var(--r-card))으로 새로 쓴다.
+   ============================================================ */
+
+/* 카드 라운드 — 세영 지시(버튼·카드 모두 파이값) */
+.card{ border-radius:var(--r-card); }
+.invert .card{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.card__no{ font-size:14px; font-weight:700; color:var(--brand); letter-spacing:.04em; }
+
+/* ---------- 카드 그리드 ---------- */
+.cardgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:56px; }
+.cardgrid--2{ grid-template-columns:repeat(2,1fr); }
+.cardgrid--4{ grid-template-columns:repeat(4,1fr); }
+/* 번호는 CSS 카운터로 — 마크업의 글자를 늘리지 않는다(콘텐츠 불변) */
+.cardgrid--numbered{ counter-reset:card; }
+.cardgrid--numbered .card::before{
+  counter-increment:card; content:counter(card,decimal-leading-zero);
+  font-size:14px; font-weight:700; color:var(--brand); letter-spacing:.04em; }
+
+/* ---------- 진단 결과(diagnosis) — 세영 지시로 행 리스트 대신 카드 ---------- */
+.dgr{ margin-top:56px; display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+.dgr__row{
+  position:relative; display:flex; gap:14px; padding:30px 28px;
+  background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12); border-radius:var(--r-card); }
+.invert .dgr__row{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.dgr__no{ flex:none; font-size:14px; font-weight:700; color:var(--brand); line-height:1.7; }
+.dgr__body{ flex:1; min-width:0; padding-right:78px; }
+.dgr__en{ font-size:14px; font-weight:700; letter-spacing:.04em; color:#a4a4a4; }
+.invert .dgr__en{ color:rgba(255,255,255,.55); }
+.dgr__t{ margin-top:3px; font-size:20px; font-weight:700; line-height:1.3; }
+.dgr__d{ margin-top:10px; font-size:16px; line-height:1.6; color:#606060; }
+.invert .dgr__d{ color:rgba(255,255,255,.7); }
+.dgr__badge{
+  position:absolute; top:28px; right:24px; white-space:nowrap;
+  font-size:13px; font-weight:700; padding:5px 12px;
+  border-radius:999px; border:1px solid #d9d9d9; color:#606060; }
+.invert .dgr__badge{ border-color:rgba(255,255,255,.3); color:rgba(255,255,255,.8); }
+.dgr__badge--warn, .invert .dgr__badge--warn{ border-color:var(--brand); color:var(--brand); }
+.dgr__badge--ok{ border-color:#17150f; color:#17150f; }
+.invert .dgr__badge--ok{ border-color:rgba(255,255,255,.6); color:#fff; }
+
+/* ---------- 리뉴얼 3단계 ---------- */
+.crg{ margin-top:56px; display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.crg__item{ padding:34px 28px; background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12);
+  border-radius:var(--r-card); }
+.invert .crg__item{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.crg__item > .rule{ display:none; }   /* 카드 테두리가 윗선을 대신한다 */
+.crg__no{ font-size:14px; font-weight:700; color:var(--brand); letter-spacing:.04em; }
+.crg__key{ margin-top:6px; font-size:14px; font-weight:700; letter-spacing:.06em; color:#a4a4a4; }
+.crg__t{ margin-top:14px; font-size:20px; font-weight:700; line-height:1.35; }
+.crg__d{ margin-top:10px; font-size:16px; line-height:1.6; color:#606060; }
+.invert .crg__d{ color:rgba(255,255,255,.7); }
+.crg__link{ display:inline-block; margin-top:18px; font-size:16px; font-weight:700; color:var(--brand); }
+
+/* ---------- 무료 진단(11개 업종 페이지) — 좌 안내 / 우 단계 카드 ---------- */
+.biz-diag{ display:grid; grid-template-columns:440px 1fr; gap:60px; align-items:start; }
+.biz-diag__rows{ display:grid; gap:16px; }
+.biz-diag__row{ padding:28px; background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12);
+  border-radius:var(--r-card); }
+.invert .biz-diag__row{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.biz-diag__row .biz-chips{ margin-top:14px; }
+.biz-quick__note{ margin-top:10px; font-size:14px; color:#a4a4a4; }
+
+/* ---------- 진행 흐름(병원·프랜차이즈) ---------- */
+.biz-flow{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px; }
+.biz-flow__step{ padding:34px 28px; background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12);
+  border-radius:var(--r-card); }
+.invert .biz-flow__step{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.biz-flow__no{ font-size:14px; font-weight:700; color:var(--brand); letter-spacing:.04em; }
+.biz-flow__t{ margin-top:12px; font-size:20px; font-weight:700; line-height:1.35; }
+.biz-flow__d{ margin-top:10px; font-size:16px; line-height:1.6; color:#606060; }
+.invert .biz-flow__d{ color:rgba(255,255,255,.7); }
+
+/* ---------- 항목 그리드(병원 공지 7종) — 글자가 짧아 4열 ---------- */
+.biz-grid__grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:40px; }
+.biz-grid__item{ display:flex; align-items:baseline; gap:12px; padding:24px;
+  background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12); border-radius:var(--r-card); }
+.invert .biz-grid__item{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.biz-grid__no{ flex:none; font-size:14px; font-weight:700; color:var(--brand); }
+.biz-grid__t{ font-size:18px; font-weight:700; }
+
+/* ---------- 개원 일정(병원) ---------- */
+.biz-open{ display:grid; grid-template-columns:440px 1fr; gap:60px; align-items:start; }
+.biz-open__steps{ display:grid; gap:16px; }
+.biz-open__rail{ display:none; }   /* 카드가 되면 레일은 자리를 잃는다 */
+.biz-open__step{ padding:30px 28px; background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12);
+  border-radius:var(--r-card); }
+.invert .biz-open__step{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.biz-open__phase{ font-size:14px; font-weight:700; color:var(--brand); letter-spacing:.04em; }
+.biz-open__t{ margin-top:10px; font-size:20px; font-weight:700; line-height:1.35; }
+.biz-open__d{ margin-top:8px; font-size:16px; line-height:1.6; color:#606060; }
+.invert .biz-open__d{ color:rgba(255,255,255,.7); }
+
+/* ---------- 포함 항목 · 밴드 ---------- */
+/* 원본 실측: 3열 · `gap:0 48px`(행 간격 0). 행 간격을 주면 항목마다 그어지는
+   윗선이 끊겨 표처럼 읽히지 않는다. */
+.biz-incl{ display:grid; grid-template-columns:repeat(3,1fr); gap:0 48px; margin-top:40px; }
+.biz-bands{ display:grid; gap:16px; }
+
+/* ---------- 검색·AI 목업 행 ---------- */
+.mockrow{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+.mockrow--rev .mockrow__txt{ order:2; }
+.mock__head{ font-size:14px; font-weight:700; color:#a4a4a4; letter-spacing:.04em; }
+.mock__head i{ font-style:normal; color:var(--brand); margin-left:6px; }
+.mock__q{ margin-top:10px; font-size:18px; font-weight:700; }
+.mock__row--top .mock__t{ color:var(--brand); }
+.mock__rank{ flex:none; width:22px; font-size:14px; font-weight:700; color:#a4a4a4; }
+.mock__ask{ font-size:16px; font-weight:700; }
+.mock__ans{ margin-top:8px; font-size:16px; line-height:1.6; color:#606060; }
+.mock__src{ margin-top:10px; font-size:13px; color:#a4a4a4; }
+
+/* ---------- 등식 행(A + B = C) ---------- */
+.eqrow{ display:flex; align-items:stretch; flex-wrap:wrap; gap:16px; }
+.eqrow .eqbox{ flex:1 1 0; min-width:180px; }
+.eqop{ align-self:center; font-size:24px; font-weight:700; color:#a4a4a4; }
+.eqbox--out{ border-color:var(--brand); }
+.eqbox--out .eqbox__t{ color:var(--brand); }
+
+/* ---------- BEFORE / AFTER ---------- */
+.ba{ display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:56px; }
+.ba__tag{ font-size:14px; font-weight:700; letter-spacing:.06em; }
+.ba__tag span{ margin-left:8px; padding:3px 9px; border-radius:999px;
+  font-size:12px; font-weight:700; border:1px solid #d9d9d9; color:#a4a4a4; }
+.invert .ba__tag span{ border-color:rgba(255,255,255,.3); color:rgba(255,255,255,.6); }
+.ba--after .ba__tag{ color:var(--brand); }
+.ba--after .ba__tag span{ border-color:var(--brand); color:var(--brand); }
+.sitemap{ margin-top:16px; display:grid; gap:8px; }
+.sitemap__row--sub{ padding-left:22px; color:#606060; }
+.invert .sitemap__row--sub{ color:rgba(255,255,255,.7); }
+.ba--after .sitemap__row--sub::before{ content:"└ "; color:var(--brand); }
+.ba__notes{ margin:22px 0 0; padding:0; list-style:none; display:grid; gap:10px; }
+.ba__notes li{ display:flex; gap:10px; font-size:14px; line-height:1.6; color:#606060; }
+.invert .ba__notes li{ color:rgba(255,255,255,.7); }
+.ba__notes li::before{ content:"—"; flex:none; opacity:.5; }
+.ba--after .ba__notes li::before{ content:"→"; color:var(--brand); opacity:1; }
+.ba__result{ margin-top:22px; padding:18px 20px; border-radius:var(--r-card);
+  background:#f7f7f7; font-size:16px; line-height:1.6; }
+.invert .ba__result{ background:rgba(255,255,255,.06); }
+.ba__result em{ font-style:normal; font-weight:700; color:var(--brand); }
+
+/* ---------- 칼럼 본문 항목 — 카드 2열 ---------- */
+.article__items{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:32px; }
+.article__items .step{ padding:30px 28px; background:#fff;
+  box-shadow:0 0 20px 0 rgba(0,0,0,.12); border-radius:var(--r-card); }
+.invert .article__items .step{ background:rgba(255,255,255,.06); box-shadow:none; border:1px solid rgba(255,255,255,.14); }
+.article__items .step .rule{ display:none; }
+
+/* ---------- FAQ 분류 칩 ---------- */
+.qcats{ display:flex; flex-wrap:wrap; gap:10px; margin-top:32px; }
+.chip{ font:inherit; font-size:15px; font-weight:700; padding:10px 18px; cursor:pointer;
+  border-radius:999px; border:1px solid #d9d9d9; background:#fff; color:#606060;
+  transition:border-color .2s, color .2s, background-color .2s; }
+.chip b{ margin-left:5px; opacity:.5; }
+.chip:hover{ border-color:#17150f; color:#17150f; }
+.chip[aria-pressed="true"]{ background:#17150f; border-color:#17150f; color:#fff; }
+.chip[aria-pressed="true"] b{ opacity:.7; }
+
+/* ---------- 잔여 ---------- */
+.deflist--sm dt{ font-size:16px; }
+.deflist--num{ counter-reset:dnum; }
+.deflist--num dt::before{ counter-increment:dnum; content:counter(dnum,decimal-leading-zero) "  ";
+  font-weight:700; color:var(--brand); }
+.subLead__extras{ margin-top:18px; display:grid; gap:8px; }
+.subhero__row{ display:grid; gap:14px; }
+.footer__ul{ position:relative; display:inline-block; }
+.footer__ul::after{ content:""; position:absolute; left:0; bottom:-2px; width:100%; height:1px;
+  background:currentColor; transform:scaleX(0); transform-origin:right; transition:transform .3s; }
+.footer__ul:hover::after{ transform:scaleX(1); transform-origin:left; }
+
+/* ---------- 반응형 ---------- */
+@media screen and (max-width:1400px){
+  .biz-diag, .biz-open{ grid-template-columns:1fr; gap:40px; }
+  .biz-grid__grid{ grid-template-columns:repeat(3,1fr); }
+}
+@media screen and (max-width:1024px){
+  .cardgrid, .cardgrid--4{ grid-template-columns:repeat(2,1fr); }
+  .crg, .biz-flow{ grid-template-columns:repeat(2,1fr); }
+  .dgr{ grid-template-columns:1fr; }
+  .mockrow{ grid-template-columns:1fr; gap:32px; }
+  .mockrow--rev .mockrow__txt{ order:0; }
+  .ba{ grid-template-columns:1fr; gap:32px; }
+  .biz-incl{ grid-template-columns:repeat(2,1fr); gap:0 40px; }
+  .article__items{ grid-template-columns:1fr; }
+}
+@media screen and (max-width:768px){
+  .cardgrid, .cardgrid--2, .cardgrid--4, .crg, .biz-flow{ grid-template-columns:1fr; }
+  .biz-grid__grid{ grid-template-columns:repeat(2,1fr); }
+  .dgr__body{ padding-right:0; }
+  .dgr__badge{ position:static; display:inline-block; margin-top:12px; }
+  .dgr__row{ flex-wrap:wrap; padding:24px 22px; }
+}
+
+/* ⚠ 아래 셋은 「가로 4열」 배치를 전제로 만든 값이라, 카드 안으로 들어오자
+   윗선이 카드 테두리와 겹쳐 두 번 그어졌다(2026-08-26). 카드 문맥에서만 되돌린다. */
+.biz-diag__row .biz-diag__step{
+  flex:none; border-top:0; padding-top:0;
+  font-size:14px; font-weight:700; letter-spacing:.04em; color:var(--brand); }
+.biz-diag__row .biz-diag__t{ margin-top:10px; margin-bottom:8px; }
+.eqbox{ border-radius:var(--r-card); }
+@media screen and (max-width:768px){
+  .biz-incl{ grid-template-columns:1fr; }
 }
