@@ -706,3 +706,17 @@ main .container > .btns:first-child{ margin-top:0; }
 /* ⚠ 탭이 하나뿐이면서 그 이름이 제목과 같으면, 같은 글자가 위아래로 두 번 나온다
    (included 「무료서비스」 — 2026-08-26 전수 검수). 탭이 하나면 고를 것이 없으므로 숨긴다. */
 .subMainTab .subTabbar li:only-child{ display:none; }
+
+/* ⚠ 폼 영역(.split)은 좌우 2단인데 들어갈 덩어리가 셋(설명·안내·폼)이라 폼이 한쪽 열로
+   떨어지고 그 옆이 통째로 비었다. 안내 박스를 빼자 이번엔 반대쪽이 비었다 — 여백 자리만
+   옮겨간 셈이다(2026-08-26). 폼을 2단 밖으로 꺼내 **가로 전체**를 쓰게 하고, 그 안의
+   입력칸만 2열로 놓는다. diagnosis·free-proposal·inquiry 세 장이 함께 정리된다. */
+.split > form{ grid-column:1 / -1; }
+.form__group{ display:grid; grid-template-columns:1fr 1fr; gap:0 32px; align-items:start; }
+/* ⚠ 라벨·안내문·선택지까지 2열로 갈리면 「해당하는 항목을 선택해 주세요」가 엉뚱한 자리로
+   간다(free-proposal 에서 실제로 그랬다). **입력칸만** 2열이다. */
+.form__group > :not(.field){ grid-column:1 / -1; }
+.form__group .field--wide{ grid-column:1 / -1; }
+@media screen and (max-width:768px){
+  .form__group{ grid-template-columns:1fr; }
+}

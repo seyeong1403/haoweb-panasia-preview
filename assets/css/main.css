@@ -1595,3 +1595,9 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    단계의 OUTPUT 라벨과 플랜의 PAGES·부연은 장식이 아니라 읽어야 하는 정보다. */
 .tstep__out i{ color:#6e6a60; }
 .hw-plans .plan .scale i, .hw-plans .plan .scale s{ color:#6e6a60; }
+
+/* ⚠ 모바일 2열 그리드에서 사업자 정보가 좁은 칸에 들어가 「528-87-」/「01037」처럼
+   등록번호가 중간에서 끊겼다(2026-08-26). 이 항목만 한 줄을 통째로 쓴다. */
+@media screen and (max-width:1024px){
+  #footer .ftList li:nth-child(3) div:nth-of-type(3){ grid-column:1 / -1; }
+}
