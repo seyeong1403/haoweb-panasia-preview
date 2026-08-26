@@ -188,7 +188,12 @@ main .sec:first-of-type{ padding-top:90px; }
 .eqbox__t{ font-size:20px; font-weight:700; margin-bottom:10px; }
 .eqbox__d{ font-size:16px; color:#606060; line-height:150%; }
 .opt{ display:flex; gap:14px; padding:18px 0; align-items:flex-start; border-bottom:1px solid #d9d9d9; }
-.opt__t{ font-size:18px; font-weight:700; }
+/* ⚠ `.opt__d` 규칙이 아예 없어서 제목과 설명이 한 줄로 붙어 있었다
+     (「신규 홈페이지 제작처음부터 …」 — 2026-08-26 발견). 원본 하오웹처럼 줄을 나눈다.
+     크기는 파나시아 값(제목 18 / 설명 16)을 쓴다. */
+.opt > span{ display:block; }
+.opt__t{ display:block; font-size:18px; font-weight:700; }
+.opt__d{ display:block; margin-top:5px; font-size:16px; line-height:1.5; color:#606060; }
 .mock{ background:#f1f4f9; padding:24px; }
 .mock__row{ padding:10px 0; border-bottom:1px solid rgba(0,0,0,.08); }
 .mock__t{ font-size:16px; font-weight:700; }
@@ -315,7 +320,7 @@ img.dwork__img{ width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
 .field label{ display:block; font-size:16px; font-weight:700; margin-bottom:8px; }
 .field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=submit]),
 .field select, .field textarea, .biz-quick input:not([type=submit]), .biz-quick select{
-  width:100%; border:1px solid #d9d9d9; border-radius:0; background:#fff; font-family:var(--font);
+  width:100%; border:1px solid #d9d9d9; border-radius:var(--r-field); background:#fff; font-family:var(--font);
   font-size:16px; padding:12px 16px; color:#000;
 }
 .field textarea{ min-height:160px; resize:vertical; }
@@ -327,7 +332,7 @@ img.dwork__img{ width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
 .form__label{ display:block; font-size:16px; font-weight:700; margin-bottom:8px; }
 .form__group input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=submit]),
 .form__group select, .form__group textarea{
-  width:100%; border:1px solid #d9d9d9; border-radius:0; background:#fff; font-family:var(--font);
+  width:100%; border:1px solid #d9d9d9; border-radius:var(--r-field); background:#fff; font-family:var(--font);
   font-size:16px; padding:12px 16px; color:#000;
 }
 .form__group textarea{ min-height:160px; resize:vertical; }
