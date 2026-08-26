@@ -850,20 +850,23 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   /* ⚠ `align-items: flex-start` 가 없으면 flex 기본값(stretch)이라 배지가 칸 폭을 다 먹는다. */
   display: flex; flex-direction: column; align-items: flex-start; min-height: 565px;
 }
+/* ⭐ 2026-08-26 세영 「제목을 현재 하오웹 다른 섹션과 통일」 →
+   원본 하오웹의 회색 pill 배지 대신 파나시아 표준 아이브로(.bluetext 16/700 레드)로 맞췄다.
+   섹션 머리가 사이트 전체에서 「레드 작은 글씨 → 50px 제목 → 18px 리드」로 같아진다. */
 .diff__badge {
-  display: inline-block; font-size: 15px; font-weight: 700; letter-spacing: -.02em;
-  color: rgba(23, 21, 15, .74); background: rgba(23, 21, 15, .07);
-  padding: 9px 18px; border-radius: 999px;
+  display: block; font-size: 16px; font-weight: 700; letter-spacing: -.02em;
+  color: var(--brand); background: none; padding: 0; border-radius: 0;
+  margin-bottom: 3px;
 }
 /* ⚠ 레퍼런스 실측은 제목 58 / 리드 23.2 이지만, 사이트 전체 타이틀을 하나로 맞추라는
    2026-08-25 세영 지시에 따라 파나시아 표준(.txt2 50/800 · .txt3 18)으로 내렸다.
    섹션 제목이 50 인 곳이 12 군데라 여기만 58 이면 그 섹션만 커 보인다. */
 .diff__title {
-  margin-top: 28px; font-size: 50px; font-weight: 800;
+  margin-top: 0; font-size: 50px; font-weight: 800;
   line-height: 130%; letter-spacing: -.04em; color: #17150f;
 }
 .diff__sub {
-  margin-top: 30px; font-size: 18px; font-weight: 400;
+  margin-top: 22px; font-size: 18px; font-weight: 400;
   line-height: 1.45; letter-spacing: -.02em; color: #606060;
 }
 /* 화살표 — 레퍼런스는 좌측 글 아래에 둘을 나란히 둔다(각 48×62). */
@@ -1322,6 +1325,13 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    손톱만 해진다(390 에서 실제로 그랬다 — 2026-08-26). */
 @media screen and (max-width:1280px){
   .hw-sec .work__item { width: calc((100% - 36px) / 3); }
+}
+@media screen and (max-width:1024px){
+  /* 좁은 화면에서는 영문 대제목과 국문을 좌우로 두면 국문이 눌린다(390 에서 확인).
+     원본 하오웹도 ≤900 에서 세로로 쌓는다 — 파나시아 브레이크포인트(1024)에 맞췄다. */
+  .hw-sec .bighead { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .hw-sec .bighead__title { white-space: normal; }
+  .hw-sec .bighead__right { max-width: none; }
 }
 @media screen and (max-width:1024px){
   .hw-sec .work { gap: 10px; }

@@ -13,7 +13,7 @@
 <link rel="icon" href="assets/img/logo-on-dark.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-<link rel="stylesheet" href="assets/css/main.css?v=aecf37aa">
+<link rel="stylesheet" href="assets/css/main.css?v=1f573622">
 </head>
 <body>
 <div id="wrap">
@@ -999,12 +999,17 @@
      되돌리려면 `python _movework.py` 의 SRC/DST 를 맞바꿔 실행한다. -->
 <section class="sec sec--flush hw-sec" style="padding-top:160px;padding-bottom:80px" data-workview data-view="grid">
   <div class="container">
-    <!-- ⚠ 원본은 좌 영문 대제목(112px) + 우 국문 2단 구성이지만, 사이트 전체 타이틀을
-         하나로 맞추라는 2026-08-25 세영 지시에 따라 파나시아 표준 머리로 바꿨다.
-         카드·목록·모션은 원본 그대로다. -->
-    <p class="bluetext">Work</p>
-    <p class="txt2">실제로 운영 중인 홈페이지를 확인해 보세요.</p>
-    <p class="txt3">현재 온라인에서 운영 중인 제작 사이트를 직접 확인할 수 있습니다.</p>
+    <!-- ⭐ 2026-08-26 세영 「기존 하오웹처럼 크게」 → 원본 `.bighead` 구조로 되돌렸다.
+         좌 영문 대제목(최대 112px) + 우 국문 제목·리드 2단.
+         ⚠ 2026-08-25 「사이트 전체 타이틀 크기 통일」로 파나시아 표준 머리(txt2 50)로
+           바꿨던 것을 다시 뒤집은 것이다. 이 섹션만 예외로 크게 간다. -->
+    <div class="bighead">
+      <h2 class="bighead__title" data-anim>Work</h2>
+      <div class="bighead__right">
+        <p class="bighead__ko" data-anim="lines">실제로 운영 중인 홈페이지를 확인해 보세요.</p>
+        <p class="bighead__lead" data-anim="lines">현재 온라인에서 운영 중인 제작 사이트를 직접 확인할 수 있습니다.</p>
+      </div>
+    </div>
         <div class="viewsw-wrap">
       <div class="viewsw" role="group" aria-label="보기 방식">
         <button class="viewsw__btn" type="button" data-view-btn="grid" aria-pressed="true" aria-label="카드 보기">
