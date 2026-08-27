@@ -176,10 +176,19 @@ main .sec:first-of-type{ padding-top:90px; }
   background:#fff; border-radius:var(--r-card); padding:40px;
   box-shadow:0 0 20px 0 rgba(0,0,0,.08);
 }
-.biz-incl__ic{ display:block; width:44px; height:44px; margin-bottom:25px; }
-.biz-incl__head{ display:flex; align-items:center; gap:10px; margin-bottom:15px; }
-.biz-incl__no{ font-size:16px; font-weight:700; color:var(--brand); }
-.biz-incl__t{ font-size:20px; font-weight:700; }
+/* 2026-08-27 세영: 「아이콘 더 크게+컬러, 번호·타이틀 더 크게」.
+   ⚠ 색은 마스크(background)가 낸다 — <img> 는 원본 SVG 에 fill 이 없어 검정으로 굳는다.
+   mask-image 는 파일이 50종이라 규칙 대신 마크업 인라인으로 넘긴다. */
+.biz-incl__ic{
+  display:block; width:60px; height:60px; margin-bottom:25px;
+  background:var(--brand);
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:left center; mask-position:left center;
+  -webkit-mask-size:contain; mask-size:contain;
+}
+.biz-incl__head{ display:flex; align-items:center; gap:12px; margin-bottom:15px; }
+.biz-incl__no{ font-size:20px; font-weight:700; color:var(--brand); }
+.biz-incl__t{ font-size:24px; font-weight:700; }
 .biz-incl__d{ font-size:16px; color:#555; line-height:1.5; }
 /* 다크 섹션(included 22칸)에서도 카드가 희므로 글색 규칙이 뒤집히지 않게 명시 */
 .invert .biz-incl__item{ color:#17150f; }
