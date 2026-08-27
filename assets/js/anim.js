@@ -147,3 +147,45 @@
     initReveal();
   }
 })();
+
+
+/* ── 스크롤 하이라이트(.hl) — webpreme 실측 이식 (2026-08-27) ─────────────────
+   레퍼런스는 GSAP ScrollTrigger(항목마다 start 'top 50%' / end 'bottom 45%')로
+   active 를 옮긴다. 서브는 GSAP 를 싣지 않으므로 같은 규칙을 스크롤 좌표로 재현한다:
+   화면 세로 50% 선을 «지나간 마지막 항목» 이 켜진다. 결과는 동일하다(배타 active).
+ ⚠ .hl--armed 를 목록에 붙이고 나서야 흐림(.22)이 걸린다 — JS 가 죽으면 전부 또렷하게
+   남아야 하기 때문(CSS 쪽 안전장치와 한 쌍). */
+(function () {
+  'use strict';
+  function initHl() {
+    var lists = [].slice.call(document.querySelectorAll('.hl'));
+    if (!lists.length) return;
+    var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq && mq.matches) return;          /* 모션 줄이기 — 전부 켜진 채로 둔다 */
+    lists.forEach(function (l) { l.classList.add('hl--armed'); });
+
+    var ticking = false;
+    function paint() {
+      ticking = false;
+      var line = window.innerHeight * .5;
+      lists.forEach(function (list) {
+        var items = [].slice.call(list.querySelectorAll('.step'));
+        if (!items.length) return;
+        var on = 0;
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].getBoundingClientRect().top <= line) on = i;
+        }
+        items.forEach(function (el, i) { el.classList.toggle('is-hl', i === on); });
+      });
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+    }, { passive: true });
+    paint();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHl);
+  } else {
+    initHl();
+  }
+})();

@@ -735,7 +735,9 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 }
 @media screen and (max-width:1400px){
   .mainCon .main-con1 .inner .text-banner .txt2{ font-size:34px; }
-  .mainCon .main-con1 .inner .bottom-text{ font-size:80px; line-height:100px; }
+  /* ⚠ 375px 폰에서 80px 'HAOWEB'(폭 360)이 가용 345 를 넘어 문서를 391 로 밀었다 —
+     내비까지 덩달아 넓어져 가로 스크롤이 생겼다(2026-08-27 실측). 화면 폭에 따라 줄인다. */
+  .mainCon .main-con1 .inner .bottom-text{ font-size:min(80px, 20vw); line-height:1.25; }
   .mainCon .main-con2 .text-banner .txt2{ font-size:34px; }
   .mainCon .main-con3 .txt2{ font-size:34px; }
   .mainCon .main-con3 .txt3{ font-size:16px; }
@@ -1084,8 +1086,12 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 }
 .perf__head .txt2{ margin-top:3px; }
 .perf__head .txt3{ margin-top:35px; }   /* 레퍼런스 실측 sec_tw margin-top 35 */
-/* 2026-08-26 세영: 프로젝트 항목을 빼고 남은 셋을 **횡으로** 세운다(2열 → 3열 한 줄). */
-.perf__list{ display:grid; grid-template-columns:repeat(3,1fr); column-gap:24px; }
+/* 2026-08-26 세영: 프로젝트 항목을 빼고 남은 셋을 **횡으로** 세운다(2열 → 3열 한 줄).
+   ⚠ 2026-08-27 세영: 「간격이 제각각이야」. repeat(3,1fr)은 «칸» 은 균등하지만 내용 폭이
+   저마다 달라(412 좁고 · 4,500 넓고 · 98 좁음) **눈에 보이는 틈**이 들쭉날쭉했다.
+   칸을 내용 폭(auto)으로 줄이고 남는 공간을 틈에 균등 배분한다 — 첫 칸은 왼 기준선,
+   끝 칸은 컨테이너 오른 끝에 맞아 정돈된다. */
+.perf__list{ display:grid; grid-template-columns:auto auto auto; justify-content:space-between; column-gap:40px; }
 /* ⛔ 지그재그(왼쪽 열만 110px 내림)는 걷어냈다 — 2026-08-25 세영: 「위치가 어긋나 있거나
      어색한 부분」의 예로 이 섹션을 짚었다. 바로웹에서는 의도된 배치지만, 파나시아는 컨테이너와
      숫자 크기가 달라 **어긋난 것처럼** 보였다. 네 항목을 같은 선에서 시작시킨다. */
