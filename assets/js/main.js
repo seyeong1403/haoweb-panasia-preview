@@ -243,6 +243,27 @@
   var bgLayer = $('.business-bg');
   var bgImages = menuItems.map(function (li) { return li.getAttribute('data-bg'); });
   if (bgLayer && bgImages[0]) bgLayer.style.backgroundImage = 'url(' + bgImages[0] + ')';
+  /* ⚠ 배경 교체는 **새 레이어를 위에 얹어 불투명도만** 올린다. background-image 를
+     그대로 갈면 CSS 전환이 두 사진을 크로스페이드로 섞으며 cover 가 충돌해
+     사진이 늘어나 보인다(2026-08-27 세영이 본 왜곡). 끝나면 밑판에 확정하고 걷는다. */
+  function setBizBg(url) {
+    if (!bgLayer) return;
+    var img = new Image();
+    img.onload = function () {
+      var f = document.createElement('div');
+      f.className = 'business-bg__fade';
+      f.style.backgroundImage = 'url(' + url + ')';
+      bgLayer.appendChild(f);
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        f.style.opacity = '1';
+      }); });
+      f.addEventListener('transitionend', function () {
+        bgLayer.style.backgroundImage = 'url(' + url + ')';
+        if (f.parentNode) f.parentNode.removeChild(f);
+      });
+    };
+    img.src = url;
+  }
 
   var marquees = {};
   $$('.business-swiper').forEach(function (el) {
@@ -302,7 +323,7 @@
       /* ⚠ `display:none` 인 동안에는 폭이 0 이라 한 벌 폭을 잴 수 없다. 보이게 «한 뒤에»
          다시 재고 시작해야 흐름이 이어진다 — 안 그러면 그 탭만 서 있는다. */
       bizPlay(true);
-      if (bgLayer && bgImages[idx]) bgLayer.style.backgroundImage = 'url(' + bgImages[idx] + ')';
+      if (bgImages[idx]) setBizBg(bgImages[idx]);
     });
   });
 

@@ -361,9 +361,17 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 .mainCon .main-con2{
   width:100%; position:absolute; color:#fff; background-color:#000; height:100%; top:0; overflow:hidden;
 }
+/* ⚠ 2026-08-27 세영: 「버튼을 차례로 누르면 배경 이미지가 왜곡」.
+   원인은 `transition:.5s`(전체 속성) — background-image 에도 걸려 크롬이 두 사진을
+   크로스페이드로 섞는데, 그 0.5초 동안 **비율이 다른 두 이미지의 cover 가 충돌**해
+   사진이 늘어나 보였다. 전환은 아래 .business-bg__fade(불투명도만) 가 맡는다. */
 .mainCon .main-con2 .business-bg{
   position:absolute; inset:0; z-index:1; background-size:cover; background-position:center;
-  background-repeat:no-repeat; transition:.5s ease;
+  background-repeat:no-repeat;
+}
+.business-bg__fade{
+  position:absolute; inset:0; background-size:cover; background-position:center;
+  background-repeat:no-repeat; opacity:0; transition:opacity .5s ease;
 }
 /* 원본 배경 이미지들은 어두운 사진이라 오버레이가 없다 — 하오웹 사진은 밝아서
    흰 글자 대비 확보용 오버레이를 얹었다(이식 조정 사항, 보고 대상) */
