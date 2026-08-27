@@ -683,17 +683,30 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 
 /* (복원 10) 플랜 3종 — 카드 그림자·패딩 실측 문법 */
 .hw-plans .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; margin-top:80px; }
-.hw-plans .plan{ background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12); padding:34px;
-  border-radius:var(--r-card); }
-.hw-plans .plan .name{ font-size:28px; font-weight:700; display:flex; align-items:center; gap:10px; }
-.hw-plans .plan .name .tag{ display:inline-block; border-radius:500px; font-size:14px; font-weight:700; line-height:27px; padding:0 14px; background:var(--brand); color:#fff; }
-.hw-plans .plan .scale{ margin:16px 0 24px; }
-.hw-plans .plan .scale b{ font-size:50px; font-weight:800; line-height:1; }
+/* 2026-08-27 세영: webseller.co.kr/service/seo 요금 카드 실측 이식.
+   실측: 카드 radius 16 · pad 40/30 · 그림자 0 4 30 rgba(0,0,0,.1) · 추천 2px 테두리 ·
+   배지 13/700 대문자 자간2 #999 · 가격 32/800(그라데이션→우리는 브랜드 단색) ·
+   설명 14 #888 · 리스트 6px 0, 들여쓰기 20, ✔ 브랜드 / 미포함 × #ccc · 버튼 풀폭.
+   ⚠ 버튼 모양은 레퍼런스(radius16)가 아니라 **우리 .btn 알약** — 「모든 CTA 는 기존
+     하오웹과 동일」 원칙이 우선한다. */
+.hw-plans .plan{ background:#fff; box-shadow:0 4px 30px 0 rgba(0,0,0,.1); padding:40px 30px;
+  border-radius:16px; display:flex; flex-direction:column; }
+.hw-plans .plan .name{ font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#999;
+  display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.hw-plans .plan .name .tag{ display:inline-block; border-radius:500px; font-size:12px; font-weight:700; line-height:24px; padding:0 12px; background:var(--brand); color:#fff; letter-spacing:0; }
+.hw-plans .plan .scale{ margin:0 0 8px; }
+.hw-plans .plan .scale b{ font-size:32px; font-weight:800; line-height:1.2; color:var(--brand); }
 .hw-plans .plan .scale i{ font-size:14px; font-weight:700; color:#a4a4a4; margin-left:8px; }
-.hw-plans .plan .scale s{ display:block; text-decoration:none; font-size:14px; color:#a4a4a4; margin-top:6px; }
-.hw-plans .plan .eyebrow{ font-size:16px; font-weight:700; color:var(--brand); margin-bottom:13px; }
-.hw-plans .plan ul li{ font-size:16px; color:#606060; line-height:150%; padding:8px 0; border-bottom:1px solid #eaeaea; }
-.hw-plans .plan ul li:last-child{ border-bottom:0; }
+.hw-plans .plan .scale s{ display:inline; text-decoration:none; font-size:14px; color:#a4a4a4; margin-left:8px; }
+.hw-plans .plan .plan__target{ font-size:14px; color:#888; margin:0 0 24px; padding-bottom:24px; border-bottom:1px solid #eee; }
+.hw-plans .plan .eyebrow{ display:none; }
+.hw-plans .plan ul{ flex:1; }
+.hw-plans .plan ul li{ font-size:15px; color:#555; line-height:1.5; padding:6px 0 6px 22px; border-bottom:0; position:relative; }
+.hw-plans .plan ul li::before{ content:'✓'; position:absolute; left:0; top:6px; font-size:13px; font-weight:700; color:var(--brand); }
+.hw-plans .plan ul li.disabled{ color:#ccc; }
+.hw-plans .plan ul li.disabled::before{ content:'×'; color:#ccc; }
+/* 추천 카드 강조 — plan.html 과 같은 문법 */
+.hw-plans .grid > .plan:nth-child(2){ outline:2px solid var(--brand); }
 
 /* (복원 11) 무료 제안서 — 다크 + deflist 2컬럼 */
 .hw-proposal .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:30px 96px; margin-top:80px; }

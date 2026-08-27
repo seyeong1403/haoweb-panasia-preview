@@ -280,19 +280,35 @@ main .sec:first-of-type{ padding-top:90px; }
 
 /* ---------- 플랜 ---------- */
 .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; margin-top:80px; }
-.plan{ background:#fff; box-shadow:0 0 20px 0 rgba(0,0,0,.12); padding:34px; border-radius:var(--r-card); }
-.plan__name{ font-size:28px; font-weight:700; display:flex; align-items:center; gap:10px; }
-.plan__rec{ display:inline-block; border-radius:500px; font-size:14px; font-weight:700; line-height:27px; padding:0 14px; background:var(--brand); color:#fff; }
-.plan__scale{ margin:16px 0 24px; }
-.plan__scale b{ font-size:50px; font-weight:800; line-height:1; }
+/* 2026-08-27 세영: webseller.co.kr/service/seo 요금 카드 실측 이식.
+   실측: 카드 radius 16 · pad 40/30 · 그림자 0 4 30 rgba(0,0,0,.1) · 추천 2px 테두리 ·
+   배지 13/700 대문자 자간2 #999 · 가격 32/800(그라데이션→우리는 브랜드 단색) ·
+   설명 14 #888 · 리스트 6px 0, 들여쓰기 20, ✔ 브랜드 / 미포함 × #ccc · 버튼 풀폭.
+   ⚠ 버튼 모양은 레퍼런스(radius16)가 아니라 **우리 .btn 알약** — 「모든 CTA 는 기존
+     하오웹과 동일」 원칙이 우선한다. */
+.plan{ background:#fff; box-shadow:0 4px 30px 0 rgba(0,0,0,.1); padding:40px 30px; border-radius:16px; display:flex; flex-direction:column; }
+.plan__name{ font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#999;
+  display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.plan__rec{ display:inline-block; border-radius:500px; font-size:12px; font-weight:700; line-height:24px; padding:0 12px; background:var(--brand); color:#fff; letter-spacing:0; }
+.plan__scale{ margin:0 0 8px; }
+.plan__scale b{ font-size:32px; font-weight:800; line-height:1.2; color:var(--brand); }
 .plan__scale i{ font-size:14px; font-weight:700; color:#a4a4a4; margin-left:8px; }
-.plan__scale s{ display:block; text-decoration:none; font-size:14px; color:#a4a4a4; margin-top:6px; }
-.plan__price{ margin:-10px 0 24px; }
+.plan__scale s{ display:inline; text-decoration:none; font-size:14px; color:#a4a4a4; margin-left:8px; }
+.plan__price{ margin:0 0 8px; }
 .plan__price b{ font-size:20px; font-weight:700; }
 .plan__price i{ font-size:14px; color:#a4a4a4; margin-left:12px; }
-.plan__eyebrow{ font-size:19px; font-weight:700; color:var(--brand); margin-bottom:13px; }
-.plan__list li{ font-size:16px; color:#606060; line-height:150%; padding:8px 0; border-bottom:1px solid #eaeaea; }
-.plan__list li:last-child{ border-bottom:0; }
+.plan__target{ font-size:14px; color:#888; margin:0 0 24px; padding-bottom:24px; border-bottom:1px solid #eee; }
+.plan__eyebrow{ display:none; }   /* 레퍼런스에는 「포함 범위」 라벨이 없다 — 체크가 그 역할 */
+.plan__list{ flex:1; }
+.plan__list li{
+  font-size:15px; color:#555; line-height:1.5; padding:6px 0 6px 22px;
+  border-bottom:0; position:relative;
+}
+.plan__list li::before{
+  content:'✓'; position:absolute; left:0; top:6px; font-size:13px; font-weight:700; color:var(--brand);
+}
+.plan__list li.disabled{ color:#ccc; }
+.plan__list li.disabled::before{ content:'×'; color:#ccc; }
 .plan--rec{ outline:2px solid var(--brand); }
 
 /* ---------- Work 그리드 / 행 리스트 ---------- */
