@@ -175,7 +175,20 @@ main .sec:first-of-type{ padding-top:90px; }
 .biz-incl__item{
   background:#fff; border-radius:var(--r-card); padding:40px;
   box-shadow:0 0 20px 0 rgba(0,0,0,.08);
+  transition:transform .3s ease, box-shadow .3s ease, background-color .3s ease;
 }
+/* 2026-08-27 세영: 「호버했을때 모션」. 바로웹 아이콘 카드 문법(ctg_slide .in_icon:hover —
+   배경을 브랜드색으로 채우고 아이콘·글자를 흰색으로 반전) + 살짝 떠오르는 리프트.
+   ⚠ 아이콘은 마스크라 background 만 바꾸면 흰색이 된다 — img 였다면 filter 반전이 필요했다. */
+.biz-incl__item:hover{
+  transform:translateY(-6px);
+  box-shadow:0 14px 30px 0 rgba(0,0,0,.16);
+  background:var(--brand);
+}
+.biz-incl__item:hover .biz-incl__ic{ background:#fff; }
+.biz-incl__item:hover .biz-incl__no{ color:rgba(255,255,255,.8); }
+.biz-incl__item:hover .biz-incl__t{ color:#fff; }
+.biz-incl__item:hover .biz-incl__d{ color:rgba(255,255,255,.9); }
 /* 2026-08-27 세영: 「아이콘 더 크게+컬러, 번호·타이틀 더 크게」.
    ⚠ 색은 마스크(background)가 낸다 — <img> 는 원본 SVG 에 fill 이 없어 검정으로 굳는다.
    mask-image 는 파일이 50종이라 규칙 대신 마크업 인라인으로 넘긴다. */
