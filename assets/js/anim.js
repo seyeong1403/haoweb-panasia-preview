@@ -212,6 +212,16 @@
       rail.appendChild(track);
       var m = make(rail, track, { speed: 40 });
       if (!m) return;
+      /* 타이틀 옆 화살표 — 누르면 카드 두 장 분량을 빠르게 이동(마퀴 nudge).
+         head 는 레일 바로 앞 형제다. */
+      var head = rail.previousElementSibling;
+      if (head && head.classList.contains('drail-head')) {
+        var step = 880;                        /* 카드 420 + 간격 20, 두 장 */
+        var bp = head.querySelector('[data-rail-prev]');
+        var bn = head.querySelector('[data-rail-next]');
+        if (bp) bp.addEventListener('click', function () { m.nudge(-step); });
+        if (bn) bn.addEventListener('click', function () { m.nudge(step); });
+      }
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (es) {
           es.forEach(function (e) { if (e.isIntersecting) m.start(); else m.stop(); });

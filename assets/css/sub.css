@@ -353,7 +353,20 @@ main .sec:first-of-type{ padding-top:90px; }
 
 /* ---------- 디자인 작업물 가로 레일 (graphic-design)
      원본 = 가로 스크롤 레일 → 파나시아 business-swiper 문법(자유 스크롤+스크롤바) ---------- */
-.drail-head{ display:flex; align-items:baseline; gap:12px; margin:64px 0 20px; }
+/* 2026-08-27 세영: 「타이틀이 화면 끝에 붙었다」 — 레일은 풀블리드지만 제목은
+   컨테이너 기준선(구간별 좌단)에 맞춘다. + 우측에 빨리 넘기는 화살표. */
+.drail-head{ display:flex; align-items:center; gap:12px; margin:64px 0 20px;
+  padding-left:139px; padding-right:139px; justify-content:space-between; }
+@media screen and (min-width:1683px){
+  .drail-head{ padding-left:calc((100% - 1400px)/2); padding-right:calc((100% - 1400px)/2); } }
+@media screen and (max-width:1024px){ .drail-head{ padding-left:30px; padding-right:30px; } }
+.drail-head__nav{ display:flex; gap:10px; }
+.drail-head__btn{
+  width:44px; height:44px; border-radius:50%; border:1px solid #d9d9d9; background:#fff;
+  font-size:22px; line-height:1; color:#17150f; cursor:pointer;
+  transition:background-color .3s, color .3s, border-color .3s;
+}
+.drail-head__btn:hover{ background:var(--brand); border-color:var(--brand); color:#fff; }
 .drail-head__t{ font-size:25px; font-weight:700; }
 .drail-head__t b{ color:var(--brand); font-weight:700; margin-left:6px; }
 /* 2026-08-27 — 손 스크롤 레일 → 마퀴(anim.js). 스크롤바는 더 이상 없다.
@@ -1042,4 +1055,35 @@ html.no-js .hl .step, .hl:not(.hl--armed) .step{ opacity:1; }
   .pcard__nm{ font-size:6em; right:25px; }
   .pcard__badge{ top:20px; right:25px; }
   .pcard__txt{ padding:40px 24px; width:100%; }
+}
+
+/* ── 포트폴리오 라이트박스 — 기존 하오웹 base.css 추출 이식(토큰은 실값 치환) ── */
+.lbox { position: fixed; inset: 0; z-index: 60; display: none; background: #0b0b0b; }
+.lbox.is-open { display: block; }
+.lbox__wrap { position: absolute; inset: 0; display: grid; gap: 40px; align-items: center; grid-template-columns: minmax(0, 1fr) 340px; padding: 72px 88px; }
+.lbox__figure { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 0; }
+.lbox__img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--r-card); background: #f4f4f2; }
+.lbox__info { color: #f4f4f2; max-height: 100%; overflow-y: auto; }
+.lbox__cat { display: block; font-size: 14px; color: #a8a8a6; }
+.lbox__title { margin-top: 10px; font-size: 26px; font-weight: 700; line-height: 1.35; word-break: keep-all; }
+.lbox__desc { margin-top: 16px; font-size: 16px; line-height: 1.75; color: #d6d6d4; word-break: keep-all; }
+.lbox__label { margin-top: 32px; padding-top: 18px; font-size: 12px; letter-spacing: .08em; color: #a8a8a6; border-top: 1px solid #4a4a4a; }
+.lbox__rows { margin-top: 14px; display: grid; gap: 10px; }
+.lbox__rows div { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 12px; font-size: 14px; }
+.lbox__rows b { font-weight: 600; color: #a8a8a6; }
+.lbox__rows span { color: #f4f4f2; word-break: keep-all; }
+.lbox__btn { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; border: 1px solid #4a4a4a; background: color-mix(in srgb, #000 55%, transparent); color: #f4f4f2; font-size: 24px; line-height: 1; cursor: pointer; transition: border-color .25s, background .25s; }
+.lbox__btn:hover { border-color: #f4f4f2; background: #000; }
+.lbox__btn--prev { left: 20px; }
+.lbox__btn--next { right: 20px; }
+.lbox__close { position: absolute; top: 20px; right: 20px; width: 48px; height: 48px; border: 1px solid #4a4a4a; border-radius: 50%; background: transparent; color: #f4f4f2; font-size: 26px; line-height: 1; cursor: pointer; transition: border-color .25s, background .25s; }
+.lbox__close:hover { border-color: #f4f4f2; background: #000; }
+.lbox__btn:focus-visible, .lbox__close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+body.lbox-open { overflow: hidden; }
+@media (max-width: 1000px) {
+  .lbox__wrap { grid-template-columns: minmax(0, 1fr); align-items: start; padding: 64px 20px 32px; overflow-y: auto; gap: 24px; }
+  .lbox__figure { max-height: 52vh; }
+  .lbox__info { max-height: none; overflow: visible; padding-bottom: 76px; }
+  .lbox__title { font-size: 21px; }
+  .lbox__btn { top: auto; bottom: 16px; transform: none; width: 46px; height: 46px; }
 }
