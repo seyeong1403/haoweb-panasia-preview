@@ -177,18 +177,14 @@ main .sec:first-of-type{ padding-top:90px; }
   box-shadow:0 0 20px 0 rgba(0,0,0,.08);
   transition:transform .3s ease, box-shadow .3s ease, background-color .3s ease;
 }
-/* 2026-08-27 세영: 「호버했을때 모션」. 바로웹 아이콘 카드 문법(ctg_slide .in_icon:hover —
-   배경을 브랜드색으로 채우고 아이콘·글자를 흰색으로 반전) + 살짝 떠오르는 리프트.
-   ⚠ 아이콘은 마스크라 background 만 바꾸면 흰색이 된다 — img 였다면 filter 반전이 필요했다. */
+/* 2026-08-27 세영: 「호버했을때 모션」 → 같은 날 재조정. 처음에는 배경을 브랜드색으로
+   통째로 반전했는데, 세영 지적대로 **누르는 것(버튼)으로 읽힌다** — 이 카드는 눌러도
+   아무 일이 없는 정보 나열이다. 바로웹 원본도 이 카드에는 hover 가 없다.
+   ⚠ 배경 반전은 «누르는 것» 에만 쓴다. 여기는 리프트+그림자만 — 살아있되 버튼 신호는 없다. */
 .biz-incl__item:hover{
   transform:translateY(-6px);
   box-shadow:0 14px 30px 0 rgba(0,0,0,.16);
-  background:var(--brand);
 }
-.biz-incl__item:hover .biz-incl__ic{ filter:brightness(0) invert(1); }
-.biz-incl__item:hover .biz-incl__no{ color:rgba(255,255,255,.8); }
-.biz-incl__item:hover .biz-incl__t{ color:#fff; }
-.biz-incl__item:hover .biz-incl__d{ color:rgba(255,255,255,.9); }
 /* 2026-08-27 세영: 「아이콘 더 크게+컬러」.
    ⚠⚠ 처음에 마스크(background=색)로 했다가 되돌렸다 — 마스크 이미지는 브라우저 보안
      정책상 file:// (폴더에서 직접 열기)에서 차단돼 **아이콘이 통째로 투명**이 된다
