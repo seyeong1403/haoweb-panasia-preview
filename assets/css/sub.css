@@ -720,3 +720,18 @@ main .container > .btns:first-child{ margin-top:0; }
 @media screen and (max-width:768px){
   .form__group{ grid-template-columns:1fr; }
 }
+
+/* ⚠ 서브의 `.work.fullbleed`·`.rows.fullbleed` 는 클래스만 있고 폭 규칙이 없어 컨테이너
+   폭(1415)에 갇혀 있었다 — 메인은 화면 끝까지 간다(2026-08-27 세영: 「서브페이지 포트폴리오
+   파트도 메인페이지처럼 좌우 여백 없이 꽉 차게」).
+   ⚠ 메인 규칙은 `.hw-sec` 으로 스코프돼 있는데 서브엔 `.hw-sec` 이 없다. sub.css 는 서브에서만
+   불러오므로 여기서 정의해도 메인에 영향이 없다.
+   ⚠ `100vw` 는 스크롤바를 포함해 clientWidth 보다 넓다 → 1682 이하에서는 **컨테이너 폭에서
+   되돌리는 계산**을 쓴다(어제 보기 전환 스위치가 7px 잘렸던 것과 같은 함정). */
+.fullbleed{ width:100vw; max-width:100vw; margin-left:calc((100vw - 1400px) / -2); }
+@media screen and (max-width:1682px){
+  .fullbleed{ width:calc(100% + 169px); max-width:none; margin-left:-139px; }
+}
+@media screen and (max-width:1024px){
+  .fullbleed{ width:calc(100% + 60px); margin-left:-30px; }
+}

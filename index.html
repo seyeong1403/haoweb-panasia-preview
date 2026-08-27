@@ -13,7 +13,7 @@
 <link rel="icon" href="assets/img/logo-on-dark.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-<link rel="stylesheet" href="assets/css/main.css?v=e91b68e9">
+<link rel="stylesheet" href="assets/css/main.css?v=d9814b1b">
 </head>
 <body>
 <div id="wrap">
@@ -467,6 +467,19 @@
       <!-- ⛔ 「앱 제작」 07 은 2026-08-17 삭제. 아이디어 시트에도 미팅 녹음본에도 근거가 없는
              유일한 서비스였고, 포트폴리오 22곳에도 앱 실적이 없다. 목록 끝이라 번호는 안 밀린다. -->
     </div>
+  <!-- 업종 행 아래 CTA — 마지막 행 선 아래가 한 칸 비어 보이던 자리다
+       (2026-08-27 세영: 「맨 하단에 빈칸이 있는 오류」 + 「CTA를 넣어줘」).
+       ⚠ 기존 하오웹 라이브에는 이 섹션에 CTA 가 없다 — 세영 지시로 새로 넣는다. -->
+  <!-- 업종 행 아래 CTA — 기존 하오웹 원본 그대로다(2026-08-27 세영이 캡처로 지정).
+       원본은 `.wrows` 섹션 **다음** 섹션 맨 위에 `padding-top:56px` 로 버튼 둘만 둔다.
+       ⚠ 앞서 「원본에 CTA 가 없다」고 본 것은 내 오독이었다 — wrows 뒤에 이어지는
+         「홈페이지 제작센터 / 글로벌 홈페이지」를 다음 섹션 본문으로 착각했다. -->
+  <div class="container hw-biz__cta">
+    <div class="hw-btns">
+      <a class="button add-button ink-border-btn" href="website.html">홈페이지 제작센터</a>
+      <a class="button add-button ink-border-btn" href="global.html">글로벌 홈페이지</a>
+    </div>
+  </div>
 </div>
 
 <!-- GSAP 핀 구간: con1(소개) → con2(서비스 탭) -->
@@ -995,6 +1008,15 @@
     </div>
     <div class="work fullbleed" data-work style="margin-top:40px">
       <div class="work__item">
+        <a class="work__link" href="https://www.diningbrands.com" target="_blank" rel="noopener">
+          <figure class="work__thumb" style="background-image:url('assets/img/work/diningbrands-com.jpg')"></figure>
+          <div class="work__text">
+            <h3 class="work__name"><i><span>다이닝브랜즈그룹</span></i></h3>
+            <p class="work__meta">www.diningbrands.com <span class="work__live">LIVE ↗</span></p>
+          </div>
+        </a>
+      </div>
+      <div class="work__item">
         <a class="work__link" href="http://www.daeyoungfabric.com" target="_blank" rel="noopener">
           <figure class="work__thumb" style="background-image:url('assets/img/work/daeyoungfabric-com.jpg')"></figure>
           <div class="work__text">
@@ -1057,21 +1079,22 @@
           </div>
         </a>
       </div>
-      <div class="work__item">
-        <a class="work__link" href="https://daeyangsusan.co.kr" target="_blank" rel="noopener">
-          <figure class="work__thumb" style="background-image:url('assets/img/work/daeyangsusan-co-kr.jpg')"></figure>
-          <div class="work__text">
-            <h3 class="work__name"><i><span>대양수산영어조합법인</span></i></h3>
-            <p class="work__meta">daeyangsusan.co.kr <span class="work__live">LIVE ↗</span></p>
-          </div>
-        </a>
-      </div>
     </div>
     <div class="rows fullbleed">
       <div class="row">
         <div class="row__face">
-          <a class="row__link" href="http://www.daeyoungfabric.com" target="_blank" rel="noopener">
+          <a class="row__link" href="https://www.diningbrands.com" target="_blank" rel="noopener">
             <span class="row__cat">/01</span>
+            <span class="row__title">다이닝브랜즈그룹</span>
+            <span class="row__meta">www.diningbrands.com</span>
+          </a>
+        </div>
+        <div class="row__over"><div class="row__marquee" data-marquee="WWW.DININGBRANDS.COM"></div></div>
+      </div>
+      <div class="row">
+        <div class="row__face">
+          <a class="row__link" href="http://www.daeyoungfabric.com" target="_blank" rel="noopener">
+            <span class="row__cat">/02</span>
             <span class="row__title">대영패브릭</span>
             <span class="row__meta">www.daeyoungfabric.com</span>
           </a>
@@ -1081,7 +1104,7 @@
       <div class="row">
         <div class="row__face">
           <a class="row__link" href="https://gnlifekorea.com" target="_blank" rel="noopener">
-            <span class="row__cat">/02</span>
+            <span class="row__cat">/03</span>
             <span class="row__title">Global Geumsan Ginseng</span>
             <span class="row__meta">gnlifekorea.com</span>
           </a>
@@ -1091,7 +1114,7 @@
       <div class="row">
         <div class="row__face">
           <a class="row__link" href="https://www.ycdis.co.kr" target="_blank" rel="noopener">
-            <span class="row__cat">/03</span>
+            <span class="row__cat">/04</span>
             <span class="row__title">YCDIS</span>
             <span class="row__meta">www.ycdis.co.kr</span>
           </a>
@@ -1101,7 +1124,7 @@
       <div class="row">
         <div class="row__face">
           <a class="row__link" href="http://www.pharmicellbc.com" target="_blank" rel="noopener">
-            <span class="row__cat">/04</span>
+            <span class="row__cat">/05</span>
             <span class="row__title">파미셀㈜ 바이오케미컬사업부</span>
             <span class="row__meta">www.pharmicellbc.com</span>
           </a>
@@ -1111,7 +1134,7 @@
       <div class="row">
         <div class="row__face">
           <a class="row__link" href="https://royalchef.kr" target="_blank" rel="noopener">
-            <span class="row__cat">/05</span>
+            <span class="row__cat">/06</span>
             <span class="row__title">대령숙수</span>
             <span class="row__meta">royalchef.kr</span>
           </a>
@@ -1121,7 +1144,7 @@
       <div class="row">
         <div class="row__face">
           <a class="row__link" href="https://bestdh.co.kr" target="_blank" rel="noopener">
-            <span class="row__cat">/06</span>
+            <span class="row__cat">/07</span>
             <span class="row__title">대현공</span>
             <span class="row__meta">bestdh.co.kr</span>
           </a>
@@ -1131,22 +1154,12 @@
       <div class="row">
         <div class="row__face">
           <a class="row__link" href="https://neopwr.co.kr" target="_blank" rel="noopener">
-            <span class="row__cat">/07</span>
+            <span class="row__cat">/08</span>
             <span class="row__title">㈜네오파워텍</span>
             <span class="row__meta">neopwr.co.kr</span>
           </a>
         </div>
         <div class="row__over"><div class="row__marquee" data-marquee="NEOPWR.CO.KR"></div></div>
-      </div>
-      <div class="row">
-        <div class="row__face">
-          <a class="row__link" href="https://daeyangsusan.co.kr" target="_blank" rel="noopener">
-            <span class="row__cat">/08</span>
-            <span class="row__title">대양수산영어조합법인</span>
-            <span class="row__meta">daeyangsusan.co.kr</span>
-          </a>
-        </div>
-        <div class="row__over"><div class="row__marquee" data-marquee="DAEYANGSUSAN.CO.KR"></div></div>
       </div>
     </div>
     <div class="hw-btns" style="margin-top:56px"><a class="button add-button brand-border-btn" href="portfolio.html">포트폴리오 전체 보기</a></div>
