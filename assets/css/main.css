@@ -971,8 +971,9 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    ⚠ 글자 크기는 파나시아 토큰에 맞춘다(레퍼런스 px 를 그대로 옮기지 않는다).
      숫자 88 → 70(.txt1) · 국문 26 → 20 · 내려오는 양 140 → 110(같은 비율)
    ============================================================ */
+/* 2026-08-27 세영: 「타이틀과 정부지원사업 수행 사이 간격을 더 벌려줘」 — 29(원본 실측) → 96 */
 .perf .container{
-  display:grid; grid-template-columns:439px 1fr; column-gap:29px; align-items:start;
+  display:grid; grid-template-columns:439px 1fr; column-gap:96px; align-items:start;
 }
 .perf__head .txt2{ margin-top:3px; }
 .perf__head .txt3{ margin-top:35px; }   /* 레퍼런스 실측 sec_tw margin-top 35 */
