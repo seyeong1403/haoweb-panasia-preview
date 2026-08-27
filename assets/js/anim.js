@@ -189,3 +189,41 @@
     initHl();
   }
 })();
+
+
+/* ── 스포트라이트 리스트(.uspl) — rideradian usp 실측 이식 (2026-08-27) ─────────
+   좌측 항목이 화면 중앙을 지나면 그 항목만 켜지고(색 100%), 우측 sticky 이미지가
+   같은 번호로 갈아든다. 규칙은 .hl 과 동일(50% 선을 지나간 마지막 항목). */
+(function () {
+  'use strict';
+  function initUspl() {
+    var box = document.querySelector('.uspl');
+    if (!box) return;
+    var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq && mq.matches) return;
+    box.classList.add('uspl--armed');
+    var items = [].slice.call(box.querySelectorAll('.uspl__item'));
+    var imgs = [].slice.call(box.querySelectorAll('.uspl__img'));
+    if (!items.length) return;
+    var ticking = false;
+    function paint() {
+      ticking = false;
+      var line = window.innerHeight * .5;
+      var on = 0;
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].getBoundingClientRect().top <= line) on = i;
+      }
+      items.forEach(function (el, i) { el.classList.toggle('is-on', i === on); });
+      imgs.forEach(function (el, i) { el.classList.toggle('is-on', i === on); });
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+    }, { passive: true });
+    paint();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUspl);
+  } else {
+    initUspl();
+  }
+})();

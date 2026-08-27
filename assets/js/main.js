@@ -545,24 +545,6 @@
     });
   });
 
-  /* 업종별 — con3 와 같은 호버 교체 + 와이프 */
-  var indLinks = $$('.hw-industry .link-list li');
-  var indImgs = $$('.hw-industry .left .list li');
-  indLinks.forEach(function (li, idx) {
-    li.addEventListener('mouseenter', function () {
-      indLinks.forEach(function (x) { x.classList.remove('on'); });
-      li.classList.add('on');
-      indImgs.forEach(function (x, i) { x.classList.toggle('on', i === idx); });
-    });
-  });
-  gsap.fromTo('.hw-industry .left .list li img',
-    { clipPath: 'inset(0 100% 0 0)' },
-    {
-      clipPath: 'inset(0 0% 0 0)',
-      ease: 'none',
-      scrollTrigger: { trigger: '.hw-industry', start: 'top bottom', end: 'center bottom', scrub: 2 }
-    });
-
   /* 자료가 없어도 — 풀폭 이미지 와이프 */
   gsap.fromTo('.hw-reveal .photo img',
     { clipPath: 'inset(0 100% 0 0)' },

@@ -423,8 +423,17 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   position:absolute; left:0; top:0; width:100%; height:1px; opacity:0; visibility:hidden;
 }
 .mainCon .main-con3 .inner .left{ width:50%; }
-.mainCon .main-con3 .inner .left .list li{ display:none; }
-.mainCon .main-con3 .inner .left .list li.on{ display:block; }
+/* ⚠ 2026-08-27 세영: 「AEO·GEO 호버했을때 SEO처럼 이미지 모션」.
+   display:none↔block 은 모션 없이 뚝 바뀐다. 이미지를 한 칸에 겹쳐 두고(grid 1/1)
+   켜지는 것이 **클립 와이프(왼→오)** 로 덮으며 나타나게 한다 — 첫 로드의 GSAP 와이프와
+   같은 인상. 꺼진 것은 밑에 남아 있어 전환 중 빈 바탕이 비치지 않는다. */
+.mainCon .main-con3 .inner .left .list{ display:grid; }
+.mainCon .main-con3 .inner .left .list li{
+  grid-area:1 / 1; display:block; z-index:1;
+  clip-path:inset(0 100% 0 0);
+  transition:clip-path .8s cubic-bezier(.4,0,.2,1);
+}
+.mainCon .main-con3 .inner .left .list li.on{ z-index:2; clip-path:inset(0 0% 0 0); }
 /* 원본 이미지는 960×980 세로형이 섹션 높이를 만든다 — 하오웹 사진(가로형)을
    같은 비율로 크롭해 레퍼런스 지오메트리를 유지 */
 .mainCon .main-con3 .inner .left .list li img{ width:100%; aspect-ratio:960/980; object-fit:cover; }
@@ -619,28 +628,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 .hw-after .hw-note b{ color:#fff; font-weight:700; }
 
 
-.hw-industry .inner{ display:flex; align-items:center; position:relative; }
-.hw-industry .left{ width:50%; }
-.hw-industry .left .list li{ display:none; }
-.hw-industry .left .list li.on{ display:block; }
-.hw-industry .left .list li img{ width:100%; aspect-ratio:960/980; object-fit:cover; }
-.hw-industry .right{ width:50%; margin:auto; }
-.hw-industry .right .right-box{ max-width:542px; margin:0 auto; }
-.hw-industry .link-list{ margin:64px 0 0; }
-.hw-industry .link-list li a{
-  position:relative; display:block; font-size:30px; font-weight:700; color:#6e6a60;
-  padding:24px 0; border-bottom:1px solid #d9d9d9;
-}
-.hw-industry .link-list li a .lbl{ display:block; font-size:14px; font-weight:400; color:#c4c4c4; line-height:1; margin-bottom:6px; }
-.hw-industry .link-list li a .no{ position:absolute; right:44px; top:50%; transform:translateY(-50%); font-size:14px; font-weight:400; color:#c4c4c4; }
-.hw-industry .link-list li a:after{
-  content:''; position:absolute; right:0; top:50%; transform:translateY(-50%); width:30px; height:30px;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none'%3E%3Cpath d='M8 22L22 8M22 8H11M22 8v11' stroke='%23a4a4a4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/cover no-repeat;
-}
-.hw-industry .link-list li:hover a{ color:#000; }
-.hw-industry .link-list li:hover a:after{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none'%3E%3Cpath d='M8 22L22 8M22 8H11M22 8v11' stroke='%23e83817' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
+/* 업종별도 같은 와이프 전환(위 con3 주석 참고) */
 
 
 /* (복원 6) 리뉴얼 — 강조문 25/700(원본 dep2Tit 타이포) */
@@ -709,7 +697,6 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 /* 누락 텍스트 복원분 스타일 (2026-08-25 전수 대조 후) */
 .mainCon .main-con2 .text-banner .txt3{ color:rgba(255,255,255,.75); margin-top:16px; font-size:18px; line-height:1.45; }
 .mainCon .main-con4 .event-slide .card .top .wno{ font-size:14px; color:#c4c4c4; margin-left:auto; }
-.hw-industry .lbl i{ font-style:normal; margin-left:8px; }
 .hw-proposal .dl-label{ font-size:16px; font-weight:700; margin-bottom:8px; }
 .allMenuWrap .allMenuTitle{ font-size:16px; font-weight:700; color:#a4a4a4; letter-spacing:.1em; margin-bottom:10px; }
 #footer .ftList li p{ line-height:26px; }
@@ -865,10 +852,6 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   .hw-sec .txt2{ font-size:26px !important; }
   .hw-sec .txt3{ font-size:16px; }
   .hw-after .hw-steps, .hw-build .hw-steps{ grid-template-columns:1fr; gap:20px; }
-  .hw-industry .inner{ display:block; }
-  .hw-industry .left{ display:none; }
-  .hw-industry .right{ width:100%; }
-  .hw-industry .link-list li a{ font-size:18px; padding:15px 0; }
   .hw-plans .grid{ grid-template-columns:1fr; gap:20px; margin-top:40px; }
   .hw-plans .plan .scale b{ font-size:34px; }
   .hw-proposal .grid{ grid-template-columns:1fr; gap:0; margin-top:40px; }
@@ -888,140 +871,45 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    ⚠ 컨테이너만 다르다 — 원본 1360(내용 1264)이고 파나시아는 1400 이라,
      카드가 오른쪽으로 넘치는 인상을 지키려고 뷰포트를 758 로 고정했다.
    ============================================================ */
-.diff { background: #fff; padding-block: 128px; overflow: hidden; }
 /* ⚠ 폭·좌우 위치는 파나시아 `.container` 가 정한다 — 이 사이트의 컨테이너는 1682px 이하에서
      `calc(100% - 169px)` + `margin-left:139px` 로 **왼쪽에 치우쳐** 있다(원본 좌측 레일 때문).
      여기서 1400 중앙으로 고정했더니 다른 섹션과 좌우가 31px 어긋났다(2026-08-25 실측).
    ⚠ 뷰포트 758 은 고정이다 — 카드 2장(398x2+15=811)이 53px 넘치는 인상이 레퍼런스의 핵심이다.
      비율(60%)로 두면 1431 에서 859 가 되어 넘침이 사라진다. */
-.diff__inner {
-  display: grid; grid-template-columns: 1fr 758px; align-items: start;
-}
 /* 좌측 글 — 카드가 지나가는 동안 붙어 있는다(레퍼런스도 고정된 채 슬라이드만 움직인다). */
 /* ⚠ 레퍼런스는 sticky 가 아니다. 좌측 글 상자가 슬라이더와 **같은 높이**(565)이고
      화살표가 그 **맨 아래**에 붙는다(섹션 위에서 503px). 그래서 세로 flex 로 밀어 내린다. */
-.diff__aside {
-  min-width: 0; padding-right: 40px;
-  /* ⚠ `align-items: flex-start` 가 없으면 flex 기본값(stretch)이라 배지가 칸 폭을 다 먹는다. */
-  display: flex; flex-direction: column; align-items: flex-start;
-}
 /* ⭐ 2026-08-26 세영 「제목을 현재 하오웹 다른 섹션과 통일」 →
    원본 하오웹의 회색 pill 배지 대신 파나시아 표준 아이브로(.bluetext 16/700 레드)로 맞췄다.
    섹션 머리가 사이트 전체에서 「레드 작은 글씨 → 50px 제목 → 18px 리드」로 같아진다. */
-.diff__badge {
-  display: block; font-size: 16px; font-weight: 700; letter-spacing: -.02em;
-  color: var(--brand); background: none; padding: 0; border-radius: 0;
-  margin-bottom: 3px;
-}
 /* ⚠ 레퍼런스 실측은 제목 58 / 리드 23.2 이지만, 사이트 전체 타이틀을 하나로 맞추라는
    2026-08-25 세영 지시에 따라 파나시아 표준(.txt2 50/800 · .txt3 18)으로 내렸다.
    섹션 제목이 50 인 곳이 12 군데라 여기만 58 이면 그 섹션만 커 보인다. */
-.diff__title {
-  margin-top: 0; font-size: 50px; font-weight: 800;
-  line-height: 130%; letter-spacing: -.04em; color: #17150f;
-}
-.diff__sub {
-  margin-top: 22px; font-size: 18px; font-weight: 400;
-  line-height: 1.45; letter-spacing: -.02em; color: #606060;
-}
 /* 화살표 — 레퍼런스는 좌측 글 아래에 둘을 나란히 둔다(각 48×62). */
 /* 레퍼런스 실측 — `.port_pager` 110×62 · 버튼 48×62 · 사이 15px · 좌측 글 맨 아래 */
 /* ⚠ 원본은 `margin-top:auto` 로 좌측 칸 맨 아래에 붙인다(칸 높이 565). 제목을 한 줄로
    바꾸고 나니 제목과 화살표 사이가 휑해졌다(2026-08-26 세영) → 리드문 아래로 당긴다. */
-.diff__nav { display: flex; gap: 20px; margin-top: 56px; }
-.diff__arrow {
-  /* ⚠ 레퍼런스 실측은 48x62 · 글자 44 지만 2026-08-26 세영 「더 크게」로 키웠다. */
-  width: 64px; height: 80px; padding: 0; border: 0; background: none; cursor: pointer;
-  font-size: 60px; line-height: 1; color: #17150f;
-  display: flex; align-items: center; justify-content: center;
-  transition: color .25s ease, opacity .25s ease;
-}
-.diff__arrow:hover { color: var(--brand); }
 /* ⚠ 끝에 닿으면 눌러도 소용없다는 걸 보여 준다 — 안 그러면 고장으로 읽힌다. */
-.diff__arrow[disabled] { opacity: .28; cursor: default; }
-.diff__arrow[disabled]:hover { color: #17150f; }
 
 /* 슬라이더 — 오른쪽으로 흘러넘치게 둔다. 넘친 부분은 `.diff` 의 overflow 가 자른다.
    ⚠⚠ `min-width: 0` 이 반드시 있어야 한다. 그리드 `fr` 트랙의 자동 최소값은 **min-content** 라
      안에 든 카드 1244px 에 맞춰 칸이 통째로 늘어난다 — 좌측 글 칸이 짜부라지고
      넘치는 게 없어져 **화살표가 둘 다 꺼진 채로 굳는다**(2026-08-24 실제로 그랬다.
      실측: 뷰포트가 758 이어야 하는데 1244 로 나왔다). */
-.diff__viewport {
-  position: relative; overflow: visible; min-width: 0;
-  /* ⚠⚠ **왼쪽만 자른다.** 무한 루프를 만들려고 앞뒤로 카드를 복제해 두었는데,
-     앞쪽 복제본이 왼쪽으로 삐져나와 「차별화된 서비스」 글 위를 덮었다(2026-08-24 캡처).
-     `overflow:hidden` 을 쓰면 오른쪽으로 흘러넘치는 인상까지 같이 죽는다.
-     그래서 `clip-path` 로 **왼쪽 0 · 오른쪽 -100vw** — 왼쪽만 자르고 오른쪽은 열어 둔다.
-     위아래도 여유를 줘서 카드 모서리가 깎이지 않게 한다. */
-  clip-path: inset(-40px -100vw -40px 0);
-}
 /* ⭐ 진행바 — 레퍼런스 실측 `.swiper-pagination-progressbar`
      트랙 779×5 · radius 50 · #f0f0f0 / 채움 #111. 슬라이더와 같은 x 에서 시작한다.
    ⚠ 폭은 슬라이더 뷰포트와 같다(779 ≈ 820 에서 좌우 여백을 뺀 값). 우리는 뷰포트 폭에 맞춘다. */
-.diff__bar {
-  position: relative; height: 5px; border-radius: 50px; background: #f0f0f0;
-  margin-top: 57px; overflow: hidden;
-}
-.diff__bar span {
-  position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 50px; background: #111;
-  transition: width .8s cubic-bezier(.4, 0, .2, 1), transform .8s cubic-bezier(.4, 0, .2, 1);
-}
-.diff__track {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; gap: 25px;   /* 레퍼런스 실측 spaceBetween 25 */
-  /* ⚠ 레퍼런스 실측 speed = 800ms. JS 에서 인라인으로 넣었더니 `place()` 가 transition 을
-     비우는 순간 이 CSS 값으로 되돌아가 **0.6초로 돌고 있었다**(2026-08-24 실측).
-     한 곳에서만 정한다 — 여기다. */
-  transition: transform .8s cubic-bezier(.4, 0, .2, 1);
-}
-.diff__card {
-  position: relative; flex: none;
-  width: 398px; min-height: 530px; border-radius: 20px;
-  padding: 80px 50px 60px;
-  display: flex; flex-direction: column;
-}
 /* 아이콘 — 레퍼런스 실측 85×85, 카드 위에서 80px(안쪽 여백과 같은 줄).
    ⚠ 색을 카드마다 바꿔야 해서 `<img>` 가 아니라 **마스크**로 쓴다.
      `<img>` 로 넣으면 원본 검정 그대로라 레드·먹색 카드에서 안 보인다.
      경로는 **이 파일 기준**(`../img/`)이다 — 인라인 변수로 넘기면 조각 기준으로 풀려 깨진다. */
-.diff__ico {
-  display: block; width: 85px; height: 85px; flex: none;
-  background: currentColor; opacity: .92;
-  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-  -webkit-mask-position: left center; mask-position: left center;
-  -webkit-mask-size: contain; mask-size: contain;
-}
-.diff__ico--write { -webkit-mask-image: url('../img/icon/diff-write.svg'); mask-image: url('../img/icon/diff-write.svg'); }
-.diff__ico--team  { -webkit-mask-image: url('../img/icon/diff-team.svg');  mask-image: url('../img/icon/diff-team.svg'); }
-.diff__ico--shoot  { -webkit-mask-image: url('../img/icon/diff-shoot.svg');  mask-image: url('../img/icon/diff-shoot.svg'); }
-.diff__ico--global { -webkit-mask-image: url('../img/icon/diff-global.svg'); mask-image: url('../img/icon/diff-global.svg'); }
-.diff__ico--care   { -webkit-mask-image: url('../img/icon/diff-care.svg');   mask-image: url('../img/icon/diff-care.svg'); }
-.diff__ico--doc    { -webkit-mask-image: url('../img/icon/diff-doc.svg');    mask-image: url('../img/icon/diff-doc.svg'); }
 
 /* 큰 번호 — 레퍼런스는 모든 카드에 rgba(0,0,0,.1) 을 쓴다.
    ⚠ 어두운 카드에서는 검정 10% 가 보이지 않아 그 카드만 흰 알파로 뒤집는다. */
-.diff__no {
-  position: absolute; top: 65px; right: 25px;
-  font-size: 112px; font-weight: 600; line-height: 1; letter-spacing: -.04em;
-  color: rgba(0, 0, 0, .10); pointer-events: none;
-}
 /* ⚠ 제목은 **아이콘·번호 아래에서** 시작한다. 레퍼런스 실측 — 아이콘 80~165, 번호 65~177,
      제목 윗변 215. 안 띄우면 큰 번호가 제목 위에 겹친다(2026-08-24 캡처에서 실제로 겹쳤다).
      아이콘(85) + 50 = 135 가 그 자리를 만든다. */
-.diff__cardt {
-  margin: 50px 0 0; font-size: 28px; font-weight: 800; line-height: 1.2; letter-spacing: -.03em;
-}
-.diff__say { margin-top: 22px; }
-.diff__q { font-size: 18px; font-weight: 700; line-height: 1.6; letter-spacing: -.02em; }
-.diff__a { margin-top: 8px; font-size: 18px; font-weight: 400; line-height: 1.6; letter-spacing: -.02em; }
 /* ⚠ 레퍼런스에 없는 우리 것. 지우면 글 13개가 사라져서 남겼다. 카드 맨 아래로 민다. */
-.diff__tags {
-  margin-top: auto; padding-top: 28px; display: flex; flex-wrap: wrap; gap: 8px;
-}
-.diff__tags span {
-  font-size: 14px; font-weight: 500;
-  padding: 7px 14px; border-radius: 999px;
-}
 
 /* ── 카드 2색 — **하오 포인트 컬러와 회색이 번갈아** (2026-08-24 세영 지시).
    세영: "카드색은 검은색은 하지 말고 하오 포인트 컬러와 회색이 번갈아가며 보이게".
@@ -1029,45 +917,24 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    우리는 두 색만 쓴다 — 01·03·05 레드 / 02·04·06 회색.
    ⚠ 레드 카드의 흰 글자를 위해 채움은 `--brand-fill`(#e83817) 이다. `--brand`(#e83817)를 쓰면
      흰 글자가 4.19:1 로 기준(4.5)을 못 넘는다(2026-08-24 실측). ── */
-.diff__card--brand { background: var(--brand); color: #fff; }
 /* ⚠ .82 는 레드 채움 위에서 3.7:1 이라 18px 본문 기준(4.5)을 못 넘는다(2026-08-24 실측).
      흰색 100% 면 4.86:1 이다. 인용문과 답변은 색이 아니라 **굵기**로 갈린다(q 700 / a 400). */
-.diff__card--brand .diff__q { color: #fff; }
-.diff__card--brand .diff__a b { color: #fff; }
 /* ⚠ 흰 알파 칩은 레드를 **밝게** 만들어 그 위 흰 글자가 3.7:1 로 떨어진다.
      검은 알파로 바꾸면 칩이 어두워져 흰 글자가 산다. */
-.diff__card--brand .diff__tags span { color: #fff; background: rgba(0, 0, 0, .16); }
 
-.diff__card--gray { background: #f4f4f4; color: #222; }
-.diff__card--gray .diff__q { color: rgba(0, 0, 0, .62); }
-.diff__card--gray .diff__a b { color: var(--brand); }
-.diff__card--gray .diff__tags span { color: rgba(0, 0, 0, .74); background: rgba(0, 0, 0, .07); }
 
 /* ⭐ 화면별 보이는 장수 — 레퍼런스 Swiper breakpoints 실측
      기본 2장(간격 25) · 1300 이상 3장(간격 15) · 768 미만 1장(간격 7)
    ⚠ 레퍼런스는 1700 이상에서 다시 2장으로 돌아간다. 큰 화면에서 카드가 너무 커지는 걸
      막으려는 값으로 보이는데, 우리 카드는 폭이 398 로 고정이라 해당 없다(같이 넣지 않았다). */
 @media (min-width: 1300px) {
-  .diff__track { gap: 15px; }
 }
 @media (max-width: 1100px) {
-  .diff__inner { grid-template-columns: 1fr; }
-  .diff__aside { min-height: 0; padding-right: 0; }
-  .diff__nav { margin-top: 36px; }
-  .diff__viewport { margin-top: 44px; }
-  .diff__bar { margin-top: 32px; }
 }
 @media (max-width: 767px) {
-  .diff__track { gap: 7px; }
 }
 @media (max-width: 900px) {
-  .diff { padding-block: 88px; }
   /* ⚠ 좁은 화면에서 카드 폭을 398 로 두면 화면(375)을 넘는다. 화면에 맞춘다. */
-  .diff__card { width: min(398px, 82vw); min-height: 0; padding: 64px 30px 40px; }
-  .diff__no { font-size: 88px; top: 48px; right: 20px; }
-  .diff__cardt { font-size: 23px; margin-top: 36px; }
-  .diff__ico { width: 66px; height: 66px; }
-  .diff__q, .diff__a { font-size: 16px; }
 }
 
 /* ============================================================
@@ -1163,7 +1030,6 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    원본이 쓰는 크기는 164·50·33·30·28·22·20·18·17·16·15·14 뿐인데, 기존 하오웹에서
    가져온 섹션들이 그 밖의 크기를 들고 왔다. 「글자 크기는 파나시아 값을 유지한다」는
    원칙에 따라 본문·라벨급을 스케일 안으로 되돌렸다 —
-     .diff__cardt 26→28 · .diff__tags 12→14 · .work__name 24→22 · .work__live 11→14
      · .row__title 44→30 (원본 con3 링크가 30/700 이다)
    ⚠ 25px 은 **원본에도 있다**(헤더 2뎁스 제목 `.dep2Tit .tit` 25/700). 처음엔 이탈로 보고
      `.bigsay` 를 28 로 올렸다가 되돌렸다 — 메뉴가 닫혀 있어 분포 측정에서 빠졌을 뿐이다.
@@ -1413,14 +1279,6 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   transition: color .3s, border-color .3s, background .3s;
 }
 .tstep.is-on .tstep__no {
-/* ⭐⭐ 2026-08-24 세영 — "단계별로 보여주는 부분이 많을 거야. 숫자 부분은 하오웹 포인트
-     컬러로 바뀌게 통일하자." 사이트의 단계 숫자를 전부 레드로 맞췄다.
-     ⚠ 쓰임에 따라 값이 다르다 — **채움**(흰 숫자를 얹는 동그라미)은 `--brand-fill`(4.86:1),
-       **글자**로 쓰는 숫자는 `--brand-ink`(#e83817 · 흰 바탕 5.68 · #f9f9f9 5.39).
-       `--brand`(#e83817)를 작은 글자에 쓰면 4.19 로 기준(4.5)을 못 넘는다.
-     ⚠ `.diff__no`(카드 위 큰 워터마크 번호)는 단계 표시가 아니라 장식이라 제외했다.
-     ⚠ 타임라인의 **선과 점**은 그대로 먹색이다 — 숫자만 바꾸라는 지시였고,
-       선까지 레드로 하면 '지금 도달한 지점'을 알리는 맥동 레드 점이 묻힌다. */
   color: #fff; background: var(--brand); border-color: var(--brand);
   animation: noPop .55s cubic-bezier(.16,1,.3,1);
 }
