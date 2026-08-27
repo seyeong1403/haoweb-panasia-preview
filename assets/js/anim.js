@@ -189,3 +189,39 @@
     initHl();
   }
 })();
+
+
+/* ── 포트폴리오 레일(.drail) 마퀴 — 2026-08-27 세영: 「이미지 크게 + 끊임없이 흐르게」.
+   손 스크롤 레일을 마퀴로 바꾼다. 엔진은 marquee.js(공용) — hover 시 멈추고,
+   카드 클릭(라이트박스)은 그대로 산다. */
+(function () {
+  'use strict';
+  function initRails() {
+    var make = window.HAO_makeMarquee;
+    if (!make) return;
+    var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq && mq.matches) return;
+    [].slice.call(document.querySelectorAll('.drail[data-rail]')).forEach(function (rail) {
+      rail.style.overflow = 'hidden';
+      /* ⚠⚠ view(멈춤 판정·IO 관찰)와 track(transform 이동)은 **다른 요소**여야 한다.
+         rail 자신을 track 으로 쓰면 rail 이 통째로 -1만px 밀려 화면 밖 취급되고,
+         IntersectionObserver 가 즉시 stop 을 불러 영영 안 흐른다(실측 [0,0]). */
+      var track = document.createElement('div');
+      track.className = 'drail__track';
+      while (rail.firstChild) track.appendChild(rail.firstChild);
+      rail.appendChild(track);
+      var m = make(rail, track, { speed: 40 });
+      if (!m) return;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) m.start(); else m.stop(); });
+        }, { threshold: 0 }).observe(rail);
+      } else m.start();
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRails);
+  } else {
+    initRails();
+  }
+})();

@@ -1074,6 +1074,9 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
      이 섹션만 화면 전체를 쓴다. 원본도 같다.
    ============================================================ */
 .hw-sec .bighead { display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 48px; }
+/* 2026-08-27 세영: Work 머리는 가운데 정렬 + 리드 한 줄 */
+.hw-sec .bighead--center { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+.hw-sec .bighead--center .bighead__lead { max-width: none; }
 .hw-sec .bighead__title {
   font-family: var(--font); font-size: clamp(64px, 7vw, 112px); line-height: .95;
   font-weight: 700; letter-spacing: -.035em; white-space: nowrap;
@@ -1768,9 +1771,45 @@ body:has(.subhero--grad) .nav:not(.is-stuck):not(.is-open) .nav__logo img {conte
    본문이라면 모자라지만 이 글자는 44px 이상(굵기 800)이라 큰 글자 기준(3:1)을 넘는다. */
 .flowtxt{ overflow:hidden; padding:44px 0; }
 .flowtxt__track{ display:flex; white-space:nowrap; will-change:transform; }
+/* 2026-08-27 세영: 「더 크게, 색은 튀니까 연하게」 — 워터마크처럼 가라앉힌 브랜드색 */
 .flowtxt__part{
   display:inline-block; flex:none; padding-right:72px;
-  font-size:clamp(44px, 6.2vw, 95px); font-weight:800; line-height:1.15;
-  letter-spacing:-.02em; color:var(--brand);
+  font-size:clamp(56px, 8.2vw, 128px); font-weight:800; line-height:1.15;
+  letter-spacing:-.02em; color:rgba(232,56,23,.18);
 }
 @media screen and (max-width:1024px){ .flowtxt{ padding:30px 0; } }
+
+/* ============================================================
+   스크롤 다운 표시 — miracell.co.kr/kr 실측 이식 (2026-08-27 세영)
+   실측: 래퍼 좌 30 · 하 80 · 원 60×60(4px rgba(255,255,255,.1), 안쪽 세로 flex 가운데) ·
+   점 6px 흰 원 3개(위 두 점 사이 1px), keyframes 10%→.25 / 20%→.5 / 30%→1,
+   1.5s 무한, 딜레이 0 / .2s / .3s · 글 15/500 rgba(255,255,255,.5) · 원과 글 사이 24px.
+   ⚠⚠ 기준은 **사진 박스(video-wrap) 안**이어야 한다. 섹션 기준으로 두면 로드 시(알약이
+     아직 작을 때) 표시가 흰 배경 위에 떠서 흰 점·흰 글자가 통째로 안 보인다(실측).
+     사진 안이면 축소·확대 어느 상태에서도 어두운 사진 위다. */
+/* ⚠ 로드 시에는 히어로 알약 밖 «흰 배경» 위라 흰 점·글자가 통째로 안 보였고,
+   사진 박스 안에 넣으면 알약 곡선(overflow)에 잘렸다(둘 다 실측).
+   → 섹션 기준으로 두고 **배경 상태에 따라 색을 바꾼다** — 기본 먹색,
+   히어로가 펼쳐지면(.mv-ix_visual_box.on) 흰색(실측값 그대로). */
+.scrolldown{
+  position:absolute; left:30px; bottom:80px; z-index:5;
+  display:flex; align-items:center; gap:24px; pointer-events:none;
+}
+.scrolldown__ring{
+  width:60px; height:60px; border:4px solid rgba(23,21,15,.12); border-radius:50%;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  transition:border-color .4s ease;
+}
+.scrolldown__dot{
+  width:6px; height:6px; border-radius:6px; background:#17150f; opacity:.25;
+  animation:sd_dotfade 1.5s infinite; transition:background-color .4s ease;
+}
+section.visual:has(.mv-ix_visual_box.on) .scrolldown__ring{ border-color:rgba(255,255,255,.1); }
+section.visual:has(.mv-ix_visual_box.on) .scrolldown__dot{ background:#fff; }
+section.visual:has(.mv-ix_visual_box.on) .scrolldown__txt{ color:rgba(255,255,255,.5); }
+.scrolldown__dot + .scrolldown__dot{ margin-top:1px; }
+.scrolldown__dot:nth-child(2){ animation-delay:.2s; }
+.scrolldown__dot:nth-child(3){ animation-delay:.3s; }
+@keyframes sd_dotfade{ 10%{ opacity:.25; } 20%{ opacity:.5; } 30%{ opacity:1; } }
+.scrolldown__txt{ font-size:15px; font-weight:500; color:rgba(23,21,15,.5); margin:0; transition:color .4s ease; }
+@media screen and (max-width:1024px){ .scrolldown{ left:20px; bottom:40px; } }
