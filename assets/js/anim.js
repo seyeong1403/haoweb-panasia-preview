@@ -6,7 +6,9 @@
    ⚠ 히어로는 IntersectionObserver 에만 맡기면 안 된다 — rootMargin 이 화면 아래 12% 를
      관찰에서 빼기 때문에, 첫 화면 맨 아래 CTA 는 스크롤 전까지 나타나지 않는다.
      그래서 `data-anim-hero` 는 load 후 0.9s 로 따로 재생한다(원본 실측).
-   ⚠ index 는 GSAP·AOS 로 이미 모션이 있다 — 이 파일은 **서브에서만** 부른다. */
+   ⚠ 2026-08-27 부터 index 도 부른다(옛 하오웹 haoweb/index 타이틀 모션 이식) —
+     index 의 GSAP·AOS 는 히어로·다른 섹션 담당이라 충돌하지 않는다.
+     data-anim 계열은 재진입마다 다시 재생된다(initReveal 의 outIO 참조). */
 (function () {
   'use strict';
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -50,27 +52,37 @@
   }
 
   // 줄 단위 — 단어를 감싼 뒤 offsetTop으로 줄을 묶고 마스크 처리
+  // ⚠ <br> 이 있는 제목(index .txt2 등)은 textContent 로 넘기면 줄바꿈이 사라지고
+  //   경계의 두 단어가 붙는다(「다르면,고객이」). <br> 을 강제 줄 경계로 보존한다.
+  //   (.ta-mask 가 display:block 이라 최종 마크업에는 <br> 이 필요 없다)
   function splitLines(el) {
-    if (el.dataset.splitBase === undefined) el.dataset.splitBase = el.textContent;
-    var text = el.dataset.splitBase.replace(/\s+/g, ' ').trim();
+    if (el.dataset.splitBase === undefined) el.dataset.splitBase = el.innerHTML;
+    var chunks = el.dataset.splitBase.split(/<br\s*\/?>/i);
     el.textContent = '';
 
     var probes = [];
-    text.split(' ').forEach(function (word, wi, arr) {
-      var w = document.createElement('span');
-      w.style.display = 'inline-block';
-      w.textContent = word;
-      el.appendChild(w);
-      probes.push(w);
-      if (wi < arr.length - 1) el.appendChild(document.createTextNode(' '));
+    chunks.forEach(function (chunk, ci) {
+      var tmp = document.createElement('div');
+      tmp.innerHTML = chunk;
+      var text = tmp.textContent.replace(/\s+/g, ' ').trim();
+      if (!text) return;
+      text.split(' ').forEach(function (word, wi, arr) {
+        var w = document.createElement('span');
+        w.style.display = 'inline-block';
+        w.textContent = word;
+        el.appendChild(w);
+        probes.push({ w: w, ci: ci });
+        if (wi < arr.length - 1) el.appendChild(document.createTextNode(' '));
+      });
+      if (ci < chunks.length - 1) el.appendChild(document.createElement('br'));
     });
 
     var lines = [];
-    var top = null;
-    probes.forEach(function (w) {
-      var t = w.offsetTop;
-      if (top === null || Math.abs(t - top) > 3) { lines.push([]); top = t; }
-      lines[lines.length - 1].push(w.textContent);
+    var top = null, lastCi = null;
+    probes.forEach(function (p) {
+      var t = p.w.offsetTop;
+      if (top === null || Math.abs(t - top) > 3 || p.ci !== lastCi) { lines.push([]); top = t; lastCi = p.ci; }
+      lines[lines.length - 1].push(p.w.textContent);
     });
 
     el.textContent = '';
@@ -107,12 +119,28 @@
         if (!e.isIntersecting) return;
         var el = e.target;
         var delay = parseFloat(el.dataset.delay || '0');
-        setTimeout(function () { el.dataset.played = 'true'; }, delay * 1000);
-        io.unobserve(el);
+        el._inT = setTimeout(function () { el.dataset.played = 'true'; }, delay * 1000);
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
 
-    animEls.concat(fadeEls).forEach(function (el) { io.observe(el); });
+    /* 재진입마다 다시 재생 (2026-08-27 세영, 옛 하오웹 haoweb/index 이식:
+       「스크롤을 내릴때마다 모션이 있는 타이틀」) — 옛 사이트 revIO 실측 그대로
+       두 갈래 관찰: 진입은 위 io(기존 기준 유지), 리셋은 **완전히 화면 밖**일 때만
+       (threshold 0 · margin 0 — 일부라도 보이는 동안 닫히면 빈 화면이 된다).
+       리셋은 스냅백이다: 트랜지션이 played 상태에만 선언돼 있어 속성만 지우면 된다.
+       ⚠ 히어로(data-anim-hero)는 로드 인트로라 리셋하지 않는다 — 맨 위로 되돌아올
+         때마다 인트로가 다시 도는 것은 원본에도 없다. */
+    var outIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) return;
+        var el = e.target;
+        if (el.hasAttribute('data-anim-hero')) return;
+        clearTimeout(el._inT);
+        delete el.dataset.played;
+      });
+    }, { threshold: 0 });
+
+    animEls.concat(fadeEls).forEach(function (el) { io.observe(el); outIO.observe(el); });
 
     // 히어로는 로드 직후 0.9s 뒤 (레퍼런스 실측). data-delay 가 있으면 그만큼 더 늦춘다.
     // ※ 히어로 요소를 IntersectionObserver 에만 맡기면 안 된다 —
@@ -233,5 +261,58 @@
     document.addEventListener('DOMContentLoaded', initRails);
   } else {
     initRails();
+  }
+})();
+
+
+/* ── 프로세스 스파이(.proc-grid) — 옛 하오웹(haoweb/index) 실측 이식 (2026-08-27) ──
+   원본 로직 그대로: 화면 세로 중앙 10% 밴드(rootMargin -45%/-45%)에 들어온 항목이
+   현재가 되고, 왼쪽 대형 번호·제목·카운트·진행선이 그 항목으로 바뀐다.
+   hover 는 미리보기 — 커서가 항목에 오르면 왼쪽이 그 항목으로, 떠나면 스크롤 현재로.
+   ⚠ 딤은 .proc--armed 를 붙인 뒤에만 걸린다(JS 죽으면 전부 또렷 — .hl 과 같은 안전장치). */
+(function () {
+  'use strict';
+  function initProc() {
+    var grids = [].slice.call(document.querySelectorAll('.proc-grid'));
+    if (!grids.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    grids.forEach(function (grid) {
+      var items = [].slice.call(grid.querySelectorAll('.proc-item'));
+      if (!items.length) return;
+      var curNo = grid.querySelector('.proc-cur-no');
+      var curTitle = grid.querySelector('.proc-cur-title');
+      var count = grid.querySelector('.proc-count b');
+      var fill = grid.querySelector('.proc-track-fill');
+      var total = items.length;
+      var cur = 0;
+      function setProc(i) {
+        if (i < 0 || i >= total) return;
+        items.forEach(function (it, idx) { it.classList.toggle('on', idx === i); });
+        var el = items[i];
+        if (curNo) curNo.textContent = el.getAttribute('data-no');
+        if (curTitle) curTitle.textContent = el.getAttribute('data-title');
+        if (count) count.textContent = el.getAttribute('data-no');
+        if (fill) fill.style.width = (((i + 1) / total) * 100).toFixed(1) + '%';
+      }
+      setProc(0);
+      if (!reduce && 'IntersectionObserver' in window) {
+        grid.classList.add('proc--armed');
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting) { cur = items.indexOf(e.target); setProc(cur); }
+          });
+        }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+        items.forEach(function (it) { io.observe(it); });
+      }
+      items.forEach(function (it, i) {
+        it.addEventListener('mouseenter', function () { setProc(i); });
+        it.addEventListener('mouseleave', function () { setProc(cur); });
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProc);
+  } else {
+    initProc();
   }
 })();

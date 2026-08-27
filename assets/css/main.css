@@ -9,6 +9,9 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
 /* 워드마크 밴드 전용 — 원본 campton 이 상용이라 기존 하오웹이 Poppins 로 대체해 쓰고 있다(세영 확인) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+/* 숫자·영문 라벨 전용 — 옛 하오웹(haoweb) --font-label 실측 이식(2026-08-27 세영:
+   「숫자 폰트도 예뻐」). 국문은 스택 폴백으로 Pretendard 가 그대로 받는다. */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 
 :root{
   --brand:#e83817;            /* 하오 레드 — 원본 #0089CF 자리 전부 */
@@ -24,13 +27,20 @@
   --r-field:8px;
   --font:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
          'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* 숫자·영문 라벨 — 옛 하오웹(haoweb) --font-label(Space Grotesk) 이식.
+     크기·굵기는 각 컴포넌트 기존 값 그대로, 서체만 바꾼다. */
+  --font-num:'Space Grotesk', var(--font);
 }
 
 /* ---------- 리셋 (원본 common.css 동등) ---------- */
 *{ box-sizing:border-box; outline:none !important; }
 html{ height:100%; overflow-y:auto; }
 body{
-  overflow:hidden; margin:0; min-width:320px; color:#000;
+  /* 원본은 overflow:hidden — 그대로 두면 body 가 클리핑 컨테이너가 되어 뷰포트 기준
+     position:sticky 가 전부 죽는다(proc-stage -1911px 실측, pcards .sec_tbox 도
+     조용히 죽어 있었다). clip 은 같은 클리핑을 하되 스크롤 컨테이너를 만들지 않아
+     sticky 가 산다(2026-08-27 proc 이식 때 발견). */
+  overflow:clip; margin:0; min-width:320px; color:#000;
   line-height:1.47; font-size:16px; font-family:var(--font);
   word-break:keep-all; overflow-wrap:break-word; font-weight:400;
 }
@@ -1037,7 +1047,12 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   font-size:440px; font-weight:700; line-height:1;
   color:#000; text-align:center; white-space:nowrap;
   will-change:transform; animation:txtsecFlowL 16.5s linear infinite;
+  /* 2026-08-27 세영: 「보이기 직전부터 모션 들어가게 — 내렸을 때 이미 많이 진행돼 휭해」
+     → 로드부터 돌리지 않고 멈춰 두었다가(글자 중앙 정렬 상태) 섹션이 화면에
+       접근하면 JS 가 .is-run 을 붙여 그때부터 흐른다. 완전히 벗어나면 리셋. */
+  animation-play-state:paused;
 }
+.txtsec.is-run .txtsec__line{ animation-play-state:running; }
 .txtsec__line[data-wb="-1"]{ animation-name:txtsecFlowR; }
 @keyframes txtsecFlowL{ from{ transform:translateX(0); } to{ transform:translateX(-100vw); } }
 @keyframes txtsecFlowR{ from{ transform:translateX(0); } to{ transform:translateX(100vw); } }
@@ -1813,3 +1828,70 @@ section.visual:has(.mv-ix_visual_box.on) .scrolldown__txt{ color:rgba(255,255,25
 @keyframes sd_dotfade{ 10%{ opacity:.25; } 20%{ opacity:.5; } 30%{ opacity:1; } }
 .scrolldown__txt{ font-size:15px; font-weight:500; color:rgba(23,21,15,.5); margin:0; transition:color .4s ease; }
 @media screen and (max-width:1024px){ .scrolldown{ left:20px; bottom:40px; } }
+
+/* ============================================================
+   등장 모션 — 기존 하오웹 것을 그대로 (2026-08-27 세영: 「서브페이지에 모션 좀 넣어줘, 다양하게」)
+   2026-08-27 sub.css → main.css 이동: 옛 하오웹(haoweb/index) 타이틀 모션 이식으로
+   index 에도 걸린다. 재생은 anim.js — 완전히 벗어나면 리셋, 재진입마다 다시 재생
+   (세영: 「스크롤을 내릴때마다 모션이 있는 타이틀」). 리셋이 스냅백인 이유:
+   트랜지션이 played 상태에만 선언돼 있어 속성을 지우면 즉시 원위치다.
+   ⚠ 마크업에는 `data-anim`·`data-anim="lines"`·`data-fade` 가 **이미 붙어 있었다.**
+     파나시아에 이 규칙과 JS 가 없어 **아무 일도 일어나지 않고** 있었을 뿐이다.
+   세 갈래로 다르게 들어온다:
+     · `data-anim`        글자 단위 — 오른쪽에서 하나씩 (제목)
+     · `data-anim="lines"` 줄 단위 — 마스크 아래에서 위로 (문단)
+     · `data-fade`        블록 통째 — 아래에서 24px 올라오며 (카드·이미지)
+   ============================================================ */
+.ta-char, .ta-line{ display:inline-block; will-change:transform, opacity; }
+[data-anim] .ta-char{ opacity:0; transform:translateX(20px); }
+[data-anim][data-played='true'] .ta-char{
+  opacity:1; transform:none;
+  transition:opacity .7s cubic-bezier(0,0,.2,1), transform .7s cubic-bezier(0,0,.2,1); }
+.ta-mask{ display:block; overflow:hidden; }
+[data-anim] .ta-mask .ta-line{ opacity:0; transform:translateY(105%); }
+[data-anim][data-played='true'] .ta-mask .ta-line{
+  opacity:1; transform:none;
+  transition:opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1); }
+[data-fade]{ opacity:0; transform:translateY(24px); }
+[data-fade][data-played='true']{
+  opacity:1; transform:none;
+  transition:opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1); }
+/* 소제목은 조금 짧고 빠르게 — 질문이 먼저 들어오고 제목이 뒤따르는 순서가 보이게 */
+.askq[data-fade], .eyebrow[data-fade], .bluetext[data-fade]{ opacity:0; transform:translateY(14px); }
+.askq[data-fade][data-played='true'], .eyebrow[data-fade][data-played='true'],
+.bluetext[data-fade][data-played='true']{
+  opacity:1; transform:none;
+  transition:opacity .62s cubic-bezier(.19,1,.22,1), transform .62s cubic-bezier(.19,1,.22,1); }
+
+@media (prefers-reduced-motion: reduce){
+  [data-anim] .ta-char, [data-anim] .ta-mask .ta-line, [data-fade]{
+    opacity:1 !important; transform:none !important; }
+  .tstep{ opacity:1 !important; transform:none !important; }
+}
+
+/* ============================================================
+   숫자 폰트 — 옛 하오웹(haoweb) Space Grotesk 이식 (2026-08-27 세영: 「숫자 폰트도 예뻐」)
+   대상: 카드·단계 번호, 실적 숫자, 플랜 규모, 영문 실적 라벨.
+   크기·굵기·색은 각 컴포넌트 기존 값 그대로 — 서체만 바꾼다(폰트·크기 고정 원칙).
+   국문이 섞인 값(「20페이지」)은 스택 폴백으로 국문만 Pretendard 가 받는다.
+   ⚠ 워드마크 밴드(.txtsec__line)는 Poppins 유지 — campton 대체로 세영이 확정한 서체다.
+   ============================================================ */
+.perf__no em, .perf__en, .acc__no,
+.step__no, .tstep__no, .biz-incl__no, .biz-band__no, .biz-grid__no,
+.dgr__no, .zig__no, .pcard__nm, .plan__scale b{
+  font-family:var(--font-num);
+}
+
+/* 버튼 hover 리프트 — 옛 하오웹(haoweb) .btn-primary:hover translateY(-2px) 실측 이식.
+   색 전환은 기존 규칙 그대로, 위로 2px 뜨는 움직임만 더한다. */
+.button.add-button{ transition:background .2s, color .2s, border-color .2s, transform .22s cubic-bezier(.22,1,.36,1); }
+.button.add-button:hover{ transform:translateY(-2px); }
+
+/* 실적 숫자 팝 — 옛 하오웹(haoweb) noPop 실측 이식(세기 시작할 때 한 번 튀어오른다).
+   카운트업 자체는 기존 바로웹 이식(main.js) 그대로. */
+@keyframes noPop{ 0%{ transform:scale(.5); } 55%{ transform:scale(1.16); } 100%{ transform:scale(1); } }
+.perf__no em{ display:inline-block; }
+.perf__no em.num-pop{ animation:noPop .55s cubic-bezier(.22,1,.36,1) both; transform-origin:center center; }
+@media (prefers-reduced-motion: reduce){
+  .perf__no em.num-pop{ animation:none; }
+}

@@ -898,40 +898,6 @@ main .container > .btns:first-child{ margin-top:0; }
 .invert .timeline__line i{ background:#fff; }
 .invert .tstep.is-on::before{ background:#fff; border-color:#fff; }
 
-/* ============================================================
-   등장 모션 — 기존 하오웹 것을 그대로 (2026-08-27 세영: 「서브페이지에 모션 좀 넣어줘, 다양하게」)
-   ⚠ 마크업에는 `data-anim`·`data-anim="lines"`·`data-fade` 가 **이미 붙어 있었다.**
-     파나시아에 이 규칙과 JS 가 없어 **아무 일도 일어나지 않고** 있었을 뿐이다.
-   세 갈래로 다르게 들어온다:
-     · `data-anim`        글자 단위 — 오른쪽에서 하나씩 (제목)
-     · `data-anim="lines"` 줄 단위 — 마스크 아래에서 위로 (문단)
-     · `data-fade`        블록 통째 — 아래에서 24px 올라오며 (카드·이미지)
-   ============================================================ */
-.ta-char, .ta-line{ display:inline-block; will-change:transform, opacity; }
-[data-anim] .ta-char{ opacity:0; transform:translateX(20px); }
-[data-anim][data-played='true'] .ta-char{
-  opacity:1; transform:none;
-  transition:opacity .7s cubic-bezier(0,0,.2,1), transform .7s cubic-bezier(0,0,.2,1); }
-.ta-mask{ display:block; overflow:hidden; }
-[data-anim] .ta-mask .ta-line{ opacity:0; transform:translateY(105%); }
-[data-anim][data-played='true'] .ta-mask .ta-line{
-  opacity:1; transform:none;
-  transition:opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1); }
-[data-fade]{ opacity:0; transform:translateY(24px); }
-[data-fade][data-played='true']{
-  opacity:1; transform:none;
-  transition:opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1); }
-/* 소제목은 조금 짧고 빠르게 — 질문이 먼저 들어오고 제목이 뒤따르는 순서가 보이게 */
-.askq[data-fade], .eyebrow[data-fade]{ opacity:0; transform:translateY(14px); }
-.askq[data-fade][data-played='true'], .eyebrow[data-fade][data-played='true']{
-  opacity:1; transform:none;
-  transition:opacity .62s cubic-bezier(.19,1,.22,1), transform .62s cubic-bezier(.19,1,.22,1); }
-
-@media (prefers-reduced-motion: reduce){
-  [data-anim] .ta-char, [data-anim] .ta-mask .ta-line, [data-fade]{
-    opacity:1 !important; transform:none !important; }
-  .tstep{ opacity:1 !important; transform:none !important; }
-}
 
 /* ============================================================
    스크롤 하이라이트 목록 — webpreme.com/services/platform 실측 이식 (2026-08-27 세영)
@@ -1086,4 +1052,57 @@ body.lbox-open { overflow: hidden; }
   .lbox__info { max-height: none; overflow: visible; padding-bottom: 76px; }
   .lbox__title { font-size: 21px; }
   .lbox__btn { top: auto; bottom: 16px; transform: none; width: 46px; height: 46px; }
+}
+
+/* ============================================================
+   프로세스 스파이(.proc) — 옛 하오웹(haoweb/index) 실측 이식 (2026-08-27 세영:
+   「이 부분에 적용 가능할 것 같은데, 다른 데 적용 가능한 부분 찾아 일괄 적용해줘」)
+   좌: 현재 항목 대형 번호+제목 고정(sticky) / 우: 번호 목록.
+   스크롤 화면 중앙 밴드에 든 항목이 현재가 되고(딤 해제), 진행선이 차오른다.
+   hover 하면 왼쪽이 그 항목으로 미리 바뀐다. 재현 규칙은 anim.js initProc.
+   토큰 치환: --font-label→--font-num · --color-primary→--brand · black→800 ·
+   line→#d9d9d9 · muted→#a4a4a4 · soft→#606060. 크기 체계는 원본 clamp 그대로
+   (장식급 컴포넌트 고유 형태), 목록 글자만 파나시아 값(18/20/16).
+   ⚠ 딤(.4)은 .proc--armed 가 붙은 뒤에만 — JS 가 죽으면 전부 또렷해야 한다. */
+.proc-grid{ display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
+  gap:clamp(36px,6vw,88px); align-items:start; margin-top:clamp(30px,4vw,52px); }
+.proc-stage{ position:sticky; top:120px; }
+.proc-cur-no{ font-family:var(--font-num); font-size:clamp(4rem,12vw,8.5rem); font-weight:800;
+  line-height:.9; color:var(--brand); letter-spacing:-.04em; display:block; }
+.proc-cur-title{ font-size:clamp(1.7rem,3.4vw,2.8rem); font-weight:800; color:#000;
+  letter-spacing:-.025em; margin:14px 0 22px; word-break:keep-all; }
+.proc-count{ font-family:var(--font-num); font-size:16px; color:#a4a4a4; margin-bottom:16px; }
+.proc-count b{ color:#000; font-weight:700; }
+.proc-track{ display:block; position:relative; width:100%; max-width:220px; height:2px; background:#d9d9d9; }
+.proc-track-fill{ position:absolute; left:0; top:0; height:100%; width:0;
+  background:var(--brand); transition:width .3s cubic-bezier(.22,1,.36,1); }
+
+.proc-list{ display:grid; margin:0; padding:0; list-style:none; }
+.proc-item{ display:grid; grid-template-columns:3.4rem 1fr; gap:20px; align-items:baseline;
+  padding:clamp(20px,2.6vw,30px) 0; border-top:1px solid #d9d9d9;
+  transition:opacity .3s cubic-bezier(.22,1,.36,1); }
+.proc-item:first-child{ border-top:0; }
+@media (min-width:901px){
+  .proc--armed .proc-item{ opacity:.4; }
+  .proc--armed .proc-item.on{ opacity:1; }
+}
+.pi-no{ font-family:var(--font-num); font-size:18px; font-weight:700; color:#a4a4a4; transition:color .16s; }
+.proc-item.on .pi-no{ color:var(--brand); }
+.pi-c h4{ font-size:20px; font-weight:700; color:#000; letter-spacing:-.015em; margin:0 0 7px; word-break:keep-all; }
+.pi-c p{ font-size:16px; line-height:1.62; color:#606060; max-width:46ch; word-break:keep-all; margin:0; }
+.pi-c .deflist{ margin-top:14px; }
+
+/* 어두운 섹션(invert) — process.html Eight Steps 등 */
+.invert .proc-cur-title{ color:#fff; }
+.invert .proc-count b{ color:#fff; }
+.invert .proc-track{ background:rgba(255,255,255,.22); }
+.invert .proc-item{ border-top-color:rgba(255,255,255,.25); }
+.invert .pi-no{ color:rgba(255,255,255,.45); }
+.invert .proc-item.on .pi-no{ color:var(--brand); }
+.invert .pi-c h4{ color:#fff; }
+.invert .pi-c p{ color:rgba(255,255,255,.7); }
+
+@media screen and (max-width:900px){
+  .proc-grid{ grid-template-columns:1fr; gap:26px; }
+  .proc-stage{ position:static; display:none; }   /* 원본과 동일 — 모바일은 목록만 */
 }

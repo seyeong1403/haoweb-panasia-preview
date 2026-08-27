@@ -673,6 +673,30 @@
     apply();
     window.addEventListener('resize', apply);
 
+    /* 시작 타이밍 (2026-08-27 세영: 「보이기 직전부터 모션 들어가게」) —
+       로드부터 돌리면 스크롤해 내려왔을 때 글자가 이미 멀리 가 있어 화면이 휭하다.
+       섹션이 화면 하단에 접근하면(뷰포트 아래 15% 여유) 그때 흐르기 시작하고,
+       완전히 벗어나면 애니메이션을 처음(중앙 정렬)으로 리셋해 재진입 때 다시 시작한다. */
+    if (!reduced && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) {
+            sec.classList.add('is-run');
+          } else {
+            sec.classList.remove('is-run');
+            lines.forEach(function (el) {
+              el.style.animation = 'none';
+              void el.offsetWidth;       // 리플로 강제 — 애니메이션 진행도를 0 으로
+              el.style.animation = '';
+            });
+            apply();                     // animationDuration 인라인이 위에서 지워졌으니 재적용
+          }
+        });
+      }, { threshold: 0, rootMargin: '0px 0px 15% 0px' }).observe(sec);
+    } else {
+      sec.classList.add('is-run');       // IO 없으면 원래대로 항상 흐른다
+    }
+
     /* 배경 캡처를 한 장씩 넘긴다 (2026-08-16 세영: "하나의 이미지를 깔자 · 모션이 들어가며
        다른 이미지로 바뀌고"). 레퍼런스는 영상 한 편이라 그 등가물로 전환을 쓴다.
        ⚠ 두 줄은 **같은 사진**을 공유한다 — 배경은 섹션에 하나뿐이다. */
@@ -709,6 +733,7 @@
       var steps = Math.max(1, Math.round(TIME / DELAY));
       var n = 0;
       el.textContent = '0';   /* 세기 직전에만 0 으로 — 그 전에는 목표값이 보인다 */
+      el.classList.add('num-pop');   /* 옛 하오웹(haoweb) noPop — 세기 시작에 한 번 튀어오른다 */
       var timer = setInterval(function () {
         n++;
         var v = n >= steps ? target : Math.round(target * n / steps);
