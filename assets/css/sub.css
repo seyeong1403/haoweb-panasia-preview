@@ -759,6 +759,13 @@ main .container > .btns:first-child{ margin-top:0; }
 .subhero__crumb {font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #fff; margin-bottom: 12px; text-shadow: 0 1px 3px rgba(0,0,0,.55);}
 .h1__ko {margin-top: 14px; font-size: clamp(18px, 1.953vw, 28px); font-weight: 500; line-height: 1.5; letter-spacing: -.02em; color: #17150f;}
 .subhero .h1__ko {color: #fff;}
+/* ⚠ 2026-08-27 세영: 「검은 글자가 잘 안보여」. 칼럼 9장은 히어로 제목에 본문용
+   `.article__title` 을 쓰고 있어서 위의 `.h1__ko` 흰색 규칙에 걸리지 않았다 —
+   어두운 사진 위에 검은 글자가 그대로 남아 거의 안 보였다.
+   클래스 이름에 기대지 말고 «히어로 안의 h1» 을 통째로 흰색으로 둔다.
+ ⚠ 밝은 그라데이션 히어로(`--grad`)만 예외다. 특정도가 같으므로 **반드시 뒤에** 적는다. */
+.subhero h1 {color: #fff;}
+.subhero--grad h1 {color: #17150f;}
 .subhero--full {height: 100svh;}
 .subhero__row {display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 64px; align-items: start; margin-top: 18px;}
 .subhero__row .subhero__kr {margin-top: 0;}

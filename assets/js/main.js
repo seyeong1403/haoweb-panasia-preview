@@ -496,45 +496,44 @@
       scrollTrigger: { trigger: '.main-con3', start: 'top bottom', end: 'center bottom', scrub: 2 }
     });
 
-  /* ---------- 복원 섹션 ---------- */
-  /* 차별화된 서비스 — 기존 하오웹(design-preview) 슬라이더를 그대로 옮겼다.
-     Swiper 를 쓰지 않는다: 앞뒤 한 벌씩 복제한 무한 루프 + 5초 자동재생 + 진행바.
-     전환 시간(800ms)은 CSS `.diff__track` 한 곳에서만 정한다 — 여기서 인라인으로
-     넣으면 place() 가 transition 을 비우는 순간 사라진다(원본 주석의 실제 사고). */
-  function initDiff() {
-    var view = document.querySelector('[data-diff-view]');
-    var track = document.querySelector('[data-diff-track]');
-    if (!view || !track) return;
-    var fill = document.querySelector('[data-diff-fill]');
+  /* ---------- 차별화된 서비스 — 아코디언 ----------
+     soijeong.com 「Award Winner」 실측: **얹으면 그 카드가 펼쳐진다**(자동 전환 없음).
+     폭 전환은 CSS(`flex-basis .4s`)가 맡고 여기서는 `is-open` 만 옮긴다.
+   ⚠ 첫 카드는 HTML 에 `is-open` 이 박혀 있다 — JS 가 죽어도 한 장은 펼쳐진 채로 보인다. */
+  function initAcc() {
+    var list = document.querySelector('[data-acc]');
+    if (!list) return;
+    var items = [].slice.call(list.querySelectorAll('[data-acc-item]'));
+    if (!items.length) return;
 
-    /* ⚠ 마퀴 «엔진» 은 makeMarquee 한 곳에만 둔다. 예전에는 여기에 같은 로직을 한 벌 더
-       두었는데, 속도를 올려 달라는 말에 한쪽만 고쳐져 이 슬라이더만 느린 채로 남았다
-       (2026-08-27). 두 곳에 복사된 코드는 반드시 그런 식으로 어긋난다. */
-    var m = makeMarquee(view, track, {
-      paint: function (r) {
-        if (fill) fill.style.width = (r * 100).toFixed(2) + '%';
-      }
+    function open(el) {
+      items.forEach(function (o) { o.classList.toggle('is-open', o === el); });
+    }
+    items.forEach(function (el) {
+      el.addEventListener('mouseenter', function () { open(el); });
+      el.addEventListener('focusin', function () { open(el); });
+      /* 터치 기기에는 hover 가 없다 — 두드리면 펼쳐지게 한다. */
+      el.addEventListener('click', function () { open(el); });
     });
+    /* 목록 밖으로 나가면 처음 카드로 돌아간다(레퍼런스와 같다). */
+    list.addEventListener('mouseleave', function () { open(items[0]); });
+  }
+  initAcc();
+
+  /* ---------- 흐르는 문구 ----------
+     레퍼런스 실측 초당 23px. 2026-08-27 세영 「조금 빠르게」 → 35. */
+  (function () {
+    var track = document.querySelector('[data-flowtxt]');
+    if (!track) return;
+    var sec = track.parentElement;
+    var m = makeMarquee(sec, track, { speed: 35 });
     if (!m) return;
-
-    var prev = document.querySelector('[data-diff="prev"]');
-    var next = document.querySelector('[data-diff="next"]');
-    if (prev) prev.addEventListener('click', function () { m.nudge(-m.step()); });
-    if (next) next.addEventListener('click', function () { m.nudge(m.step()); });
-
-    /* ⚠ 화면 밖에서는 돌리지 않는다 — 안 보이는 곳에서 프레임을 도는 건 낭비다. */
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
         es.forEach(function (e) { if (e.isIntersecting) m.start(); else m.stop(); });
-      }, { threshold: .2 }).observe(view);
+      }, { threshold: 0 }).observe(sec);
     } else m.start();
-  }
-
-
-  /* ⚠ 즉시 부르면 CSS 적용 전 카드 폭(52px)으로 step() 이 계산돼 트랙이 -402px 에서
-     굳는다(정상 -2478px = 6장 x 413). 실제로 그랬다 — 스타일이 확정된 뒤에 건다. */
-  if (document.readyState === 'complete') initDiff();
-  else window.addEventListener('load', initDiff);
+  })();
 
   /* SEO·AEO·GEO 상세 pill 탭 */
   $$('.hw-viz [data-viz-tab]').forEach(function (btn) {
