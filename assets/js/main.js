@@ -15,7 +15,13 @@
   var $$ = function (s, root) { return Array.prototype.slice.call((root || document).querySelectorAll(s)); };
 
   /* ---------- 헤더: 스크롤 상태 ---------- */
-  var header = $('#header');
+  /* ⚠⚠ 2026-08-27 — 헤더를 기존 하오웹 것(`nav.nav`)으로 바꾸면서 `#header` 가 사라졌다.
+     바로 아래 `applyHeaderClass()` 가 **로드 즉시** 실행되는데 null 이면 거기서 예외가 나고
+     **이 파일의 나머지가 통째로 중단된다** — 히어로 잠금(`no_scroll`)도, 등장 애니메이션도
+     걸리지 않아 메인 첫 화면이 흰 화면으로 보였다.
+     ⚠ 콘솔 검사(_qa/console.py)는 이 예외를 못 잡았다. 「에러 0」을 곧이곧대로 믿지 말 것.
+     옛 헤더 제어 코드는 대상이 없으면 아무 일도 하지 않게 더미로 받는다(되돌릴 때를 위해 남긴다). */
+  var header = $('#header') || document.createElement('div');
   function applyHeaderClass() {
     if (window.scrollY < 1) {
       header.classList.remove('nav-up');
@@ -64,7 +70,7 @@
     btn.addEventListener('click', function () {
       $$('.allMenuBtn').forEach(function (b) { b.classList.toggle('active'); });
       $('#headerY') && $('#headerY').classList.toggle('active');
-      $('.allMenuWrap').classList.toggle('active');
+      $('.allMenuWrap') && $('.allMenuWrap').classList.toggle('active');
     });
   });
   /* 전체메뉴(모바일) 아코디언 */

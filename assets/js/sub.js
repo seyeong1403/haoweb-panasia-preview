@@ -9,7 +9,11 @@
   var $$ = function (s, root) { return Array.prototype.slice.call((root || document).querySelectorAll(s)); };
 
   /* ---------- 헤더: 서브는 최상단에서 white(어두운 비주얼 위) ---------- */
-  var header = $('#header');
+  /* ⚠⚠ 2026-08-27 — 헤더가 기존 하오웹 것(`nav.nav`)으로 바뀌어 `#header` 가 없다.
+     아래 `applyHeaderClass()` 는 로드 즉시 실행되므로 null 이면 여기서 예외가 나고
+     **이 파일의 나머지(탭·아코디언·타임라인·AOS 초기화)가 통째로 중단된다.**
+     화면은 멀쩡해 보여서 알아채기 어렵다 — 메인에서 흰 화면으로 드러났다. */
+  var header = $('#header') || document.createElement('div');
   function applyHeaderClass() {
     if (window.scrollY < 1) {
       header.classList.remove('nav-up');
@@ -54,7 +58,7 @@
     btn.addEventListener('click', function () {
       $$('.allMenuBtn').forEach(function (b) { b.classList.toggle('active'); });
       $('#headerY') && $('#headerY').classList.toggle('active');
-      $('.allMenuWrap').classList.toggle('active');
+      $('.allMenuWrap') && $('.allMenuWrap').classList.toggle('active');
     });
   });
   $$('.allMenu > ul > li > span').forEach(function (sp) {

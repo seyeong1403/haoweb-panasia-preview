@@ -590,9 +590,10 @@ main .container > .btns:first-child{ margin-top:0; }
 
 /* ---------- 잔여 ---------- */
 .deflist--sm dt{ font-size:16px; }
-.deflist--num{ counter-reset:dnum; }
-.deflist--num dt::before{ counter-increment:dnum; content:counter(dnum,decimal-leading-zero) "  ";
-  font-weight:700; color:var(--brand); }
+/* ⚠ 카운터를 넣었다가 「01 01」로 **번호가 두 번** 나왔다(2026-08-27 세영 지적).
+   조각이 이미 `<b>01</b>` 로 번호를 갖고 있다 — 어제 `.cardgrid--numbered` 에서 한 실수를
+   그대로 반복했다. ⚠ 번호를 CSS 로 찍기 전에 **마크업에 이미 있는지 먼저 볼 것.**
+   `--num` 은 번호가 있는 목록이라는 표시일 뿐이라 규칙이 필요 없다. */
 .subLead__extras{ margin-top:18px; display:grid; gap:8px; }
 .subhero__row{ display:grid; gap:14px; }
 .footer__ul{ position:relative; display:inline-block; }
@@ -735,3 +736,77 @@ main .container > .btns:first-child{ margin-top:0; }
 @media screen and (max-width:1024px){
   .fullbleed{ width:calc(100% + 60px); margin-left:-30px; }
 }
+
+/* ============================================================
+   서브 히어로 — 기존 하오웹(design-preview) 것을 **추출 도구로** 옮겼다
+   (2026-08-27 세영 지시, graphic-design.html 기준)
+   ⚠⚠ 처음에는 base.css 727~861 구간만 보고 손으로 옮겼다가 **뒤에 오는 재정의 8줄**
+     (`justify-content:center; align-items:center; text-align:center` …)을 통째로 놓쳐
+     좌하단 정렬로 나왔다. 라이브는 **가운데 정렬**이다.
+     → CSS 를 옮길 때는 구간을 눈으로 자르지 말고 **셀렉터로 전부 뽑을 것**
+       (`_qa/extract_nav.py` 의 WANT 를 바꿔 쓰면 된다).
+   ⚠ 원본 토큰은 실제값으로 치환했다(--container 1400 · --nav-h 68 · --t-* …).
+     `padding-inline` 만 0 이 되어 좁은 화면에서 글자가 화면에 붙으므로 30px 로 준다.
+   ⚠ `.subhero--grad` 계열은 우리가 쓰지 않지만 함께 옮겨 둔다(원본에 있는 변형).
+   ============================================================ */
+.subhero {position: relative; width: 100%; height: 82svh; min-height: 560px; overflow: hidden; background: #ffffff;}
+.subhero__img {position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: none;}
+.subhero__dots {position: absolute; inset: 0; background-image: radial-gradient(#17150f 1px, transparent 1px); background-size: 14px 14px; -webkit-mask-image: radial-gradient(ellipse 34% 42% at 50% 48%, #000 10%, transparent 72%); mask-image: radial-gradient(ellipse 34% 42% at 50% 48%, #000 10%, transparent 72%); opacity: .5;}
+.subhero__scrim {position: absolute; inset: 0; background: linear-gradient(to top, rgba(23,21,15,.78) 0%, rgba(23,21,15,.82) 34%, rgba(23,21,15,.84) 62%, rgba(23,21,15,.84) 86%, rgba(23,21,15,.62) 100%);}
+.subhero__inner {position: relative; z-index: 10; height: 100%; max-width: 1400px; margin-inline: auto; display: flex; flex-direction: column; justify-content: flex-end; padding-block: 68px 56px; padding-inline: 0px;}
+.subhero__title {font-family: inherit; font-weight: 600; text-transform: uppercase; font-size: clamp(52px, 7.8vw, 118px); line-height: 1.05; letter-spacing: -.025em; color: #fff;}
+.subhero__kr {margin-top: 30px; font-size: 16px; font-weight: 400; line-height: 1.75; color: rgba(255,255,255,.88); max-width: 720px;}
+.subhero__crumb {font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #fff; margin-bottom: 12px; text-shadow: 0 1px 3px rgba(0,0,0,.55);}
+.h1__ko {margin-top: 14px; font-size: clamp(18px, 1.953vw, 28px); font-weight: 500; line-height: 1.5; letter-spacing: -.02em; color: #17150f;}
+.subhero .h1__ko {color: #fff;}
+.subhero--full {height: 100svh;}
+.subhero__row {display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 64px; align-items: start; margin-top: 18px;}
+.subhero__row .subhero__kr {margin-top: 0;}
+.subhero__inner > .subhero__aside {margin-top: 14px;}
+.subhero__aside {font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, .86);}
+
+@media (max-width: 900px) {
+  .subhero--full {height: auto; min-height: 100svh;}
+  .subhero__row {grid-template-columns: 1fr; gap: 22px;}
+  .subhero__aside {font-size: 16px;}
+  .subhero--full .subhero__inner {padding-block: calc(68px + 40px) 48px;}
+}
+.subhero .note {color: rgba(255, 255, 255, .72);}
+.subhero .btn:not(.btn--brand) {color: #fff; border-color: rgba(255, 255, 255, .46);}
+.subhero .btn:not(.btn--brand):hover {background: var(--brand); border-color: var(--brand); color: #fff;}
+
+@media (max-width: 900px) {
+  .subhero__title {font-size: 56px;}
+  .subhero__kr {font-size: 16px;}
+}
+.subhero--grad {background: linear-gradient(200deg, #fbfaf9 0%, #f6f3f1 34%, #f2e9e6 68%, #efdfda 100%);}
+.subhero--grad .subhero__scrim {background: radial-gradient(46% 52% at 88% 6%, rgba(232,56,23,.10), rgba(232,56,23,0) 62%), radial-gradient(56% 50% at 6% 30%, rgba(255,255,255,.94), rgba(255,255,255,0) 58%), radial-gradient(70% 62% at 18% 112%, rgba(232,56,23,.07), rgba(232,56,23,0) 60%);}
+.subhero--grad .subhero__dots {inset: -32% -22%; background-image: radial-gradient(closest-side at 22% 52%, rgba(255,255,255,0) 66%, rgba(255,255,255,.90) 67%, rgba(255,255,255,0) 71%), radial-gradient(closest-side at 12% 38%, rgba(255,255,255,0) 57%, rgba(255,255,255,.66) 58%, rgba(255,255,255,0) 62%), radial-gradient(closest-side at 34% 64%, rgba(232,56,23,0) 74%, rgba(232,56,23,.10) 75%, rgba(232,56,23,0) 78%); background-size: auto; -webkit-mask-image: none; mask-image: none; transform: rotate(-12deg);}
+.subhero--grad::after {content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(130% 92% at 50% -26%, rgba(255,255,255,0) 54%, rgba(255,255,255,.46) 100%);}
+.subhero--grad .subhero__title {color: #17150f;}
+.subhero--grad .h1__ko {color: #17150f;}
+.subhero--grad .subhero__crumb {color: var(--brand);}
+.subhero--grad .subhero__kr,
+.subhero--grad .subhero__aside,
+.subhero--grad .note {color: color-mix(in srgb, #17150f 72%, transparent);}
+.subhero--grad .btn:not(.btn--brand) {color: #17150f; border-color: color-mix(in srgb, #17150f 28%, transparent);}
+.subhero--grad .btn:not(.btn--brand):hover {background: var(--brand); border-color: var(--brand); color: #fff;}
+.subhero__inner {justify-content: center; align-items: center; text-align: center; padding-block: 68px 68px;}
+.subhero__kr, .subhero__aside {margin-inline: auto;}
+.subhero__row {grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 14px;}
+.subhero .h1__ko {line-height: 1.2; letter-spacing: -.04em;}
+.subhero__crumb {margin-bottom: 28px;}
+.subhero__kr {margin-top: 36px; line-height: 1.75;}
+.subhero__row .subhero__kr {margin-top: 0;}
+.subhero__aside {line-height: 1.75;}
+.subhero .biz-herocta {margin-top: 56px;}
+
+/* 좁은 화면에서 좌우가 붙지 않게 — 원본은 `--gutter:48px` 이었다 */
+.subhero__inner{ padding-inline:30px; }
+
+/* ⚠ 어두운 섹션의 단계 진행선이 먹색(#17150f)이라 **안 보인다**. 차오를수록 배경선을 덮어
+   오히려 어두워졌다(2026-08-27 세영: 「모션 끝나고 흰 선이 보여야 해」).
+   밝은 면은 그대로 두고 어두운 면에서만 뒤집는다. */
+.invert .timeline__line{ background:rgba(255,255,255,.22); }
+.invert .timeline__line i{ background:#fff; }
+.invert .tstep.is-on::before{ background:#fff; border-color:#fff; }

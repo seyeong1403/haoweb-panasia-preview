@@ -1612,3 +1612,114 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 .button.add-button.ink-border-btn{ border:1px solid #d9d9d9; color:#17150f; }
 .button.add-button.ink-border-btn:hover{ border-color:#17150f; }
 @media screen and (max-width:1024px){ .hw-biz__cta{ margin-top:40px; } }
+
+
+/* ============================================================
+   내비게이션 — 기존 하오웹(design-preview) 것을 **추출 도구로** 옮겼다
+   (2026-08-27 세영: 「내비게이션 디자인과 모션도 이전 하오웹 것을 그대로.
+    햄버거와 햄버거를 눌렀을 때 나오는 화면까지 똑같이」)
+   ⚠⚠ 처음엔 `.nav`·`.mm`·`.navpanel` 로 **시작하는** 셀렉터만 뽑아 6개를 놓쳤다:
+     · `.nav__group{position:relative}` — 없으면 드롭다운이 항목이 아니라 화면 폭을 다 쓴다
+     · `body:has(.subhero) .nav … {color:#fff}` — 없으면 사진 위에서 메뉴가 통째로 묻힌다
+     · 같은 조건의 로고 교체(`logo-on-dark.png`)
+     → 셀렉터가 조건부(`body:has(…)`)일 수 있으니 **포함** 기준으로 뽑을 것.
+   ⚠ 파나시아 헤더(#header · #headerY 레일 · .allMenuWrap)는 마크업이 통째로 빠져 CSS 가
+     매치될 곳이 없다 — 지우지 않는다(되돌릴 때 필요).
+   ⚠ 원본 토큰은 실제값으로 치환했다. `.nav__inner` 는 원래부터 풀폭 + padding 30px 이라
+     파나시아 컨테이너와 무관하다.
+   ============================================================ */
+.nav {position: fixed; inset: 0 0 auto 0; z-index: 50; padding-block: 0; background: transparent; transition: background-color .35s ease;}
+.nav.is-stuck, .nav.is-open {background: rgba(23, 21, 15, .72); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, .12);}
+.nav.is-open {background: rgba(23, 21, 15, .92);}
+.nav.is-stuck .nav__link, .nav.is-stuck .nav__burger,
+.nav.is-open .nav__link, .nav.is-open .nav__burger {color: #fff;}
+.nav.is-stuck .nav__logo img, .nav.is-open .nav__logo img {content: url('../img/logo-on-dark.png');}
+.nav__inner {width: 100%; max-width: none; margin-inline: 0; padding-inline: 30px; height: 80px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;}
+.nav__inner > .nav__logo {justify-self: start;}
+.nav__inner > .nav__burger {justify-self: end;}
+.nav__links {display: flex; align-items: center; gap: 0; justify-self: center;}
+.nav__link {font-size: 16.23px; font-weight: 500; text-transform: none; letter-spacing: normal; color: #17150f; position: relative; display: inline-block; height: 80px; display: inline-flex; align-items: center; padding-block: 0; padding-inline: 12px;}
+.nav__link {transition: color .4s ease-in-out;}
+.nav__link:hover, .nav__link[aria-current='page'] {color: var(--brand);}
+.nav__logo {display: flex; align-items: center; height: 32px; flex: none;}
+.nav__logo img {height: 30px; width: auto; transition: transform .3s ease;}
+.nav__logo img {content: url('../img/logo-on-light.png');}
+.nav__logo:hover img {transform: rotate(-4deg);}
+.nav__burger {display: flex; flex-direction: column; justify-content: center; width: 120px; height: 32px; padding: 0; border: 0; background: none; cursor: pointer; box-sizing: border-box;}
+.nav__burger .line {display: block; width: 120px; height: 2px; margin: 4px auto; background: currentColor; transition: transform .4s ease-in-out;}
+.nav__burger[aria-expanded='true'] .line:nth-child(1) {transform: translateY(5px) rotate(45deg);}
+.nav__burger[aria-expanded='true'] .line:nth-child(2) {transform: translateY(-5px) rotate(-45deg);}
+
+@media (max-width: 900px) {
+  .nav__burger, .nav__burger .line {width: 34px;}
+}
+body:has(.hero--iw) .nav:not(.is-stuck):not(.is-open) .nav__link,
+body:has(.hero--iw) .nav:not(.is-stuck):not(.is-open) .nav__burger,
+body:has(.subhero) .nav:not(.is-stuck):not(.is-open) .nav__link,
+body:has(.subhero) .nav:not(.is-stuck):not(.is-open) .nav__burger {color: #fff;}
+body:has(.hero--iw) .nav:not(.is-stuck):not(.is-open) .nav__logo img,
+body:has(.subhero) .nav:not(.is-stuck):not(.is-open) .nav__logo img {content: url('../img/logo-on-dark.png');}
+.nav__group {position: relative; display: flex; align-items: center;}
+.mm {position: absolute; top: 70px; left: -18.6px; width: calc(100% + 37.1px); z-index: 99; text-align: left; visibility: hidden; opacity: 0; pointer-events: none; transition: opacity .2s cubic-bezier(.4, 0, 1, 1), visibility .2s cubic-bezier(.4, 0, 1, 1);}
+.mm::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 0; background: var(--brand); border-radius: 18.6px; transition: height .2s cubic-bezier(.4, 0, 1, 1);}
+.nav__group[data-open='true'] .mm {visibility: visible; opacity: 1; pointer-events: auto;}
+.nav__group[data-open='true'] .mm::before {height: 100%;}
+.mm__inner {position: relative; z-index: 1; width: 100%; max-width: none; margin-inline: 0; padding: 0;}
+.mm__eyebrow {position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);}
+.mm__grid {display: block; padding: 15px 0;}
+.mm__link {display: block; padding: 8px 10px; font-size: 14px; font-weight: 400; line-height: 1.4; text-align: center; color: #fff; opacity: 0; transition: opacity .25s ease;}
+.nav__group[data-open='true'] .mm__link {opacity: .9; transition: all .8s ease-in-out;}
+.nav__group[data-open='true'] .mm__link:nth-child(1) {transition-delay: .1s;}
+.nav__group[data-open='true'] .mm__link:nth-child(2) {transition-delay: .2s;}
+.nav__group[data-open='true'] .mm__link:nth-child(3) {transition-delay: .3s;}
+.nav__group[data-open='true'] .mm__link:nth-child(4) {transition-delay: .4s;}
+.nav__group[data-open='true'] .mm__link:nth-child(5) {transition-delay: .5s;}
+.nav__group[data-open='true'] .mm__link:nth-child(6) {transition-delay: .6s;}
+.nav__group[data-open='true'] .mm__link:nth-child(7) {transition-delay: .7s;}
+.nav__group[data-open='true'] .mm__link:nth-child(8) {transition-delay: .8s;}
+.nav__group[data-open='true'] .mm__link:nth-child(n+9) {transition-delay: .9s;}
+.mm__link:hover, .mm__link[aria-current='page'] {opacity: 1;}
+.mm__link.is-soon {opacity: .45; pointer-events: none;}
+.navpanel__link.is-soon {color: rgba(255, 255, 255, .38); pointer-events: none;}
+.navpanel {position: fixed; inset: 0; z-index: 49; visibility: hidden; pointer-events: none; overflow-y: auto;}
+.navpanel[data-open='true'] {visibility: visible; pointer-events: auto;}
+.navpanel__bg {position: fixed; inset: 0 0 0 auto; width: 0; background: #0b0b0b; transition: width .6s cubic-bezier(.4, 0, .2, 1);}
+.navpanel[data-open='true'] .navpanel__bg {width: 100%;}
+body:has(.navpanel[data-open='true']) .nav {opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;}
+.navpanel__inner {position: relative; z-index: 1; width: 100%; max-width: 1380px; margin-inline: auto; padding-inline: 30px; opacity: 0; transition: opacity .3s ease;}
+.navpanel[data-open='true'] .navpanel__inner {opacity: 1; transition-delay: .4s;}
+.navpanel__title {margin: 0; padding-top: 102px; font-family: inherit; font-size: clamp(34px, 3.87vw, 56px); font-weight: 700; letter-spacing: -.004em; color: #fff;}
+.navpanel__close {position: absolute; top: 114px; right: 30px; width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer; background: #fff; color: #111; display: flex; align-items: center; justify-content: center; transition: transform .3s ease;}
+.navpanel__close svg {width: 18px; height: 18px;}
+.navpanel__close:hover {transform: rotate(90deg);}
+.navpanel__cols {margin-top: 78px; padding-bottom: 90px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));}
+.navpanel__group {padding: 0 28px 40px; border-left: 1px solid rgba(255, 255, 255, .1); border-top: 0;}
+.navpanel__group:nth-child(6n + 1) {border-left: 0;}
+.navpanel__h {margin: 0 0 34px; min-height: 72px; font-size: clamp(20px, 1.95vw, 28px); font-weight: 600; line-height: 1.3; letter-spacing: -.008em; color: #fff;}
+.navpanel__link {display: block; padding: 9px 0; font-size: clamp(15px, 1.29vw, 18.5px); font-weight: 300; line-height: 1.3; color: rgba(255, 255, 255, .82); transition: color .25s ease;}
+.navpanel__link:hover, .navpanel__link[aria-current='page'] {color: var(--brand);}
+.navpanel__link.is-soon {color: rgba(255, 255, 255, .38); pointer-events: none;}
+
+@media (max-width: 900px) {
+  .navpanel__title {padding-top: 76px;}
+  .navpanel__close {top: 84px;}
+  .navpanel__cols {margin-top: 48px; grid-template-columns: 1fr;}
+  .navpanel__group {padding: 0 0 30px; border-left: 0;}
+  .navpanel__h {min-height: 0; margin-bottom: 16px;}
+  .nav__links {display: none;}
+  .nav__burger {display: block; width: 28px; height: 28px; color: #17150f; margin-left: auto; position: relative; z-index: 51;}
+  .nav__burger svg {width: 100%; height: 100%;}
+  .nav__burger .ic-close, .nav__burger[aria-expanded='true'] .ic-menu {display: none;}
+  .nav__burger[aria-expanded='true'] .ic-close {display: block; color: #17150f;}
+}
+
+@media (max-width: 1320px) {
+  .nav__links {display: none;}
+  .nav__burger {display: block; width: 28px; height: 28px; color: #17150f; margin-left: auto; position: relative; z-index: 51;}
+  .nav__burger svg {width: 100%; height: 100%;}
+  .nav__burger .ic-close, .nav__burger[aria-expanded='true'] .ic-menu {display: none;}
+  .nav__burger[aria-expanded='true'] .ic-close {display: block; color: #17150f;}
+}
+body:has(.subhero--grad) .nav:not(.is-stuck):not(.is-open) .nav__link,
+body:has(.subhero--grad) .nav:not(.is-stuck):not(.is-open) .nav__burger {color: #17150f;}
+body:has(.subhero--grad) .nav:not(.is-stuck):not(.is-open) .nav__logo img {content: url('../img/logo-on-light.png');}
