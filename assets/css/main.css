@@ -59,11 +59,53 @@ html.no_scroll{ position:fixed; left:0; top:0; right:0; bottom:0; }
 .mainCon .txt2{ font-size:50px; font-weight:800; line-height:130%; }
 .mainCon .txt3{ font-size:18px; color:#606060; line-height:1.45; }
 
-/* ---------- 버튼 (실측: 15/700, lh35, pad 0 32, border 1px, radius 0) ---------- */
-.button.add-button{ display:inline-block; font-size:15px; font-weight:700; line-height:35px; padding:0 32px;
-  border-radius:var(--r-btn); }
-.button.add-button.brand-border-btn{ border:1px solid var(--brand); color:var(--brand); }
-.button.add-button.white-btn{ border:1px solid #fff; color:#fff; }
+/* ---------- CTA 버튼 — 기존 하오웹(design-preview)과 같은 사양 ----------
+   ⚠ 2026-08-27 세영: 「모든 CTA 버튼을 기존 하오웹과 디자인·모션을 똑같이」.
+     파나시아 쪽은 납작(lh35·pad 0 32)한 빨간 테두리에 **hover 가 아예 없었다**.
+     기존 하오웹은 넉넉한 알약(pad 18/36·회색 테두리·먹색 글자)이고, 얹으면 브랜드색으로
+     채워진다(.3s). 눈에 보이는 차이는 «채워지는 모션» 쪽이 훨씬 크다.
+   ⚠ line-height 를 1.5 로 적는다. 원본은 지정 없이 body 의 1.5 를 상속받는데, 여기서
+     빼면 파나시아의 옛 35px 가 살아나 높이가 37px 로 주저앉는다(= 똑같이가 아니다).
+   ⚠ `.button.add-button` 은 파나시아 마크업, `.btn` 은 하오웹에서 넘어온 마크업이다.
+     48장에 섞여 있어 클래스를 바꾸는 대신 **두 이름에 같은 사양**을 준다. */
+.btn,
+.button.add-button{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:18px 36px; font-size:15px; font-weight:600; line-height:1.5;
+  letter-spacing:.01em; border:1px solid #d9d9d9; border-radius:var(--r-btn);
+  color:#17150f; background:none; cursor:pointer;
+  transition:background-color .3s ease, color .3s ease, border-color .3s ease; }
+.button.add-button.brand-border-btn,
+.button.add-button.ink-border-btn{ border:1px solid #d9d9d9; color:#17150f; }
+.btn:hover,
+.button.add-button:hover{ background:var(--brand); color:#fff; border-color:var(--brand); }
+
+/* 채움형 — 원본 .btn--brand (얹으면 한 톤 어두워진다) */
+.btn--brand,
+.button.add-button.brand-fill-btn{ background:var(--brand); border-color:var(--brand); color:#fff; }
+.btn--brand:hover,
+.button.add-button.brand-fill-btn:hover{ background:var(--brand-hover); border-color:var(--brand-hover); color:#fff; }
+
+.btn--block{ width:100%; }
+.btns, .hw-btns{ display:flex; flex-wrap:wrap; gap:12px; }
+.container > .btns{ justify-content:center; }
+
+/* 파나시아에만 있던 변형 두 가지도 기본형으로 흡수한다 */
+
+/* 어두운 바탕 위 — 원본 .invert .btn
+   ⚠ `.white-btn` 은 .invert 밖(히어로 위 등)에서도 쓰인다. var(--on) 을 태우면 서브에서
+     :root 값(#17150f)을 받아 **검은 글자**가 되므로 흰색을 직접 적는다. */
+.invert .btn:not(.btn--brand),
+.invert .button.add-button:not(.brand-fill-btn){
+  color:var(--on,#fff); border-color:color-mix(in srgb, var(--on,#fff) 62%, transparent); }
+.button.add-button.white-btn{ border-color:rgba(255,255,255,.46); color:#fff; }
+.invert .btn:not(.btn--brand):hover,
+.invert .button.add-button:not(.brand-fill-btn):hover,
+.button.add-button.white-btn:hover{ background:var(--brand); color:#fff; border-color:var(--brand); }
+
+.biz-quick .btn{ flex:none; }
+.biz-diag__aside .biz-quick .btn{ width:100%; }
+@media (max-width:900px){ .biz-quick .btn{ width:100%; } }
 
 /* ============================================================
    HEADER (실측: 100px 고정 → 스크롤 시 70px, dep2 290px 패널)
@@ -361,6 +403,10 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   content:''; position:absolute; right:0; width:30px; height:30px;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none'%3E%3Cpath d='M8 22L22 8M22 8H11M22 8v11' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/cover no-repeat;
 }
+/* ⚠ 2026-08-27 세영: 「카드들도 끊김 없이 흐르도록」. Swiper 대신 rAF 마퀴로 돌린다.
+   ⚠ 칸 사이 간격은 Swiper 의 `spaceBetween:30` 이 margin 으로 주던 값이다. Swiper 를
+     걷어냈으니 여기서 직접 준다 — 빠뜨리면 카드가 딱 붙어 한 덩어리로 보인다. */
+.mainCon .main-con2 .business-swiper .swiper-wrapper{ gap:30px; }
 .mainCon .main-con2 .business-swiper .swiper-scrollbar{
   position:absolute; left:0; right:50px; bottom:0; height:4px; background:rgba(255,255,255,.15); border-radius:2px;
 }
@@ -557,7 +603,6 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 .hw-sec .txt3{ font-size:18px; color:#606060; line-height:1.45; }
 .hw-sec--dark .txt3{ color:rgba(255,255,255,.75); }
 .hw-btns{ display:flex; gap:12px; margin-top:48px; flex-wrap:wrap; }
-.button.add-button.brand-fill-btn{ background:var(--brand); border:1px solid var(--brand); color:#fff; }
 
 /* (복원 1) 핀 직후 다크 연속 — 제작 이후 단계 + 4서비스 + 실적 각주 */
 .hw-after .hw-steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:30px; margin-top:64px; }
@@ -721,7 +766,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   .mainCon .txt2{ font-size:26px !important; }
   .bluetext{ font-size:14px; }
   .mainCon .txt3{ font-size:16px; }
-  .button.add-button{ font-size:14px; line-height:42px; text-align:center; }
+  .button.add-button, .btn{ font-size:14px; padding:15px 28px; }
 
   .mainCon .main-con1 .inner{ margin:70px 0; flex-direction:column; gap:38px; }
   .mainCon .main-con1 .inner .text-banner{ height:auto; }
@@ -1608,9 +1653,6 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
 /* 원본 실측: 행 목록 아래 `padding-top:56px` 자리에 버튼 둘, 가운데 정렬 */
 .hw-biz__cta{ margin-top:56px; }
 .hw-biz__cta .hw-btns{ margin-top:0; justify-content:center; }
-/* ⚠ 원본 버튼은 브랜드 레드가 아니라 **중립 테두리**다. 파나시아에는 그 변형이 없어 추가한다 */
-.button.add-button.ink-border-btn{ border:1px solid #d9d9d9; color:#17150f; }
-.button.add-button.ink-border-btn:hover{ border-color:#17150f; }
 @media screen and (max-width:1024px){ .hw-biz__cta{ margin-top:40px; } }
 
 

@@ -149,40 +149,159 @@
   /* 페이지 아무 데서나 최상단 도달 후 휠업 → 닫힘 (원본과 동일하게 #mv-ix 위에서만 작동) */
 
 
-  /* ---------- 비즈니스 탭 + 스와이퍼 (원본 파라미터) ---------- */
+  /* ---------- 공용 마퀴 ----------
+     끊김 없이 한 방향으로 흐르는 카드 줄. 앞뒤로 한 벌씩 복제해 두고 rAF 로 매 프레임
+     조금씩 민다.
+   ⚠⚠ Swiper 의 autoplay(delay 0 + 긴 speed)로는 이 모양이 안 나온다. 실측해 보니
+     `animating` 이 true 로 굳어 `slideNext()` 를 손으로 불러도 1px 도 움직이지 않았다
+     (2026-08-27). 「멈춰 있다가 탭을 누르면 그제야 움직인다」가 그 증상이었다.
+     그래서 이 슬라이더는 Swiper 로 돌리지 않는다 — 배치(flex)와 카드 폭은 CSS 가 이미
+     쥐고 있어서 Swiper 없이도 그대로 선다. */
+  function makeMarquee(view, track, opts) {
+    opts = opts || {};
+    if (!view || !track) return null;
+    var real = [].slice.call(track.children);
+    var N = real.length;
+    if (!N) return null;
+
+    function clone(list, where) {
+      list.forEach(function (el) {
+        var c = el.cloneNode(true);
+        c.setAttribute('aria-hidden', 'true');
+        c.setAttribute('inert', '');
+        c.setAttribute('data-clone', '');
+        c.removeAttribute('data-fade');
+        c.classList.add('on');
+        if (where === 'before') track.insertBefore(c, track.firstChild);
+        else track.appendChild(c);
+      });
+    }
+    clone(real.slice().reverse(), 'before');
+    clone(real, 'after');
+
+    /* ⚠ 매 프레임 transform 을 직접 준다. CSS 에 transition 이 남아 있으면 프레임마다
+       새 전환이 시작돼 끈적하게 끌리고 진행바와 어긋난다. */
+    track.style.transition = 'none';
+
+    var SPEED = opts.speed || 85;
+    var x = 0, unit = 0, raf = null, last = 0, pending = 0, running = false;
+
+    /* 한 벌 폭 — 카드 폭을 곱하지 않고 **좌표 차이**로 잰다. 반응형으로 좁아져도 정확하다. */
+    function measure() {
+      var a = track.children[N], b = track.children[N * 2];
+      unit = (a && b) ? (b.offsetLeft - a.offsetLeft) : 0;
+      if (!unit) unit = 1;
+    }
+    function wrap() {
+      while (x <= -2 * unit) x += unit;
+      while (x > -unit) x -= unit;
+    }
+    function paint() {
+      track.style.transform = 'translateX(' + x + 'px)';
+      if (opts.paint) opts.paint(((-x - unit) / unit), unit);
+    }
+    function frame(t) {
+      raf = requestAnimationFrame(frame);
+      if (!last) { last = t; return; }
+      var dt = Math.min((t - last) / 1000, .05);   /* 탭을 다시 열었을 때 튀지 않게 */
+      last = t;
+      if (!running) return;
+      if (pending) {
+        var take = pending * Math.min(1, dt * 5);
+        x -= take; pending -= take;
+        if (Math.abs(pending) < .5) { x -= pending; pending = 0; }
+      }
+      x -= SPEED * dt;
+      wrap(); paint();
+    }
+    function start() { running = true; last = 0; if (!raf) raf = requestAnimationFrame(frame); }
+    function stop() { running = false; if (raf) { cancelAnimationFrame(raf); raf = null; } }
+    function remeasure() {
+      var r = unit ? x / unit : -1;
+      measure(); x = r * unit; wrap(); paint();
+    }
+
+    /* 읽는 동안에는 세워 둔다 — 흐르는 글을 눈으로 좇게 하지 않는다. */
+    view.addEventListener('mouseenter', function () { running = false; });
+    view.addEventListener('mouseleave', function () { if (raf) { last = 0; running = true; } });
+    window.addEventListener('resize', remeasure);
+
+    measure(); x = -unit; paint();
+
+    var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    var frozen = !!(mq && mq.matches);   /* 「모션 줄이기」를 켠 분에게는 흐르지 않는다 */
+    return {
+      start: function () { if (!frozen) start(); },
+      stop: stop, remeasure: remeasure,
+      nudge: function (px) { pending += px; },
+      step: function () { return unit / N; }
+    };
+  }
+
+  /* ---------- 비즈니스 탭 + 카드 마퀴 ---------- */
   var menuItems = $$('.btn-area li');
   var bgLayer = $('.business-bg');
   var bgImages = menuItems.map(function (li) { return li.getAttribute('data-bg'); });
   if (bgLayer && bgImages[0]) bgLayer.style.backgroundImage = 'url(' + bgImages[0] + ')';
 
-  var swipers = {};
+  var marquees = {};
   $$('.business-swiper').forEach(function (el) {
+    var track = el.querySelector('.swiper-wrapper');
     var sb = el.querySelector('.swiper-scrollbar');
-    swipers[el.dataset.swiper] = new Swiper(el, {
-      slidesPerView: 'auto',
-      spaceBetween: 30,
-      centeredSlides: false,
-      loop: false,
-      observer: true,
-      observeParents: true,
-      freeMode: true,
-      slidesOffsetAfter: 50,
-      scrollbar: sb ? { el: sb, hide: false, draggable: true, snapOnRelease: false } : undefined
+    var drag = null;
+    if (sb) {
+      /* Swiper 가 만들어 주던 손잡이를 직접 둔다 — 진행바가 있어야 어디쯤인지 보인다. */
+      drag = sb.querySelector('.swiper-scrollbar-drag');
+      if (!drag) {
+        drag = document.createElement('span');
+        drag.className = 'swiper-scrollbar-drag';
+        sb.appendChild(drag);
+      }
+    }
+    marquees[el.dataset.swiper] = makeMarquee(el, track, {
+      speed: 90,
+      paint: function (r, unit) {
+        if (!drag) return;
+        var w = Math.min(1, Math.max(.08, el.clientWidth / unit));
+        drag.style.width = (w * 100) + '%';
+        /* translateX 는 «자기 폭» 기준이다 — 움직일 수 있는 거리를 손잡이 폭으로 나눈다. */
+        drag.style.transform = 'translateX(' + (((1 - w) / w) * r * 100) + '%)';
+      }
     });
   });
+
+  /* ⚠ 첫 탭은 «들어가자마자» 흘러야 한다(2026-08-27 세영). 화면 밖에서는 세워 둔다 —
+     안 보이는 곳에서 프레임을 도는 건 낭비다. */
+  var bizSec = $('.main-con2');
+  function bizPlay(on) {
+    Object.keys(marquees).forEach(function (k) {
+      var m = marquees[k];
+      if (!m) return;
+      var el = document.querySelector('[data-swiper="' + k + '"]');
+      var live = el && el.classList.contains('active');
+      if (on && live) { m.remeasure(); m.start(); } else m.stop();
+    });
+  }
+  if (bizSec && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { bizPlay(e.isIntersecting); });
+    }, { threshold: .05 }).observe(bizSec);
+  } else {
+    bizPlay(true);
+  }
+
   menuItems.forEach(function (li, idx) {
     li.addEventListener('click', function () {
       var act = $('.btn-area li.active');
       if (act) act.classList.remove('active');
       li.classList.add('active');
       $$('.business-swiper').forEach(function (wrap, i) {
-        var on = i === idx;
-        wrap.classList.toggle('active', on);
-        wrap.style.display = on ? 'block' : 'none';
-        if (on && wrap.swiper) wrap.swiper.update();
+        wrap.classList.toggle('active', i === idx);
+        wrap.style.display = i === idx ? 'block' : 'none';
       });
-      var key = 'swiper-' + idx;
-      if (swipers[key]) swipers[key].slideTo(0);
+      /* ⚠ `display:none` 인 동안에는 폭이 0 이라 한 벌 폭을 잴 수 없다. 보이게 «한 뒤에»
+         다시 재고 시작해야 흐름이 이어진다 — 안 그러면 그 탭만 서 있는다. */
+      bizPlay(true);
       if (bgLayer && bgImages[idx]) bgLayer.style.backgroundImage = 'url(' + bgImages[idx] + ')';
     });
   });
@@ -386,86 +505,32 @@
     var view = document.querySelector('[data-diff-view]');
     var track = document.querySelector('[data-diff-track]');
     if (!view || !track) return;
-    var prev = document.querySelector('[data-diff="prev"]');
-    var next = document.querySelector('[data-diff="next"]');
     var fill = document.querySelector('[data-diff-fill]');
 
-    var real = [].slice.call(track.children);
-    var N = real.length;
-    if (!N) return;
-
-    function clone(list, where) {
-      list.forEach(function (el) {
-        var c = el.cloneNode(true);
-        c.setAttribute('aria-hidden', 'true');
-        c.setAttribute('inert', '');
-        c.setAttribute('data-clone', '');
-        c.removeAttribute('data-fade');
-        c.classList.add('on');
-        if (where === 'before') track.insertBefore(c, track.firstChild);
-        else track.appendChild(c);
-      });
-    }
-    clone(real.slice().reverse(), 'before');
-    clone(real, 'after');
-
-    var i = N;
-    var timer = null;
-    var DELAY = 5000;      /* 레퍼런스 실측 */
-    /* ⚠ 전환 시간(레퍼런스 실측 800ms)은 **CSS 한 곳에서만** 정한다.
-       여기서 인라인으로 넣으면 `place()` 가 transition 을 비울 때 사라져 CSS 기본값으로 돈다. */
-
-    function step() {
-      var card = track.children[0];
-      if (!card) return 0;
-      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
-      return card.getBoundingClientRect().width + gap;
-    }
-    /* 진행바 — 지금이 원본 몇 번째인지의 비율만큼 채운다. 한 칸 분량이 최소 폭이다. */
-    function paint() {
-      if (!fill) return;
-      var pos = ((i - N) % N + N) % N;          /* 0 … N-1 */
-      var one = 100 / N;
-      fill.style.width = (one * (pos + 1)) + '%';
-    }
-    function place(animate) {
-      track.style.transition = animate ? '' : 'none';
-      track.style.transform = 'translateX(' + (-i * step()) + 'px)';
-      if (!animate) { track.offsetHeight; track.style.transition = ''; }
-      paint();
-    }
-    function settle() {
-      if (i >= N * 2) { i -= N; place(false); }
-      else if (i < N) { i += N; place(false); }
-    }
-    /* ⚠ `transitionend` 는 자식에서 올라온다 — 트랙 자신 것만 받는다.
-       안 그러면 카드 안 등장 모션이 위치 보정을 엉뚱한 순간에 부른다. */
-    track.addEventListener('transitionend', function (e) {
-      if (e.target === track && e.propertyName === 'transform') settle();
+    /* ⚠ 마퀴 «엔진» 은 makeMarquee 한 곳에만 둔다. 예전에는 여기에 같은 로직을 한 벌 더
+       두었는데, 속도를 올려 달라는 말에 한쪽만 고쳐져 이 슬라이더만 느린 채로 남았다
+       (2026-08-27). 두 곳에 복사된 코드는 반드시 그런 식으로 어긋난다. */
+    var m = makeMarquee(view, track, {
+      paint: function (r) {
+        if (fill) fill.style.width = (r * 100).toFixed(2) + '%';
+      }
     });
-    function go(d) { i += d; place(true); restart(); }
+    if (!m) return;
 
-    function restart() {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(function () { go(1); }, DELAY);
-    }
-    if (prev) prev.addEventListener('click', function () { go(-1); });
-    if (next) next.addEventListener('click', function () { go(1); });
-    window.addEventListener('resize', function () { place(false); });
+    var prev = document.querySelector('[data-diff="prev"]');
+    var next = document.querySelector('[data-diff="next"]');
+    if (prev) prev.addEventListener('click', function () { m.nudge(-m.step()); });
+    if (next) next.addEventListener('click', function () { m.nudge(m.step()); });
 
-    /* ⚠ 화면 밖에서는 돌리지 않는다 — 안 보이는 곳에서 타이머가 도는 건 낭비다.
-       레퍼런스는 항상 돌지만 결과(보이는 동안 5초마다)는 같고 배터리를 덜 쓴다. */
+    /* ⚠ 화면 밖에서는 돌리지 않는다 — 안 보이는 곳에서 프레임을 도는 건 낭비다. */
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
-        es.forEach(function (e) {
-          if (e.isIntersecting) restart();
-          else if (timer) { clearTimeout(timer); timer = null; }
-        });
+        es.forEach(function (e) { if (e.isIntersecting) m.start(); else m.stop(); });
       }, { threshold: .2 }).observe(view);
-    } else restart();
-
-    place(false);
+    } else m.start();
   }
+
+
   /* ⚠ 즉시 부르면 CSS 적용 전 카드 폭(52px)으로 step() 이 계산돼 트랙이 -402px 에서
      굳는다(정상 -2478px = 6장 x 413). 실제로 그랬다 — 스타일이 확정된 뒤에 건다. */
   if (document.readyState === 'complete') initDiff();
@@ -606,66 +671,6 @@
   }
   initTimeline();
 
-  /* ---------- 업종별 행 마퀴 ----------
-     기존 하오웹 site.js 의 initBizRows() 를 그대로 옮겼다.
-     커서가 위/아래 어느 쪽에서 들어왔는지 재서 띠가 그 방향에서 올라오고,
-     화면 폭에 맞춰 마퀴 파트 수를 계산해 복제한다. */
-  function initBizRows() {
-    var rows = Array.prototype.slice.call(document.querySelectorAll('[data-wrow]'));
-    if (!rows.length) return;
-    var EASE = 'transform .6s cubic-bezier(.16,1,.3,1)';
-
-    var dirOf = function (ev, el) {
-      var r = el.getBoundingClientRect();
-      var mx = ev.clientX - r.left, my = ev.clientY - r.top;
-      var top = Math.pow(mx - r.width / 2, 2) + Math.pow(my, 2);
-      var bot = Math.pow(mx - r.width / 2, 2) + Math.pow(my - r.height, 2);
-      return top < bot ? 'top' : 'bottom';
-    };
-
-    rows.forEach(function (row) {
-      var mq = row.querySelector('.wrow__mq');
-      // ⚠ 세로 이동은 .wrow__shift 가 맡는다. .wrow__track 은 CSS 애니메이션이 가로 흐름에
-      //   쓰고 있어서, 여기에 translateY 를 쓰면 흐름이 통째로 멈춘다(transform 은 한 속성).
-      var shift = row.querySelector('.wrow__shift');
-      var track = row.querySelector('.wrow__track');
-      if (!mq || !shift || !track) return;
-
-      // 파트를 화면 폭이 채워질 만큼 복제한다(원본과 같은 식). 최소 4개.
-      var part = track.querySelector('.wrow__part');
-      var fill = function () {
-        if (!part) return;
-        var pw = part.offsetWidth;
-        if (!pw) return;
-        var need = Math.max(4, Math.ceil(window.innerWidth / pw) + 2);
-        while (track.children.length < need) track.appendChild(part.cloneNode(true));
-        track.style.setProperty('--parts', track.children.length);
-        track.classList.add('wrow__track--run');
-      };
-      fill();
-      window.addEventListener('resize', fill);
-
-      row.addEventListener('mouseenter', function (ev) {
-        var d = dirOf(ev, row), a = d === 'top' ? '-101%' : '101%', b = d === 'top' ? '101%' : '-101%';
-        mq.style.transition = shift.style.transition = 'none';
-        mq.style.transform = 'translateY(' + a + ')';
-        shift.style.transform = 'translateY(' + b + ')';
-        // 값을 세팅한 프레임과 같은 프레임에서 0 으로 보내면 전환이 생략된다 → 다음 프레임에
-        requestAnimationFrame(function () {
-          mq.style.transition = shift.style.transition = EASE;
-          mq.style.transform = shift.style.transform = 'translateY(0%)';
-        });
-      });
-
-      row.addEventListener('mouseleave', function (ev) {
-        var d = dirOf(ev, row);
-        mq.style.transition = shift.style.transition = EASE;
-        mq.style.transform = 'translateY(' + (d === 'top' ? '-101%' : '101%') + ')';
-        shift.style.transform = 'translateY(' + (d === 'top' ? '101%' : '-101%') + ')';
-      });
-    });
-  }
-  initBizRows();
 
   /* ---------- 레일 경계선 감추기 ----------
      사진이 화면 끝까지 깔리는 구간(`.work.fullbleed`)이 화면에 걸쳐 있는 동안만
