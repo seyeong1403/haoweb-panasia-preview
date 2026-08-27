@@ -166,11 +166,24 @@ main .sec:first-of-type{ padding-top:90px; }
 .invert .card__d{ color:rgba(255,255,255,.75); }
 
 /* ---------- biz 컴포넌트 ---------- */
-.biz-incl__item{ border-top:1px solid #d9d9d9; padding:24px 0 28px; }
-.biz-incl__head{ display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+/* ⚠ 2026-08-27 세영: 「카드형으로 아이콘 넣어서 정리할까?」 → baroweb.kr
+   page_why_02 「20 Free Service」 카드 실측 이식(클론 style.css 원문):
+   흰 카드 radius 15(우리 토큰 --r-card 원칙이지만 카드 계열 공용값 유지) · padding 40 ·
+   아이콘 위 mb25 · 제목 1.25em mb15 · 설명 #555 lh1.4 · 3열 gap20.
+   배지(N만원 상당)는 바로웹 콘텐츠라 넣지 않는다 — 우리 데이터에 대응 사실이 없다.
+   아이콘은 바탕화면 「아이콘 레퍼런스 DB」 SET_A 라인 계열(제목별 매핑 _qa/_icl_map.json). */
+.biz-incl__item{
+  background:#fff; border-radius:var(--r-card); padding:40px;
+  box-shadow:0 0 20px 0 rgba(0,0,0,.08);
+}
+.biz-incl__ic{ display:block; width:44px; height:44px; margin-bottom:25px; }
+.biz-incl__head{ display:flex; align-items:center; gap:10px; margin-bottom:15px; }
 .biz-incl__no{ font-size:16px; font-weight:700; color:var(--brand); }
 .biz-incl__t{ font-size:20px; font-weight:700; }
-.biz-incl__d{ font-size:16px; color:#606060; line-height:150%; }
+.biz-incl__d{ font-size:16px; color:#555; line-height:1.5; }
+/* 다크 섹션(included 22칸)에서도 카드가 희므로 글색 규칙이 뒤집히지 않게 명시 */
+.invert .biz-incl__item{ color:#17150f; }
+.invert .biz-incl__item .biz-incl__d{ color:#555; }
 /* ⚠ 이식 때 아이콘 SVG 가 없어 숨겨 두었던 자리다(2026-08-26 원본에서 18개 복사해 살림).
    <img> 로 넣지 않는다 — 원본 SVG 에 fill 이 없어 검정으로 굳는다. mask + currentColor 라야
    밝은 면·어두운 면 양쪽에서 글자색을 따라간다. 경로는 **이 파일 기준**(../img/). */
@@ -545,7 +558,7 @@ main .container > .btns:first-child{ margin-top:0; }
 /* ---------- 포함 항목 · 밴드 ---------- */
 /* 원본 실측: 3열 · `gap:0 48px`(행 간격 0). 행 간격을 주면 항목마다 그어지는
    윗선이 끊겨 표처럼 읽히지 않는다. */
-.biz-incl{ display:grid; grid-template-columns:repeat(3,1fr); gap:0 48px; margin-top:40px; }
+.biz-incl{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:40px; }
 .biz-bands{ display:grid; gap:16px; }
 
 /* ---------- 검색·AI 목업 행 ---------- */
@@ -632,7 +645,7 @@ main .container > .btns:first-child{ margin-top:0; }
   .mockrow{ grid-template-columns:1fr; gap:32px; }
   .mockrow--rev .mockrow__txt{ order:0; }
   .ba{ grid-template-columns:1fr; gap:32px; }
-  .biz-incl{ grid-template-columns:repeat(2,1fr); gap:0 40px; }
+  .biz-incl{ grid-template-columns:repeat(2,1fr); gap:16px; }
   .article__items{ grid-template-columns:1fr; }
 }
 @media screen and (max-width:768px){
