@@ -286,7 +286,9 @@ main .sec:first-of-type{ padding-top:90px; }
    설명 14 #888 · 리스트 6px 0, 들여쓰기 20, ✔ 브랜드 / 미포함 × #ccc · 버튼 풀폭.
    ⚠ 버튼 모양은 레퍼런스(radius16)가 아니라 **우리 .btn 알약** — 「모든 CTA 는 기존
      하오웹과 동일」 원칙이 우선한다. */
-.plan{ background:#fff; box-shadow:0 4px 30px 0 rgba(0,0,0,.1); padding:40px 30px; border-radius:16px; display:flex; flex-direction:column; }
+.plan{ background:#fff; box-shadow:0 4px 30px 0 rgba(0,0,0,.1); padding:40px 30px; border-radius:16px; display:flex; flex-direction:column;
+  transition:transform .3s ease, box-shadow .3s ease; }
+.plan:hover{ transform:translateY(-6px); box-shadow:0 14px 34px 0 rgba(0,0,0,.16); }
 .plan__name{ font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#999;
   display:flex; align-items:center; gap:10px; margin-bottom:10px; }
 .plan__rec{ display:inline-block; border-radius:500px; font-size:12px; font-weight:700; line-height:24px; padding:0 12px; background:var(--brand); color:#fff; letter-spacing:0; }

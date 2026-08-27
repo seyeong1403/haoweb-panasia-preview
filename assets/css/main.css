@@ -690,7 +690,9 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
    ⚠ 버튼 모양은 레퍼런스(radius16)가 아니라 **우리 .btn 알약** — 「모든 CTA 는 기존
      하오웹과 동일」 원칙이 우선한다. */
 .hw-plans .plan{ background:#fff; box-shadow:0 4px 30px 0 rgba(0,0,0,.1); padding:40px 30px;
-  border-radius:16px; display:flex; flex-direction:column; }
+  border-radius:16px; display:flex; flex-direction:column;
+  transition:transform .3s ease, box-shadow .3s ease; }
+.hw-plans .plan:hover{ transform:translateY(-6px); box-shadow:0 14px 34px 0 rgba(0,0,0,.16); }
 .hw-plans .plan .name{ font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#999;
   display:flex; align-items:center; gap:10px; margin-bottom:10px; }
 .hw-plans .plan .name .tag{ display:inline-block; border-radius:500px; font-size:12px; font-weight:700; line-height:24px; padding:0 12px; background:var(--brand); color:#fff; letter-spacing:0; }
