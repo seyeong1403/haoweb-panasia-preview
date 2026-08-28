@@ -1913,8 +1913,11 @@ section.visual:has(.mv-ix_visual_box.on) .scrolldown__txt{ color:rgba(255,255,25
 .con3phone{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
   z-index:5; display:grid; }
 /* 폰이 경계에 걸치는 만큼 우측 텍스트는 오른쪽으로 비켜 선다(세영 스케치의 배치).
-   화면이 좁아지면 폰이 사진 쪽으로 물러나고 텍스트는 원래 중앙으로 복귀. */
-.mainCon .main-con3 .inner .right .right-box{ margin-left:auto; margin-right:24px; }
+   화면이 좁아지면 폰이 사진 쪽으로 물러나고 텍스트는 원래 중앙으로 복귀.
+   ⚠ 2026-08-28 세영 「이 간격이 이렇게 떨어질 수밖에 없어?」 — 우측 끝(mr24) 고정이던
+   것을 폰 옆 고정 간격으로 변경. 폰은 중앙선에서 151px 침범하므로 ml 231 = 간격 80 고정.
+   (우측 끝 고정이면 간격이 화면폭/2−717 로 늘어나 1920 에서 243px 였다) */
+.mainCon .main-con3 .inner .right .right-box{ margin-left:231px; margin-right:auto; }
 @media screen and (max-width:1440px){
   .con3phone{ left:42%; }
   .mainCon .main-con3 .inner .right .right-box{ margin-right:auto; }
