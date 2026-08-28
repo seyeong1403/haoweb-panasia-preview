@@ -381,8 +381,130 @@
       linkItems.forEach(function (x) { x.classList.remove('on'); });
       li.classList.add('on');
       imgItems.forEach(function (x, i) { x.classList.toggle('on', i === idx); });
+      c3Scenes.forEach(function (x, i) { x.classList.toggle('on', i === idx); });
+      con3Play(idx);
+      c3Desc(idx);
     });
   });
+
+  /* ---------- con3 목업 타이핑 (2026-08-28 세영: 「목업 텍스트 써지는 모션」) ----------
+     장면(li)이 켜질 때마다: 검색어/질문이 글자 단위로 타이핑되고, 결과·답변이 단계별로
+     등장한다. 링크 호버로 전환해도, 섹션을 벗어났다 재진입해도 처음부터 다시 재생.
+     ⚠ 타이머는 전환 시 반드시 전부 취소 — 이전 장면 타이핑이 새 장면에 겹치면
+       글자가 섞인다. 모션 줄이기에서는 완성 상태를 즉시 보여준다. */
+  /* 링크 하단 쉬운 설명(2026-08-28 세영: 「누구나 쉽게 이해할 수 있게」) */
+  var C3_DESC = [
+    '고객이 검색창에 필요한 것을 쳤을 때, 검색 결과에서 우리 회사가 발견되게 만드는 일입니다.',
+    '고객이 질문을 그대로 검색했을 때, 우리 홈페이지의 문장이 바로 그 답으로 나오게 만드는 일입니다.',
+    'ChatGPT 같은 AI에게 물었을 때, AI가 우리 회사를 알아보고 답변에서 소개하게 만드는 일입니다.'
+  ];
+  var c3DescEl = document.querySelector('[data-link-desc]');
+  function c3Desc(idx) {
+    if (!c3DescEl) return;
+    c3DescEl.classList.remove('in');
+    void c3DescEl.offsetWidth;          /* 리플로 — 전환 때마다 다시 밀려 들어오게 */
+    c3DescEl.textContent = C3_DESC[idx] || '';
+    c3DescEl.classList.add('in');
+  }
+  c3Desc(0);
+
+  var c3Scenes = $$('.con3phone .c3m-phone');   /* 경계 위 단일 폰의 장면 3개 */
+  var c3Timers = [];
+  function c3Clear() { c3Timers.forEach(clearTimeout); c3Timers = []; }
+  function c3T(fn, ms) { c3Timers.push(setTimeout(fn, ms)); }
+  function c3Reset(li) {
+    li.querySelectorAll('[data-tstep]').forEach(function (e) { e.classList.remove('in'); });
+    li.querySelectorAll('[data-type]').forEach(function (e) { e.textContent = ''; });
+    li.querySelectorAll('.c3m-q, .c3m-snipa, .c3m-ans').forEach(function (e) { e.classList.remove('typing-live'); });
+  }
+  function c3ShowAll(li) {
+    li.querySelectorAll('[data-tstep]').forEach(function (e) { e.classList.add('in'); });
+    li.querySelectorAll('[data-type]').forEach(function (e) { e.textContent = e.getAttribute('data-type'); });
+  }
+  /* 여러 span([data-type])을 이어서 타이핑 — caret 은 담는 요소(holder)에 typing-live */
+  function c3Type(holder, spans, speed, done) {
+    holder.classList.add('typing-live');
+    var si = 0;
+    (function next() {
+      if (si >= spans.length) { holder.classList.remove('typing-live'); done && done(); return; }
+      var el = spans[si], txt = el.getAttribute('data-type'), i = 0;
+      (function tick() {
+        if (i <= txt.length) { el.textContent = txt.slice(0, i); i++; c3T(tick, speed); }
+        else { si++; next(); }
+      })();
+    })();
+  }
+  function con3Play(idx) {
+    var sc = c3Scenes[idx];
+    if (!sc) return;
+    c3Clear();
+    c3Scenes.forEach(c3Reset);
+    if (reduced) { c3ShowAll(sc); return; }
+    var scene = sc.getAttribute('data-scene');
+    var steps = [].slice.call(sc.querySelectorAll('[data-tstep]'));
+    function stepIn(e, ms) { c3T(function () { e.classList.add('in'); }, ms); }
+    if (scene === 'seo') {
+      var q = sc.querySelector('.c3m-q');
+      c3T(function () {
+        c3Type(q, q.querySelectorAll('[data-type]'), 65, function () {
+          steps.forEach(function (e, i) { stepIn(e, 160 + i * 240); });
+        });
+      }, 350);
+    } else if (scene === 'aeo') {
+      var q2 = sc.querySelector('.c3m-q');
+      var box = sc.querySelector('.c3m-aibox');
+      var snip = sc.querySelector('.c3m-snipa');
+      c3T(function () {
+        c3Type(q2, q2.querySelectorAll('[data-type]'), 65, function () {
+          stepIn(sc.querySelector('.c3m-tabs'), 140);
+          stepIn(box, 380);
+          c3T(function () {
+            c3Type(snip, snip.querySelectorAll('[data-type]'), 22, function () {
+              stepIn(sc.querySelector('.c3m-src'), 120);
+              /* AI 답변 아래 일반 결과들 — 순차 등장(하단 채움) */
+              [].slice.call(sc.querySelectorAll('.c3m-hit')).forEach(function (e, i) {
+                stepIn(e, 380 + i * 240);
+              });
+            });
+          }, 850);
+        });
+      }, 350);
+    } else { /* geo — 1문답 + 후속 문답까지 */
+      var think = sc.querySelector('.c3m-think');
+      var ans = sc.querySelector('.c3m-ans:not(.c3m-ans2)');
+      var follow = sc.querySelector('[data-follow]');
+      var ai2 = sc.querySelector('[data-ai2]');
+      var ans2 = sc.querySelector('.c3m-ans2');
+      stepIn(sc.querySelector('.c3m-me'), 350);
+      stepIn(think, 900);
+      c3T(function () {
+        think.classList.remove('in');
+        c3Type(ans, ans.querySelectorAll('[data-type]'), 22, function () {
+          stepIn(sc.querySelector('.c3m-chips'), 140);
+          stepIn(follow, 750);
+          stepIn(ai2, 1250);
+          c3T(function () {
+            c3Type(ans2, ans2.querySelectorAll('[data-type]'), 22);
+          }, 1500);
+        });
+      }, 1900);
+    }
+  }
+  /* 섹션 진입 시 현재 장면 재생, 완전히 벗어나면 리셋(재진입 재생 — 사이트 공통 원칙) */
+  if (imgItems.length && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) {
+          var cur = imgItems.findIndex ? imgItems.findIndex(function (x) { return x.classList.contains('on'); })
+                                       : imgItems.map(function (x) { return x.classList.contains('on'); }).indexOf(true);
+          con3Play(cur < 0 ? 0 : cur);
+        } else {
+          c3Clear();
+          c3Scenes.forEach(c3Reset);
+        }
+      });
+    }, { threshold: 0.35 }).observe(document.querySelector('.main-con3 .left'));
+  }
 
   /* ---------- GSAP: 핀 + 박스 확장 (원본 파라미터 그대로) ---------- */
   gsap.registerPlugin(ScrollTrigger);

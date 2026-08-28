@@ -468,7 +468,7 @@ section.visual#mv-ix .mv-ix_visual_box.on .hero-scrim{ opacity:1; }
   content:''; position:absolute; right:0; top:36px; width:30px; height:30px;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none'%3E%3Cpath d='M8 22L22 8M22 8H11M22 8v11' stroke='%23a4a4a4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/cover no-repeat;
 }
-.mainCon .main-con3 .inner .link-list li:hover a{ color:#000; }
+.mainCon .main-con3 .inner .link-list li:hover a{ color:var(--brand); }  /* 2026-08-28 세영: 호버는 포인트 컬러 */
 .mainCon .main-con3 .inner .link-list li:hover a:after{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none'%3E%3Cpath d='M8 22L22 8M22 8H11M22 8v11' stroke='%23e83817' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
@@ -1894,4 +1894,148 @@ section.visual:has(.mv-ix_visual_box.on) .scrolldown__txt{ color:rgba(255,255,25
 .perf__no em.num-pop{ animation:noPop .55s cubic-bezier(.22,1,.36,1) both; transform-origin:center center; }
 @media (prefers-reduced-motion: reduce){
   .perf__no em.num-pop{ animation:none; }
+}
+
+/* ============================================================
+   con3 목업 오버레이(.c3m) — 메인 SEO·AEO·GEO (2026-08-28 세영)
+   1차: 브라우저+폰+챗 창 → 2차: 「대부분 모바일로 본다 — 셋 다 폰으로,
+   메인에는 핸드폰 전체가 통으로」. 폰 풀 프레임(노치·상태바·홈바) 3대,
+   장면만 다르다: 검색 결과 / AI 답변 박스 / AI 챗 앱.
+   타이핑 모션은 main.js initCon3Mocks — 링크 전환·재진입마다 재생.
+   ⚠ index 는 sub.css 를 싣지 않아 .svis 재사용 불가(메인 전용 컴포넌트).
+   파란 제목·AI 그라데이션은 목업 재현용 고정색 — 사이트 UI 로 새지 말 것.
+   ============================================================ */
+.mainCon .main-con3 .inner .left .list li{ position:relative; }
+/* 2026-08-28 세영 확정 위치: 폰은 **사진과 흰 면의 경계선에 걸친다**(반은 사진 위).
+   li 안에 두면 와이프 clip-path 에 경계에서 잘리므로, 폰은 .inner 직속 단일 요소
+   (.con3phone)로 빼고 장면 3개를 그 안에서 전환한다. li 의 .con3mock 은 딤 스크림만. */
+.con3mock{ position:absolute; inset:0; background:rgba(23,21,15,.36); }
+.con3phone{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  z-index:5; display:grid; }
+/* 폰이 경계에 걸치는 만큼 우측 텍스트는 오른쪽으로 비켜 선다(세영 스케치의 배치).
+   화면이 좁아지면 폰이 사진 쪽으로 물러나고 텍스트는 원래 중앙으로 복귀. */
+.mainCon .main-con3 .inner .right .right-box{ margin-left:auto; margin-right:24px; }
+@media screen and (max-width:1440px){
+  .con3phone{ left:42%; }
+  .mainCon .main-con3 .inner .right .right-box{ margin-right:auto; }
+}
+@media screen and (max-width:1200px){
+  .con3phone{ left:auto; right:51%; transform:translateY(-50%); }
+}
+.con3phone .c3m-phone{ grid-area:1 / 1; opacity:0; transform:translateY(14px);
+  transition:opacity .45s cubic-bezier(.22,1,.36,1), transform .45s cubic-bezier(.22,1,.36,1);
+  pointer-events:none; }
+.con3phone .c3m-phone.on{ opacity:1; transform:none; }
+.c3m-phone, .c3m-phone *{ letter-spacing:0; word-break:keep-all; }
+.c3m-phone{ width:min(302px, 23vw); aspect-ratio:9/19;   /* 좁은 데스크톱에서 섹션 높이 초과 방지 */ display:flex; flex-direction:column;
+  background:#fff; border:8px solid #1c1c1e; border-radius:44px;
+  box-shadow:0 30px 80px rgba(10,15,30,.45); text-align:left; color:#202124; overflow:hidden; }
+.c3m-notch{ width:92px; height:22px; margin:8px auto 0; background:#1c1c1e; border-radius:999px; }
+.c3m-status{ display:flex; align-items:center; justify-content:space-between;
+  padding:6px 22px 0; font-size:11px; font-weight:700; }
+.c3m-status svg{ width:38px; height:10px; }
+.c3m-home{ width:104px; height:4px; margin:auto auto 12px;   /* 바닥 고정 */
+  margin-top:auto; margin-left:auto; margin-right:auto; background:#d9dbe1; border-radius:999px; }
+.c3m-spark{ font-style:normal; font-weight:700;
+  background:linear-gradient(120deg,#5b6cff,#b36bff);
+  -webkit-background-clip:text; background-clip:text; color:transparent; }
+.c3m-fav{ width:17px; height:17px; border-radius:50%; background:#eef1f6; color:#5f6368;
+  font-size:9px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; flex:none; }
+.c3m-pbody{ padding:12px 16px 14px; }
+
+/* 검색 필 (SEO·AEO 공용) */
+.c3m-q{ display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:600;
+  border:1px solid #e3e6eb; border-radius:999px; padding:9px 14px;
+  box-shadow:0 1px 5px rgba(32,33,36,.08); }
+.c3m-q svg{ width:13px; height:13px; flex:none; stroke:#9aa0a6; }
+.c3m-q .mic{ margin-left:auto; display:flex; }
+.c3m-q .mic svg{ stroke:var(--brand); }
+
+/* 검색 결과 (SEO) */
+.c3m-meta{ font-size:10.5px; color:#9aa0a6; margin:11px 2px 1px; }
+.c3m-hit{ padding:10px 2px; }
+.c3m-hit + .c3m-hit{ border-top:1px solid #f1f3f6; }
+.c3m-site{ display:flex; align-items:center; gap:7px; }
+.c3m-hit--top .c3m-fav{ background:var(--brand); color:#fff; }
+.c3m-sname{ font-size:11px; }
+.c3m-u{ font-size:9.5px; color:#5f6368; display:block; }
+.c3m-t{ font-size:14px; font-weight:600; color:#1a53d1; margin-top:4px; line-height:1.4; }
+.c3m-d{ font-size:11.5px; color:#5f6368; line-height:1.55; margin-top:4px; }
+
+/* 관련 검색 (SEO 하단 채움 — 2026-08-28 세영: 「하단이 텅 비어 이상해」) */
+.c3m-rel{ margin-top:12px; padding-top:11px; border-top:1px solid #f1f3f6; }
+.c3m-rel-t{ font-size:10.5px; font-weight:700; color:#9aa0a6; }
+.c3m-rel-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.c3m-rel-chips span{ display:inline-flex; align-items:center; gap:5px; border:1px solid #e3e6eb;
+  border-radius:999px; padding:5px 11px; font-size:11px; color:#3c4043; background:#fafbfc; white-space:nowrap; }
+
+/* 탭 줄 + AI 답변 박스 (AEO) */
+.c3m-tabs{ display:flex; gap:13px; font-size:11px; color:#5f6368;
+  border-bottom:1px solid #f1f3f6; margin-top:11px; }
+.c3m-tabs b{ font-weight:600; color:#1a53d1; border-bottom:2px solid #1a53d1; padding-bottom:6px; }
+.c3m-tabs span{ padding-bottom:6px; }
+.c3m-aibox{ margin-top:11px; border:1px solid transparent; border-radius:12px; padding:12px 13px;
+  background:linear-gradient(#fff,#fff) padding-box, linear-gradient(120deg,#8a96ff,#c9a0ff) border-box; }
+.c3m-ailabel{ display:flex; align-items:center; gap:5px; font-size:11px; font-weight:800; margin-bottom:7px; }
+.c3m-ailabel b{ background:linear-gradient(120deg,#5b6cff,#b36bff);
+  -webkit-background-clip:text; background-clip:text; color:transparent; }
+.c3m-snipa{ font-size:12px; line-height:1.6; }
+.c3m-snipa b{ background:#fff3ef; font-weight:700; }
+.c3m-src{ display:flex; align-items:center; gap:7px; margin-top:10px;
+  padding-top:9px; border-top:1px solid #f1f3f6; }
+.c3m-src .c3m-fav{ background:var(--brand); color:#fff; width:14px; height:14px; font-size:8px; }
+.c3m-src span:last-child{ font-size:10px; color:#5f6368; }
+
+/* AI 챗 앱 (GEO) — 앱 헤더 + 대화 */
+.c3m-phead{ display:flex; align-items:center; justify-content:center; gap:6px;
+  font-size:12px; font-weight:700; color:#202124; padding:9px 0 8px; margin:6px 16px 0;
+  border-bottom:2px solid transparent;
+  background:linear-gradient(#fff,#fff) padding-box, linear-gradient(90deg,#8a96ff,#c9a0ff) border-box; }
+.c3m-chat{ padding:12px 16px 4px; display:flex; flex-direction:column; gap:10px; flex:1; }
+.c3m-chat .c3m-input{ margin-top:auto; }
+.c3m-me{ align-self:flex-end; max-width:84%; font-size:12px; line-height:1.5;
+  background:#f1f3f6; padding:8px 13px; border-radius:15px; border-bottom-right-radius:5px; }
+.c3m-ai{ display:flex; gap:8px; align-items:flex-start; }
+.c3m-ava{ width:21px; height:21px; flex:none; border-radius:50%;
+  background:linear-gradient(135deg,#6b7cff,#b36bff); display:flex; align-items:center; justify-content:center; }
+.c3m-ava svg{ width:11px; height:11px; fill:#fff; }
+.c3m-ans{ font-size:12px; line-height:1.62; }
+.c3m-ans b{ color:var(--brand); }
+.c3m-think{ display:inline-flex; gap:4px; padding:6px 2px; }
+.c3m-think i{ width:5px; height:5px; border-radius:50%; background:#b7bdf5; animation:c3mThink 1s infinite; }
+.c3m-think i:nth-child(2){ animation-delay:.16s; }
+.c3m-think i:nth-child(3){ animation-delay:.32s; }
+@keyframes c3mThink{ 0%,100%{ opacity:.35; transform:translateY(0); } 50%{ opacity:1; transform:translateY(-3px); } }
+.c3m-chips{ display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.c3m-chip{ display:inline-flex; align-items:center; gap:5px; border:1px solid #e3e6eb;
+  border-radius:999px; padding:3px 9px; font-size:10px; color:#5f6368; background:#fafbfc; }
+.c3m-chip .c3m-fav{ width:12px; height:12px; font-size:7px; background:var(--brand); color:#fff; }
+.c3m-input{ display:flex; align-items:center; gap:8px; margin-top:2px;
+  border:1px solid #e3e6eb; border-radius:999px; padding:8px 8px 8px 14px; background:#fafbfc; }
+.c3m-input span:first-child{ flex:1; font-size:11.5px; color:#9aa0a6; }
+.c3m-send{ width:25px; height:25px; flex:none; border-radius:50%; background:#17150f;
+  display:flex; align-items:center; justify-content:center; }
+.c3m-send svg{ width:11px; height:11px; stroke:#fff; }
+
+/* 타이핑 모션 */
+.c3m-caret{ display:inline-block; width:2px; height:1em; margin-left:2px; vertical-align:-2px;
+  background:#202124; opacity:0; }
+.typing-live .c3m-caret{ opacity:1; animation:c3mCaret .8s steps(1) infinite; }
+@keyframes c3mCaret{ 50%{ opacity:0; } }
+[data-tstep]{ opacity:0; transform:translateY(8px);
+  transition:opacity .45s cubic-bezier(.22,1,.36,1), transform .45s cubic-bezier(.22,1,.36,1); }
+[data-tstep].in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  [data-tstep]{ opacity:1 !important; transform:none !important; }
+}
+/* 링크 하단 쉬운 설명(2026-08-28 세영: 「호버하면 간략하고 쉽게 내용이」) —
+   현재 켜진 항목의 설명이 목록 아래에 뜨고, 호버 전환 때 살짝 밀려 들어온다. */
+.main-con3 .link-desc{ margin-top:32px; min-height:54px; font-size:17px; line-height:1.6;
+  color:#606060; opacity:0; transform:translateY(6px); }
+.main-con3 .link-desc.in{ opacity:1; transform:none;
+  transition:opacity .4s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1); }
+
+@media screen and (max-width:1023px){
+  .con3mock, .con3phone{ display:none; }   /* 모바일은 right-mo 목록이 대신한다 — 원본 구조 유지 */
+  .main-con3 .link-desc{ display:none; }
 }

@@ -13,7 +13,7 @@
 <link rel="icon" href="assets/img/logo-on-dark.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-<link rel="stylesheet" href="assets/css/main.css?v=396ca3ab">
+<link rel="stylesheet" href="assets/css/main.css?v=216463c7">
 </head>
 <body>
 <div id="wrap">
@@ -826,12 +826,101 @@
   <div class="main-con3">
     <div class="inner" id="con3">
       <div class="mask_trigger"></div>
+      <!-- 사진 위 실사 목업 오버레이 + 타이핑 모션(2026-08-28 세영: 「메인 저 부분에 목업,
+           더 디테일하게, 텍스트 써지는 모션」). 링크 호버 전환마다 장면이 다시 타이핑된다
+           (main.js initCon3Mocks). 예시는 ○○정밀 세계관 — 서브 목업과 동일. -->
+      <!-- 사진 3장(와이프)은 그대로, 위에는 딤 스크림만. 폰은 아래 .con3phone —
+           사진/흰 면 경계에 걸친 단일 폰에서 장면 3개가 전환된다(2026-08-28 세영 확정 위치). -->
       <div class="left">
         <ul class="list">
-          <li class="on"><img src="assets/img/wordmark/work-code.jpg" alt=""></li>
-          <li><img src="assets/img/wordmark/work-meeting.jpg" alt=""></li>
-          <li><img src="assets/img/wordmark/work-laptop.jpg" alt=""></li>
+          <li class="on"><img src="assets/img/wordmark/work-code.jpg" alt=""><div class="con3mock" aria-hidden="true"></div></li>
+          <li><img src="assets/img/wordmark/work-meeting.jpg" alt=""><div class="con3mock" aria-hidden="true"></div></li>
+          <li><img src="assets/img/wordmark/work-laptop.jpg" alt=""><div class="con3mock" aria-hidden="true"></div></li>
         </ul>
+      </div>
+      <div class="con3phone" aria-hidden="true">
+        <div class="c3m-phone on" data-scene="seo">
+          <div class="c3m-notch"></div>
+          <div class="c3m-status">
+      <span>9:41</span>
+      <svg viewBox="0 0 68 18" fill="#1c1c1e"><rect x="0" y="9" width="3" height="6" rx="1"/><rect x="5" y="6" width="3" height="9" rx="1"/><rect x="10" y="3" width="3" height="12" rx="1"/><rect x="15" y="0" width="3" height="15" rx="1"/><path d="M28 6a10 10 0 0 1 12 0l-1.7 2.2a7 7 0 0 0-8.6 0z"/><path d="M30.6 9.4a6 6 0 0 1 6.8 0L35.6 11.7a3 3 0 0 0-3.2 0z"/><circle cx="34" cy="14" r="1.7"/><rect x="46" y="3" width="18" height="11" rx="3" fill="none" stroke="#1c1c1e" stroke-width="1.4"/><rect x="48" y="5" width="11" height="7" rx="1.6"/><rect x="65" y="6.5" width="2.4" height="4" rx="1.2"/></svg>
+    </div>
+          <div class="c3m-pbody">
+            <p class="c3m-q typing-live"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg><span data-type="○○시 정밀 부품 가공"></span><i class="c3m-caret"></i><span class="mic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span></p>
+            <p class="c3m-meta" data-tstep>검색결과 약 12,400개 (0.42초)</p>
+            <div class="c3m-hit c3m-hit--top" data-tstep>
+              <div class="c3m-site"><span class="c3m-fav">○</span><span><span class="c3m-sname">○○정밀</span><br><span class="c3m-u">ooprecision.co.kr › 제품 › 정밀가공</span></span></div>
+              <p class="c3m-t">○○정밀 | 소량 다품종 정밀 부품 가공 전문</p>
+              <p class="c3m-d">시제품·소량 주문 범위와 납기 기준을 안내합니다. 가공 설비와 검사 장비, 진행 절차를 확인할 수 있습니다.</p>
+            </div>
+            <div class="c3m-hit" data-tstep>
+              <div class="c3m-site"><span class="c3m-fav">△</span><span><span class="c3m-sname">△△산업</span><br><span class="c3m-u">example-tech.co.kr</span></span></div>
+              <p class="c3m-t">△△산업 - 기계 부품 제조</p>
+            </div>
+            <div class="c3m-hit" data-tstep>
+              <div class="c3m-site"><span class="c3m-fav">□</span><span><span class="c3m-sname">□□테크</span><br><span class="c3m-u">example-industry.kr</span></span></div>
+              <p class="c3m-t">□□테크 | 산업용 부품 제작</p>
+            </div>
+            <div class="c3m-rel" data-tstep>
+              <p class="c3m-rel-t">관련 검색</p>
+              <p class="c3m-rel-chips"><span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>시제품 제작 업체</span><span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>CNC 소량 가공</span><span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg>정밀 가공 견적</span></p>
+            </div>
+          </div>
+          <div class="c3m-home"></div>
+        </div>
+        <div class="c3m-phone" data-scene="aeo">
+          <div class="c3m-notch"></div>
+          <div class="c3m-status">
+      <span>9:41</span>
+      <svg viewBox="0 0 68 18" fill="#1c1c1e"><rect x="0" y="9" width="3" height="6" rx="1"/><rect x="5" y="6" width="3" height="9" rx="1"/><rect x="10" y="3" width="3" height="12" rx="1"/><rect x="15" y="0" width="3" height="15" rx="1"/><path d="M28 6a10 10 0 0 1 12 0l-1.7 2.2a7 7 0 0 0-8.6 0z"/><path d="M30.6 9.4a6 6 0 0 1 6.8 0L35.6 11.7a3 3 0 0 0-3.2 0z"/><circle cx="34" cy="14" r="1.7"/><rect x="46" y="3" width="18" height="11" rx="3" fill="none" stroke="#1c1c1e" stroke-width="1.4"/><rect x="48" y="5" width="11" height="7" rx="1.6"/><rect x="65" y="6.5" width="2.4" height="4" rx="1.2"/></svg>
+    </div>
+          <div class="c3m-pbody">
+            <p class="c3m-q typing-live"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg><span data-type="시제품 소량 가공 되나요"></span><i class="c3m-caret"></i><span class="mic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span></p>
+            <p class="c3m-tabs" data-tstep><b>전체</b><span>이미지</span><span>동영상</span><span>지도</span><span>뉴스</span></p>
+            <div class="c3m-aibox" data-tstep>
+              <p class="c3m-ailabel"><i class="c3m-spark">✦</i><b>AI 답변</b></p>
+              <p class="c3m-snipa"><b data-type="시제품과 소량 다품종 가공"></b><span data-type="을 별도 라인으로 진행합니다. 수량·납기 기준은 견적 안내에서 확인할 수 있습니다."></span><i class="c3m-caret"></i></p>
+              <p class="c3m-src" data-tstep><span class="c3m-fav">○</span><span>○○정밀 — ooprecision.co.kr › FAQ</span></p>
+            </div>
+            <div class="c3m-hit c3m-hit--top" data-tstep>
+              <div class="c3m-site"><span class="c3m-fav">○</span><span><span class="c3m-sname">○○정밀</span><br><span class="c3m-u">ooprecision.co.kr › FAQ</span></span></div>
+              <p class="c3m-t">자주 묻는 질문 | 소량·시제품 가공 안내</p>
+            </div>
+            <div class="c3m-hit" data-tstep>
+              <div class="c3m-site"><span class="c3m-fav">△</span><span><span class="c3m-sname">△△산업</span><br><span class="c3m-u">example-tech.co.kr</span></span></div>
+              <p class="c3m-t">△△산업 - 가공 서비스</p>
+            </div>
+          </div>
+          <div class="c3m-home"></div>
+        </div>
+        <div class="c3m-phone" data-scene="geo">
+          <div class="c3m-notch"></div>
+          <div class="c3m-status">
+      <span>9:41</span>
+      <svg viewBox="0 0 68 18" fill="#1c1c1e"><rect x="0" y="9" width="3" height="6" rx="1"/><rect x="5" y="6" width="3" height="9" rx="1"/><rect x="10" y="3" width="3" height="12" rx="1"/><rect x="15" y="0" width="3" height="15" rx="1"/><path d="M28 6a10 10 0 0 1 12 0l-1.7 2.2a7 7 0 0 0-8.6 0z"/><path d="M30.6 9.4a6 6 0 0 1 6.8 0L35.6 11.7a3 3 0 0 0-3.2 0z"/><circle cx="34" cy="14" r="1.7"/><rect x="46" y="3" width="18" height="11" rx="3" fill="none" stroke="#1c1c1e" stroke-width="1.4"/><rect x="48" y="5" width="11" height="7" rx="1.6"/><rect x="65" y="6.5" width="2.4" height="4" rx="1.2"/></svg>
+    </div>
+          <p class="c3m-phead"><i class="c3m-spark">✦</i>AI Assistant</p>
+          <div class="c3m-chat">
+            <p class="c3m-me" data-tstep>소량으로도 정밀 가공해 주는 곳 있어?</p>
+            <div class="c3m-ai">
+              <span class="c3m-ava"><svg viewBox="0 0 24 24"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span>
+              <div>
+                <span class="c3m-think" data-tstep><i></i><i></i><i></i></span>
+                <p class="c3m-ans"><span data-type="시제품이나 소량 주문을 따로 받는 업체를 찾으시는군요. "></span><b data-type="○○정밀"></b><span data-type="은 소량 다품종 가공 범위와 납기 기준을 홈페이지에 안내하고 있어 참고할 만합니다."></span><i class="c3m-caret"></i></p>
+                <p class="c3m-chips" data-tstep><span class="c3m-chip"><span class="c3m-fav">○</span>ooprecision.co.kr</span><span class="c3m-chip">검색 결과 2건</span></p>
+              </div>
+            </div>
+            <p class="c3m-me" data-follow data-tstep>견적은 어떻게 받아?</p>
+            <div class="c3m-ai" data-ai2 data-tstep>
+              <span class="c3m-ava"><svg viewBox="0 0 24 24"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></span>
+              <div>
+                <p class="c3m-ans c3m-ans2"><span data-type="견적 안내 페이지에 기준이 공개되어 있습니다. 도면이나 샘플 사진을 보내면 범위와 납기를 회신받을 수 있습니다."></span><i class="c3m-caret"></i></p>
+              </div>
+            </div>
+            <p class="c3m-input"><span>메시지 입력…</span><span class="c3m-send"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span></p>
+          </div>
+          <div class="c3m-home"></div>
+        </div>
       </div>
       <div class="right">
         <div class="right-box">
@@ -843,6 +932,8 @@
             <li><a href="aeo.html">AEO</a></li>
             <li><a href="geo.html">GEO</a></li>
           </ul>
+          <!-- 호버 설명(2026-08-28 세영) — 문구는 main.js C3_DESC, 쉬운 말로 -->
+          <p class="link-desc" data-link-desc aria-live="polite"></p>
         </div>
       </div>
       <div class="right-mo m">
@@ -1402,6 +1493,6 @@
 <script src="assets/js/wrows.js?v=e67adaf5"></script>
 <script src="assets/js/marquee.js?v=ebdbe98a"></script>
 <script src="assets/js/anim.js?v=2960704d"></script>
-<script src="assets/js/main.js?v=c1906b21"></script>
+<script src="assets/js/main.js?v=1034c65c"></script>
 </body>
 </html>

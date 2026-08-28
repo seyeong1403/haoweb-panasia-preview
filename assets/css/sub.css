@@ -1217,3 +1217,45 @@ body.lbox-open { overflow: hidden; }
    평면 .mock 카드 12개를 svis 로 교체. 칸이 3열(452)보다 넓어(≈672) 창 폭을 묶는다. */
 .mockrow .svis{ margin-bottom:0; }
 .mockrow .svis__win{ max-width:500px; }
+
+/* seo/aeo/geo 상세 — 정의 섹션 끝에 단독 배치(2026-08-28 세영: 「상세페이지에도」). */
+.svis--solo{ max-width:640px; margin:24px auto 0; }
+.svis--solo .svis__win{ max-width:500px; }
+
+/* AI 강조(2026-08-28 세영: 「AEO·GEO는 기반이 AI — AI가 더 강조되었으면」) —
+   AI 시그니처 그라데이션(블루→퍼플, 아바타와 동일 계열)을 두 곳에:
+   · AEO 스니펫 = 「✦ AI 답변」 라벨 + 그라데이션 테두리(생성형 답변 박스 문법)
+   · 챗 창 = 주소창 ✦ 마크 + 바 하단 그라데이션 라인
+   ⚠ 이 그라데이션은 목업 속 「AI 화면」 재현용 — 사이트 UI 로 새지 말 것. */
+.svis__spark{ font-style:normal; font-weight:700;
+  background:linear-gradient(120deg,#5b6cff,#b36bff);
+  -webkit-background-clip:text; background-clip:text; color:transparent; }
+.svis__ailabel{ display:flex; align-items:center; gap:5px; font-size:10px; font-weight:800;
+  letter-spacing:.04em; margin-bottom:7px; }
+.svis__ailabel b{ background:linear-gradient(120deg,#5b6cff,#b36bff);
+  -webkit-background-clip:text; background-clip:text; color:transparent; }
+.svis__snip--ai{ border:1px solid transparent;
+  background:linear-gradient(#fff,#fff) padding-box, linear-gradient(120deg,#8a96ff,#c9a0ff) border-box; }
+.svis__bar--ai{ border-bottom:2px solid transparent;
+  background:linear-gradient(#f6f7f9,#f6f7f9) padding-box, linear-gradient(90deg,#8a96ff,#c9a0ff) border-box; }
+
+/* ── 폰 통일(2026-08-28 세영: 「거의 다 모바일로 본다 — 목업 3개 전부 모바일로」) ──
+   검색 결과·AI 챗도 폰 장면으로. 브라우저 창(.svis__win) 문법은 더 안 쓴다.
+   챗 폰은 입력창 없이 후속 질문까지 — 밴드 하단 컷과 겹치지 않게. */
+.svis__pmeta{ font-size:9.5px; color:#9aa0a6; margin:9px 2px 0; }
+.svis__phit{ padding:8px 0; }
+.svis__phit + .svis__phit{ border-top:1px solid #f1f3f6; }
+.svis__phit .svis__fav{ width:14px; height:14px; font-size:8px; }
+.svis__phit--top .svis__fav{ background:var(--brand); color:#fff; }
+.svis__pt{ font-size:12px; font-weight:600; color:#1a53d1; margin-top:3px; line-height:1.4; }
+.svis__pd{ font-size:10.5px; color:#5f6368; line-height:1.5; margin-top:3px; }
+.svis__phead{ display:flex; align-items:center; justify-content:center; gap:5px;
+  font-size:11px; font-weight:700; color:#202124; padding:8px 0 7px; margin:0 12px;
+  border-bottom:2px solid transparent;
+  background:linear-gradient(#fff,#fff) padding-box, linear-gradient(90deg,#8a96ff,#c9a0ff) border-box; }
+.svis__pchat{ padding:10px 12px 14px; display:flex; flex-direction:column; gap:9px; text-align:left; }
+.svis__pchat .svis__bub--me{ font-size:10.5px; padding:7px 10px; }
+.svis__pchat .svis__ans{ font-size:10.5px; }
+.svis__pchat .svis__chips{ margin-top:6px; }
+.svis__pchat .svis__ava{ width:18px; height:18px; }
+.svis__pchat .svis__ava svg{ width:10px; height:10px; }
