@@ -1106,3 +1106,114 @@ body.lbox-open { overflow: hidden; }
   .proc-grid{ grid-template-columns:1fr; gap:26px; }
   .proc-stage{ position:static; display:none; }   /* 원본과 동일 — 모바일은 목록만 */
 }
+
+/* ============================================================
+   기기 목업 3종(.svis) — search-ai SEO·AEO·GEO (2026-08-28 세영:
+   「아이콘이 너무 크고 이상해. PC나 모바일 화면에 활용되는 모습 구현 가능해?」
+   → 「좀 더 실제 화면인 것처럼」 2차 디테일업)
+   SEO = PC 브라우저 검색 결과(내비 버튼·자물쇠·파비콘·결과 메타 줄) /
+   AEO = 모바일 검색앱(상태바·검색 필·탭 줄·추천 스니펫) /
+   GEO = AI 챗(아바타·본문형 답변·출처 칩).
+   예시는 renewal .mock 과 같은 세계관(○○정밀). ⚠ 타사 로고는 쓰지 않는다(이미지 원칙)
+   — 검색·AI 는 중립 마크(돋보기·✦)로만. 제목 파랑 #1a53d1 등은 「실제 검색 화면」
+   재현용 고정색 — 우리 토큰 아님, 이 컴포넌트 밖으로 새지 말 것. */
+.svis{ height:336px; display:flex; align-items:flex-end; justify-content:center;
+  background:#eef1f6; border-radius:var(--r-card); overflow:hidden;
+  margin-bottom:28px; color:#202124; }
+.invert .svis{ color:#202124; }
+.svis, .svis *{ letter-spacing:0; }
+
+/* ── 공통 창(브라우저·챗) ── */
+.svis__win{ width:90%; background:#fff; border-radius:10px 10px 0 0;
+  box-shadow:0 12px 34px rgba(15,25,50,.13); }
+.svis__bar{ display:flex; align-items:center; gap:5px; padding:9px 12px;
+  background:#f6f7f9; border-bottom:1px solid #e8eaee; border-radius:10px 10px 0 0; }
+.svis__dot{ width:9px; height:9px; border-radius:50%; }
+.svis__dot:nth-child(1){ background:#f26d60; }
+.svis__dot:nth-child(2){ background:#f2bd4c; }
+.svis__dot:nth-child(3){ background:#59c26f; }
+.svis__nav{ display:flex; gap:8px; margin-left:8px; color:#9aa0a6; }
+.svis__nav svg{ width:11px; height:11px; stroke:currentColor; }
+.svis__url{ flex:1; display:flex; align-items:center; gap:6px; margin-left:6px;
+  background:#fff; border:1px solid #e3e6eb; border-radius:999px;
+  font-size:10.5px; color:#5f6368; padding:4px 12px; font-family:var(--font-num);
+  white-space:nowrap; overflow:hidden; }
+.svis__url svg{ width:9px; height:9px; flex:none; stroke:#9aa0a6; }
+
+/* ── 검색 결과 페이지 (SEO) ── */
+.svis__body{ padding:12px 16px 16px; text-align:left; }
+.svis__q{ display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600;
+  color:#202124; border:1px solid #e3e6eb; border-radius:999px; padding:7px 14px;
+  box-shadow:0 1px 4px rgba(32,33,36,.08); }
+.svis__q svg{ width:12px; height:12px; flex:none; stroke:#9aa0a6; }
+.svis__meta{ font-size:10px; color:#9aa0a6; margin:10px 2px 2px; }
+.svis__hit{ padding:9px 2px; }
+.svis__site{ display:flex; align-items:center; gap:6px; }
+.svis__fav{ width:16px; height:16px; border-radius:50%; background:#eef1f6; color:#5f6368;
+  font-size:9px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; flex:none; }
+.svis__hit--top .svis__fav{ background:var(--brand); color:#fff; }
+.svis__sname{ font-size:10.5px; color:#202124; }
+.svis__u{ font-size:9.5px; color:#5f6368; font-family:var(--font-num); }
+.svis__t{ font-size:13.5px; font-weight:600; color:#1a53d1; margin-top:3px; }
+.svis__d{ font-size:11.5px; color:#5f6368; line-height:1.5; margin-top:3px; }
+.svis__hit--dim .svis__t{ font-size:12.5px; }
+.svis__hit--dim{ border-top:1px solid #f1f3f6; }
+
+/* ── 폰 프레임 (AEO) ── */
+.svis__phone{ width:222px; background:#fff; border:6px solid #1c1c1e; border-bottom:0;
+  border-radius:28px 28px 0 0; box-shadow:0 12px 34px rgba(15,25,50,.16); }
+.svis__status{ display:flex; align-items:center; justify-content:space-between;
+  padding:7px 16px 0; font-size:9.5px; font-weight:700; color:#1c1c1e;
+  font-family:var(--font-num); }
+.svis__status svg{ width:34px; height:9px; }
+.svis__pbody{ padding:8px 12px 14px; text-align:left; }
+.svis__pill{ display:flex; align-items:center; gap:7px; background:#fff;
+  border:1px solid #e3e6eb; border-radius:999px; box-shadow:0 1px 4px rgba(32,33,36,.08);
+  font-size:11px; color:#202124; padding:7px 12px; }
+.svis__pill svg{ width:11px; height:11px; flex:none; stroke:#9aa0a6; }
+.svis__pill i{ margin-left:auto; font-style:normal; color:var(--brand); display:flex; }
+.svis__pill i svg{ stroke:var(--brand); }
+.svis__tabs{ display:flex; gap:12px; font-size:10px; color:#5f6368;
+  border-bottom:1px solid #f1f3f6; margin-top:10px; }
+.svis__tabs b{ font-weight:600; color:#1a53d1; border-bottom:2px solid #1a53d1; padding-bottom:5px; }
+.svis__tabs span{ padding-bottom:5px; }
+.svis__snip{ margin-top:10px; border:1px solid #e8eaee; border-radius:12px; padding:11px 12px;
+  box-shadow:0 1px 5px rgba(32,33,36,.05); }
+.svis__snip-a{ font-size:11.5px; line-height:1.55; color:#202124; }
+.svis__snip-a b{ background:#fff3ef; font-weight:700; }
+.svis__snip-src{ display:flex; align-items:center; gap:6px; margin-top:9px;
+  padding-top:8px; border-top:1px solid #f1f3f6; }
+.svis__snip-src .svis__fav{ background:var(--brand); color:#fff; }
+.svis__snip-src span{ font-size:9.5px; color:#5f6368; font-family:var(--font-num); }
+
+/* ── AI 챗 (GEO) ── */
+.svis__chat{ padding:12px 14px 16px; display:flex; flex-direction:column; gap:10px; text-align:left; }
+.svis__bub--me{ align-self:flex-end; max-width:80%; font-size:11.5px; line-height:1.5;
+  background:#f1f3f6; color:#202124; padding:8px 12px; border-radius:16px; border-bottom-right-radius:5px; }
+.svis__ai{ display:flex; gap:8px; align-items:flex-start; }
+.svis__ava{ width:20px; height:20px; flex:none; border-radius:50%; color:#fff;
+  background:linear-gradient(135deg,#6b7cff,#b36bff); display:flex; align-items:center; justify-content:center; }
+.svis__ava svg{ width:11px; height:11px; fill:#fff; }
+.svis__ans{ font-size:11.5px; line-height:1.6; color:#202124; }
+.svis__ans b{ color:var(--brand); }
+.svis__chips{ display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.svis__chip{ display:inline-flex; align-items:center; gap:5px; border:1px solid #e3e6eb;
+  border-radius:999px; padding:3px 9px; font-size:9.5px; color:#5f6368;
+  font-family:var(--font-num); background:#fafbfc; }
+.svis__chip .svis__fav{ width:12px; height:12px; font-size:7px; background:var(--brand); color:#fff; }
+.svis__input{ display:flex; align-items:center; gap:8px; margin-top:2px;
+  border:1px solid #e3e6eb; border-radius:999px; padding:8px 8px 8px 14px; background:#fafbfc; }
+.svis__input span:first-child{ flex:1; font-size:11px; color:#9aa0a6; } /* ⚠ span 전체로 잡으면 전송 버튼까지 flex:1 로 늘어난다(실제로 겪음) */
+.svis__send{ width:24px; height:24px; flex:none; border-radius:50%; background:#1c1c1e;
+  display:flex; align-items:center; justify-content:center; }
+.svis__send svg{ width:11px; height:11px; stroke:#fff; }
+
+/* 라벨 강조 (2026-08-28 세영: 「SEO — 발견 … 눈에 더 띄게」) —
+   영문 약어는 Space Grotesk+브랜드, 전체 28px(카드 제목급 스케일, 기존 토큰). */
+.svis-label{ font-size:28px; font-weight:800; letter-spacing:-.01em; margin-bottom:14px; }
+.svis-label b{ font-family:var(--font-num); font-weight:700; color:var(--brand); }
+
+/* 업종 페이지 mockrow 안에서(2026-08-28 세영: 「업종별 페이지 목업도」) —
+   평면 .mock 카드 12개를 svis 로 교체. 칸이 3열(452)보다 넓어(≈672) 창 폭을 묶는다. */
+.mockrow .svis{ margin-bottom:0; }
+.mockrow .svis__win{ max-width:500px; }
