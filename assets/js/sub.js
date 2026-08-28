@@ -333,3 +333,166 @@ function initLightbox() {
     initLightbox();
   }
 })();
+
+/* ============================================================
+   폰 목업 타이핑 모션(2026-08-28 세영: 「메인 AEO·SEO·GEO 폰 목업을
+   다른 서브페이지 목업에 적용 — 텍스트가 써지는 모션이 안 들어가 있어」)
+   — 마크업 무수정: 기존 텍스트를 저장해 두었다가 화면에 들어오는 순간
+   비우고 다시 타이핑한다(main.js initCon3Mocks 와 같은 문법·속도).
+   ⚠ 숨김·비우기를 「관찰 등록 때」 하면 헤드리스/숨김 탭(IntersectionObserver
+   미발동)에서 빈 폰이 찍힌다 — 반드시 발동 직전에만 한다. 미발동이면 원문 그대로.
+   ============================================================ */
+(function () {
+  'use strict';
+  var phones = [].slice.call(document.querySelectorAll('.svis__phone'));
+  if (!phones.length) return;
+  var reduced = window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced || !('IntersectionObserver' in window)) return;
+
+  function textNodes(root) {
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var out = [], n;
+    while ((n = w.nextNode())) if (n.nodeValue.trim()) out.push(n);
+    return out;
+  }
+
+  function play(phone) {
+    var timers = [];
+    function T(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    var caret = document.createElement('i');
+    caret.className = 'svis-caret';
+
+    /* holder 의 텍스트 노드들을 이어서 타이핑 — 캐럿은 holder 끝(검색 필은 마이크 앞) */
+    function type(holder, nodes, speed, done) {
+      var mic = holder.querySelector('.svis__pill i, i.svis__pill');
+      if (holder.classList.contains('svis__pill') && holder.lastElementChild &&
+          holder.lastElementChild.tagName === 'I') {
+        holder.insertBefore(caret, holder.lastElementChild);
+      } else holder.appendChild(caret);
+      holder.classList.add('typing-live');
+      var si = 0;
+      (function next() {
+        if (si >= nodes.length) {
+          holder.classList.remove('typing-live');
+          if (caret.parentNode) caret.parentNode.removeChild(caret);
+          done && done(); return;
+        }
+        var node = nodes[si], full = node.__svisFull, i = 0;
+        (function tick() {
+          if (i <= full.length) { node.nodeValue = full.slice(0, i); i++; T(tick, speed); }
+          else { si++; next(); }
+        })();
+      })();
+    }
+
+    var pill = phone.querySelector('.svis__pill');
+    var pbody = phone.querySelector('.svis__pbody');
+    var pchat = phone.querySelector('.svis__pchat');
+
+    if (pill && pbody) {
+      /* 검색형: 검색어 타이핑 → 결과 블록 순차 등장(스니펫 안 답변은 이어서 타이핑) */
+      var steps = [].slice.call(pbody.children).filter(function (e) { return e !== pill; });
+      var pillNodes = textNodes(pill).filter(function (n) { return !n.parentNode.closest('i'); });
+      pillNodes.forEach(function (n) { n.__svisFull = n.nodeValue; n.nodeValue = ''; });
+      steps.forEach(function (e) { e.classList.add('svis-step'); });
+      requestAnimationFrame(function () {
+        T(function () {
+          type(pill, pillNodes, 65, function () {
+            var delay = 160;
+            (function run(i) {
+              if (i >= steps.length) return;
+              var e = steps[i];
+              T(function () {
+                e.classList.add('in');
+                var snip = e.classList.contains('svis__snip') ? e :
+                           e.querySelector && e.querySelector('.svis__snip');
+                if (snip) {
+                  var a = snip.querySelector('.svis__snip-a');
+                  var ns = a ? textNodes(a) : [];
+                  ns.forEach(function (n) { n.__svisFull = n.nodeValue; n.nodeValue = ''; });
+                  T(function () { type(a, ns, 22, function () { run(i + 1); }); }, 200);
+                } else run(i + 1);
+              }, delay);
+              delay = 240;
+            })(0);
+          });
+        }, 350);
+      });
+    } else if (pchat) {
+      /* 채팅형: 내 말풍선 → AI 답변 타이핑 → 다음 말풍선 … 순차 */
+      var items = [].slice.call(pchat.children);
+      items.forEach(function (e) { e.classList.add('svis-step'); });
+      var ansN = [];
+      items.forEach(function (e) {
+        if (e.classList.contains('svis__ai')) {
+          var ans = e.querySelector('.svis__ans');
+          var ns = ans ? textNodes(ans) : [];
+          ns.forEach(function (n) { n.__svisFull = n.nodeValue; n.nodeValue = ''; });
+          ansN.push({ ans: ans, nodes: ns });
+        } else ansN.push(null);
+      });
+      requestAnimationFrame(function () {
+        (function run(i) {
+          if (i >= items.length) return;
+          var e = items[i];
+          T(function () {
+            e.classList.add('in');
+            if (ansN[i] && ansN[i].ans) {
+              T(function () { type(ansN[i].ans, ansN[i].nodes, 22, function () { run(i + 1); }); }, 250);
+            } else T(function () { run(i + 1); }, 420);
+          }, i === 0 ? 350 : 300);
+        })(0);
+      });
+    }
+  }
+
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting || seen.has(en.target)) return;
+      seen.add(en.target);
+      io.unobserve(en.target);
+      play(en.target);
+    });
+  }, { threshold: 0.45 });
+  phones.forEach(function (p) { io.observe(p); });
+})();
+
+/* ============================================================
+   FAQ(2026-08-28 세영 지시 2건, 16개 페이지 일괄)
+   ① 「호버하면 물음에 대한 대답이 보이게」 — hover 매체에서 details 를
+     마우스 진입 시 열고 떠나면 닫는다(터치는 기존 클릭 그대로).
+   ② 「버튼이 활성화 안 되어 있음」 — faq.html 분류 칩이 마크업만 있고
+     필터 JS 가 없었다. data-cat 매칭으로 표시/숨김.
+   ============================================================ */
+(function () {
+  'use strict';
+  var items = [].slice.call(document.querySelectorAll('details.faq__item'));
+  if (!items.length) return;
+
+  /* ① 호버 오픈 — 답을 읽는 동안(항목 전체 위) 열림 유지, 벗어나면 닫힘 */
+  if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+    items.forEach(function (d) {
+      d.addEventListener('mouseenter', function () { d.open = true; });
+      d.addEventListener('mouseleave', function () { d.open = false; });
+    });
+  }
+
+  /* ② 분류 칩 필터 */
+  var chips = [].slice.call(document.querySelectorAll('button.chip[data-cat]'));
+  if (!chips.length) return;
+  chips.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var cat = btn.getAttribute('data-cat');
+      chips.forEach(function (b) {
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      items.forEach(function (d) {
+        d.style.display =
+          (cat === 'all' || d.getAttribute('data-cat') === cat) ? '' : 'none';
+        d.open = false;
+      });
+    });
+  });
+})();
